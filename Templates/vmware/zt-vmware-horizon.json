@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5cb6eeb994e94d40910c92095cbea7c3",
+                "name": "ztg-virtualization"
+            },
+            {
+                "uuid": "8f511de0f8d347dfa41c2646aa9d08e5",
+                "name": "ztg-virtualization/esxi-vsphere"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "6def173ff74943709fe61d572873c68b",
+                "template": "zt-vmware-horizon",
+                "name": "zt-vmware-horizon",
+                "description": "Template para monitorar VMware Horizon",
+                "groups": [
+                    {
+                        "name": "ztg-virtualization"
+                    },
+                    {
+                        "name": "ztg-virtualization/esxi-vsphere"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "vmware"
+                    }
+                ]
+            }
+        ]
+    }
+}

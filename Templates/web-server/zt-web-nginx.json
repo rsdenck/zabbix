@@ -1,0 +1,31 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "8058a5017da04a848f326dea5ebad7bb",
+                "name": "ztg-web"
+            },
+            {
+                "uuid": "e95d3f3fae7d47d4a318541c657ae2c0",
+                "name": "ztg-web/nginx"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "b21bfd5d3b19417f986a5ed18a887571",
+                "template": "zt-web-nginx",
+                "name": "zt-web-nginx",
+                "description": "Template para monitoramento de servidores Nginx (status, tr\u00e1fego, conex\u00f5es ativas, etc.).",
+                "groups": [
+                    {
+                        "name": "ztg-web"
+                    },
+                    {
+                        "name": "ztg-web/nginx"
+                    }
+                ]
+            }
+        ]
+    }
+}

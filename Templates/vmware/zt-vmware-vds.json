@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5cb6eeb994e94d40910c92095cbea7c3",
+                "name": "ztg-virtualization"
+            },
+            {
+                "uuid": "8f511de0f8d347dfa41c2646aa9d08e5",
+                "name": "ztg-virtualization/esxi-vsphere"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "896b22ab61b04ec48797f35d1af22da4",
+                "template": "zt-vmware-vds",
+                "name": "zt-vmware-vds",
+                "description": "Template para monitorar VMware vDS\n\nVMware vSphere Distributed Switch (vDS)",
+                "groups": [
+                    {
+                        "name": "ztg-virtualization"
+                    },
+                    {
+                        "name": "ztg-virtualization/esxi-vsphere"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "vmware"
+                    }
+                ]
+            }
+        ]
+    }
+}

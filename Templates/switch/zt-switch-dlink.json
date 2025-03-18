@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "6de4b3b218374f089514a0104d242a51",
+                "name": "ztg-network"
+            },
+            {
+                "uuid": "de97314a64d54f32a585dece6d38dbf3",
+                "name": "ztg-network/switchs"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "b1ab3c702faf4a36acc515147c7d320d",
+                "template": "zt-switch-dlink",
+                "name": "zt-switch-dlink",
+                "description": "Template para monitorar switches D-Link",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/switchs"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "switch"
+                    }
+                ]
+            }
+        ]
+    }
+}

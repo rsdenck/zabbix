@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "6de4b3b218374f089514a0104d242a51",
+                "name": "ztg-network"
+            },
+            {
+                "uuid": "b66cda6542384d669f8f3287e602010e",
+                "name": "ztg-network/routers"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "21b7345fdc894e209eceeee959f4c288",
+                "template": "zt-router-linksys",
+                "name": "zt-router-linksys",
+                "description": "Template para roteadores Linksys",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/routers"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "router"
+                    }
+                ]
+            }
+        ]
+    }
+}

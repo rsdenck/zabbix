@@ -1,0 +1,937 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "6de4b3b218374f089514a0104d242a51",
+                "name": "ztg-network"
+            },
+            {
+                "uuid": "c4505ff5bbfe4881acfd31f6f9c8f248",
+                "name": "ztg-network/wireless"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "42e4e9cb8861439496e4cf7e3e21064b",
+                "template": "zt-wireless-aruba-ap-305",
+                "name": "zt-wireless-aruba-ap-305",
+                "description": "Template para monitorar AP Aruba AP-305",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "71541fc580a94b98a1ebcee48286d559",
+                "template": "zt-wireless-aruba-ap-515",
+                "name": "zt-wireless-aruba-ap-515",
+                "description": "Template para monitorar AP Aruba AP-515",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "95c05be0fbb54710a15831a6a989cf1e",
+                "template": "zt-wireless-aruba-instant-iap-205",
+                "name": "zt-wireless-aruba-instant-iap-205",
+                "description": "Template para monitorar AP Aruba Instant IAP-205",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "eff4221e349147d5bcfc197b6ba6a72d",
+                "template": "zt-wireless-aruba-instant-iap-225",
+                "name": "zt-wireless-aruba-instant-iap-225",
+                "description": "Template para monitorar AP Aruba Instant IAP-225",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "f490953cb08f4fe98b48a543574caf60",
+                "template": "zt-wireless-aruba-instant-iap-315",
+                "name": "zt-wireless-aruba-instant-iap-315",
+                "description": "Template para monitorar AP Aruba Instant IAP-315",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "3378ea155f934fcf924c44be14181d89",
+                "template": "zt-wireless-cisco-aironet-1800",
+                "name": "zt-wireless-cisco-aironet-1800",
+                "description": "Template para monitorar AP Cisco Aironet 1800",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "143bbd23a69747f79265d74924b4e975",
+                "template": "zt-wireless-cisco-aironet-2800",
+                "name": "zt-wireless-cisco-aironet-2800",
+                "description": "Template para monitorar AP Cisco Aironet 2800",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "204663f9547d40de810bd3b745cc0ced",
+                "template": "zt-wireless-cisco-meraki-mr33",
+                "name": "zt-wireless-cisco-meraki-mr33",
+                "description": "Template para monitorar AP Cisco Meraki MR33",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "dfe349f8d35c490e84359d715167d942",
+                "template": "zt-wireless-cisco-meraki-mr42",
+                "name": "zt-wireless-cisco-meraki-mr42",
+                "description": "Template para monitorar AP Cisco Meraki MR42",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "4d862f2af0aa4c299be1bdc1742611e3",
+                "template": "zt-wireless-cisco-meraki-mr84",
+                "name": "zt-wireless-cisco-meraki-mr84",
+                "description": "Template para monitorar AP Cisco Meraki MR84",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "27c93702c6b1434ebd18434b9d3be294",
+                "template": "zt-wireless-dlink-dap-2230",
+                "name": "zt-wireless-dlink-dap-2230",
+                "description": "Template para monitorar AP D-Link DAP-2230",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "541fb819065d4edda3e02bdd98b37259",
+                "template": "zt-wireless-dlink-dap-2610",
+                "name": "zt-wireless-dlink-dap-2610",
+                "description": "Template para monitorar AP D-Link DAP-2610",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "395ea151e9ac4d5791778ca8be7127d7",
+                "template": "zt-wireless-dlink-dap-2660",
+                "name": "zt-wireless-dlink-dap-2660",
+                "description": "Template para monitorar AP D-Link DAP-2660",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "80aa08313b9f406b88cdefdac8ef70e2",
+                "template": "zt-wireless-dlink-dap-3320",
+                "name": "zt-wireless-dlink-dap-3320",
+                "description": "Template para monitorar AP D-Link DAP-3320",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "8f20bb4db21d475b8db65b8dedac5041",
+                "template": "zt-wireless-intelbras-ap1000",
+                "name": "zt-wireless-intelbras-ap1000",
+                "description": "Template para monitorar AP Intelbras AP 1000",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "b2546fc5108842f6bbd168cdc46bd646",
+                "template": "zt-wireless-intelbras-ap1200",
+                "name": "zt-wireless-intelbras-ap1200",
+                "description": "Template para monitorar AP Intelbras AP 1200",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "6fedd1b786c74fd681d8a4e967f9d819",
+                "template": "zt-wireless-intelbras-ap2000",
+                "name": "zt-wireless-intelbras-ap2000",
+                "description": "Template para monitorar AP Intelbras AP 2000",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "ae2c2d5127d84d37a704833675c61f21",
+                "template": "zt-wireless-intelbras-ap2500",
+                "name": "zt-wireless-intelbras-ap2500",
+                "description": "Template para monitorar AP Intelbras AP 2500",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "f94478a67dfd48139897976b6b97a452",
+                "template": "zt-wireless-intelbras-ap3000",
+                "name": "zt-wireless-intelbras-ap3000",
+                "description": "Template para monitorar AP Intelbras AP 3000",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "b59dbf3dba3745e6aa4fcc98073643e0",
+                "template": "zt-wireless-intelbras-ap4000",
+                "name": "zt-wireless-intelbras-ap4000",
+                "description": "Template para monitorar AP Intelbras AP 4000",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "12f1459ff6f44494b1a0243f9d12d778",
+                "template": "zt-wireless-intelbras-ap5000",
+                "name": "zt-wireless-intelbras-ap5000",
+                "description": "Template para monitorar AP Intelbras AP 5000",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "1046a711247b48a5ad27bc562502b408",
+                "template": "zt-wireless-mikrotik-cap-ac",
+                "name": "zt-wireless-mikrotik-cap-ac",
+                "description": "Template para monitorar AP Mikrotik cAP ac",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "02c8b757a6834ca5837c845dbc626d60",
+                "template": "zt-wireless-mikrotik-hap-ac",
+                "name": "zt-wireless-mikrotik-hap-ac",
+                "description": "Template para monitorar AP Mikrotik hAP ac",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "c356b14fdcba41b3b0ca4f0ee8ae730f",
+                "template": "zt-wireless-mikrotik-hap-mini",
+                "name": "zt-wireless-mikrotik-hap-mini",
+                "description": "Template para monitorar AP Mikrotik hAP Mini",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "5240327f26bf45318362c87b5bff56fa",
+                "template": "zt-wireless-mikrotik-wap-ac",
+                "name": "zt-wireless-mikrotik-wap-ac",
+                "description": "Template para monitorar AP Mikrotik wAP ac",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "ed338eea013c439a92332d190825c020",
+                "template": "zt-wireless-mikrotik-wap-lte",
+                "name": "zt-wireless-mikrotik-wap-lte",
+                "description": "Template para monitorar AP Mikrotik wAP LTE",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "d16ce0dc4e724ad5a4fe2695fd2b9b13",
+                "template": "zt-wireless-ruckus-h510",
+                "name": "zt-wireless-ruckus-h510",
+                "description": "Template para monitorar AP Ruckus H510",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "c1a38574bf094789bc5e8c711d6225db",
+                "template": "zt-wireless-ruckus-r510",
+                "name": "zt-wireless-ruckus-r510",
+                "description": "Template para monitorar AP Ruckus R510",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "d61ee67227394f6b8d4ac80412fcef20",
+                "template": "zt-wireless-ruckus-r610",
+                "name": "zt-wireless-ruckus-r610",
+                "description": "Template para monitorar AP Ruckus R610",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "74b9a6fbbffd4fe6b336ade05d60bf07",
+                "template": "zt-wireless-ruckus-r710",
+                "name": "zt-wireless-ruckus-r710",
+                "description": "Template para monitorar AP Ruckus R710",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "1966ddf1ac5a401aa3e4951173f33f92",
+                "template": "zt-wireless-ruckus-r750",
+                "name": "zt-wireless-ruckus-r750",
+                "description": "Template para monitorar AP Ruckus R750",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "cc1454727e0d4dd4baeac5cf36464bdc",
+                "template": "zt-wireless-tplink-eap110",
+                "name": "zt-wireless-tplink-eap110",
+                "description": "Template para monitorar AP TP-Link EAP110",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "5ca8de3af9bd483dbab02fc36bc2d0a9",
+                "template": "zt-wireless-tplink-eap225",
+                "name": "zt-wireless-tplink-eap225",
+                "description": "Template para monitorar AP TP-Link EAP225",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "d9c7fe1245824969ba685b5ba92bc396",
+                "template": "zt-wireless-tplink-eap245",
+                "name": "zt-wireless-tplink-eap245",
+                "description": "Template para monitorar AP TP-Link EAP245",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "112a78405a90408f946ed885f621c4c4",
+                "template": "zt-wireless-tplink-eap245-v3",
+                "name": "zt-wireless-tplink-eap245-v3",
+                "description": "Template para monitorar AP TP-Link EAP245 V3",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "8bc2b099226c469a8804a5e3cd2bae12",
+                "template": "zt-wireless-tplink-eap265",
+                "name": "zt-wireless-tplink-eap265",
+                "description": "Template para monitorar AP TP-Link EAP265",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "25c2babe6fde48a3ad67903115f4bb63",
+                "template": "zt-wireless-unifi-ac-lite",
+                "name": "zt-wireless-unifi-ac-lite",
+                "description": "Template para monitorar AP UniFi AP AC Lite",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "8d54fc4ae40145309a89eced55a8f700",
+                "template": "zt-wireless-unifi-ac-lr",
+                "name": "zt-wireless-unifi-ac-lr",
+                "description": "Template para monitorar AP UniFi AP AC LR",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "511e6067525d4643a74e276bb974e8de",
+                "template": "zt-wireless-unifi-ac-pro",
+                "name": "zt-wireless-unifi-ac-pro",
+                "description": "Template para monitorar AP UniFi AP AC Pro",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "bebe2aa4cfcf4bd0b2264e2843026541",
+                "template": "zt-wireless-unifi-ap-hd",
+                "name": "zt-wireless-unifi-ap-hd",
+                "description": "Template para monitorar AP UniFi AP HD",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "9f4fc00a639d4790962aec12a58ce858",
+                "template": "zt-wireless-unifi-ap-xg",
+                "name": "zt-wireless-unifi-ap-xg",
+                "description": "Template para monitorar AP UniFi AP XG",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "f853bf09e1d34c198d9646a9efd67a4a",
+                "template": "zt-wireless-zyxel-nwa1123-ac",
+                "name": "zt-wireless-zyxel-nwa1123-ac",
+                "description": "Template para monitorar AP Zyxel NWA1123-AC",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "cdd11eb0c2104627bef07dbfe32d95a9",
+                "template": "zt-wireless-zyxel-nwa1302-ac",
+                "name": "zt-wireless-zyxel-nwa1302-ac",
+                "description": "Template para monitorar AP Zyxel NWA1302-AC",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "05f7569854e94f88a717207dcbaeb23f",
+                "template": "zt-wireless-zyxel-nwa5123-ac",
+                "name": "zt-wireless-zyxel-nwa5123-ac",
+                "description": "Template para monitorar AP Zyxel NWA5123-AC",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "e7a1a0ccada04386bb7b517a771654a2",
+                "template": "zt-wireless-zyxel-wac510",
+                "name": "zt-wireless-zyxel-wac510",
+                "description": "Template para monitorar AP Zyxel WAC510",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            },
+            {
+                "uuid": "2c8f0a7b0b3543fb95b7260301c5badc",
+                "template": "zt-wireless-zyxel-wac6303-d",
+                "name": "zt-wireless-zyxel-wac6303-d",
+                "description": "Template para monitorar AP Zyxel WAC6303-D",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            }
+        ]
+    }
+}

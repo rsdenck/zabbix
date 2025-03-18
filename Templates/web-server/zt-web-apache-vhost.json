@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "8058a5017da04a848f326dea5ebad7bb",
+                "name": "ztg-web"
+            },
+            {
+                "uuid": "b5ed3a362b3c45e9bf2640142c63bd84",
+                "name": "ztg-web/apache"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "c80006cf750e4c94b4c82629d709a267",
+                "template": "zt-web-apache-vhost",
+                "name": "zt-web-apache-vhost",
+                "description": "Template para monitorar Virtual Hosts do Apache",
+                "groups": [
+                    {
+                        "name": "ztg-web"
+                    },
+                    {
+                        "name": "ztg-web/apache"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "application",
+                        "value": "web"
+                    }
+                ]
+            }
+        ]
+    }
+}

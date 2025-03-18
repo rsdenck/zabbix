@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "6de4b3b218374f089514a0104d242a51",
+                "name": "ztg-network"
+            },
+            {
+                "uuid": "c4505ff5bbfe4881acfd31f6f9c8f248",
+                "name": "ztg-network/wireless"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "42e4e9cb8861439496e4cf7e3e21064b",
+                "template": "zt-wireless-aruba-ap-305",
+                "name": "zt-wireless-aruba-ap-305",
+                "description": "Template para monitorar AP Aruba AP-305",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            }
+        ]
+    }
+}

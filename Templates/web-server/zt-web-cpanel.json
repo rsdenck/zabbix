@@ -1,0 +1,460 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "7df96b18c230490a9a0a9e2307226338",
+                "name": "Templates"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "a5f54f2d0b1f411eabac055e93d4352d",
+                "template": "zt-web-cpanel",
+                "name": "zt-web-cpanel",
+                "description": "ZT - Zabbix Template\n-----------------------------------\nTemplate de Monitoramento de cPanel",
+                "groups": [
+                    {
+                        "name": "Templates"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "bb28ef8184e44210969ffa1859957554",
+                        "name": "cPhulkd service is running",
+                        "key": "net.tcp.service[tcp,,579]",
+                        "delay": "90s",
+                        "history": "30d",
+                        "valuemap": {
+                            "name": "Service state"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "985c6db40dba4bc7b523bd371ae1135c",
+                                "expression": "sum(/zt-web-cpanel/net.tcp.service[tcp,,579],#3)=0",
+                                "name": "cPhulkd service is down",
+                                "priority": "HIGH"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "85da75a036664fa59bf7f67f40eeb028",
+                        "name": "cPanel service is running",
+                        "key": "net.tcp.service[tcp,,2082]",
+                        "delay": "90s",
+                        "history": "30d",
+                        "valuemap": {
+                            "name": "Service state"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "8028ced1d20a48e4bdd1c0371506a78d",
+                                "expression": "sum(/zt-web-cpanel/net.tcp.service[tcp,,2082],#3)=0",
+                                "name": "cPanel service is down",
+                                "priority": "DISASTER"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "478667ba331a4ca48a87b4044172f5aa",
+                        "name": "cPanel SSL service is running",
+                        "key": "net.tcp.service[tcp,,2083]",
+                        "delay": "90s",
+                        "history": "30d",
+                        "valuemap": {
+                            "name": "Service state"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "74ab96507d95493cafb1b86538dc1bb3",
+                                "expression": "sum(/zt-web-cpanel/net.tcp.service[tcp,,2083],#3)=0",
+                                "name": "cPanel SSL service is down",
+                                "priority": "DISASTER"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "bb497a1005894731b204c8579b9ef9f0",
+                        "name": "WebHost Manager is running",
+                        "key": "net.tcp.service[tcp,,2086]",
+                        "delay": "90s",
+                        "history": "30d",
+                        "valuemap": {
+                            "name": "Service state"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "9bcf04f3f115449ca9d4a537ccf87307",
+                                "expression": "sum(/zt-web-cpanel/net.tcp.service[tcp,,2086],#3)=0",
+                                "name": "WebHost Manager service is down",
+                                "priority": "HIGH"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6f1a7abd968649a98007138a32701284",
+                        "name": "WebHost Manager SSL service is running",
+                        "key": "net.tcp.service[tcp,,2087]",
+                        "delay": "90s",
+                        "history": "30d",
+                        "valuemap": {
+                            "name": "Service state"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "bd2ad0adb405473ca43f3f514977b0d9",
+                                "expression": "sum(/zt-web-cpanel/net.tcp.service[tcp,,2087],#3)=0",
+                                "name": "WebHost Manager SSL service is down",
+                                "priority": "HIGH"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ce3165081f9c43e98eb7b67b3bf77909",
+                        "name": "Web mail service is running",
+                        "key": "net.tcp.service[tcp,,2095]",
+                        "delay": "90s",
+                        "history": "30d",
+                        "valuemap": {
+                            "name": "Service state"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "fa9c0833d71748a397088255c875f355",
+                                "expression": "sum(/zt-web-cpanel/net.tcp.service[tcp,,2095],#3)=0",
+                                "name": "Webmail service is down",
+                                "priority": "HIGH"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e5cb9ca10e864a8f8f91dc5115113601",
+                        "name": "Web mail SSL service is running",
+                        "key": "net.tcp.service[tcp,,2096]",
+                        "delay": "90s",
+                        "history": "30d",
+                        "valuemap": {
+                            "name": "Service state"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "25d2f28196df4e998e3980967b6e7737",
+                                "expression": "sum(/zt-web-cpanel/net.tcp.service[tcp,,2096],#3)=0",
+                                "name": "Webmail SSL service is down",
+                                "priority": "HIGH"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "295318d463a34264ad7e4a867d6293c3",
+                        "name": "Greylisting status",
+                        "key": "whmapi.cpgreylist_status",
+                        "delay": "1h",
+                        "history": "7d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "5063bdeecd2648048dc683f450ca068a",
+                                "expression": "sum(/zt-web-cpanel/whmapi.cpgreylist_status,#3)=0",
+                                "name": "Greylisting is disabled",
+                                "priority": "HIGH"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0d787d9d985c4ad4b3e4b27fd17d7354",
+                        "name": "cPHulk service status",
+                        "key": "whmapi.cphulk_status",
+                        "delay": "1h",
+                        "history": "7d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "611f020d57eb4905b62ae3b25e8fde98",
+                        "name": "cPHulk - brute force attack",
+                        "key": "whmapi.get_cphulk_brutes",
+                        "delay": "1h",
+                        "history": "7d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "22b6b50c7f58460fa71995eb4c5b2757",
+                        "name": "cPHulk - excessive brute force attack",
+                        "key": "whmapi.get_cphulk_excessive_brutes",
+                        "delay": "1h",
+                        "history": "7d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ca3eecaf53f8474ba0562c71908cc515",
+                        "name": "cPHulk - failed login attempt",
+                        "key": "whmapi.get_cphulk_failed_logins",
+                        "delay": "1h",
+                        "history": "7d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "419660e6548e48feb993e927a15d06f3",
+                        "name": "Suspended accounts",
+                        "key": "whmapi.listsuspended",
+                        "delay": "1h",
+                        "history": "7d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b6b26a57d8704d118ac96cd4a9cd01bb",
+                        "name": "$1 version count",
+                        "key": "whmapi.php_get_vhost_versions[ea-php56]",
+                        "delay": "1h",
+                        "history": "7d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "4e5ce83ff52f457bbfba2a73a0df6e46",
+                        "name": "$1 version count",
+                        "key": "whmapi.php_get_vhost_versions[ea-php71]",
+                        "delay": "1h",
+                        "history": "7d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ad22eb25c09147d6926f6d6fc1e647b6",
+                        "name": "Two-Factor Authentication (2FA) policy status",
+                        "key": "whmapi.twofactorauth_policy_status",
+                        "delay": "1h",
+                        "history": "7d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "cPanel"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "38f5274f28284d04860c4db435a5316f",
+                                "expression": "sum(/zt-web-cpanel/whmapi.twofactorauth_policy_status,#3)=0",
+                                "name": "Two-Factor Authentication (2FA) policy is disabled",
+                                "priority": "HIGH"
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "Application",
+                        "value": "cPanel"
+                    }
+                ],
+                "valuemaps": [
+                    {
+                        "uuid": "160b4cb9470747f88c3c91c26df3d01e",
+                        "name": "Service state",
+                        "mappings": [
+                            {
+                                "value": "0",
+                                "newvalue": "Down"
+                            },
+                            {
+                                "value": "1",
+                                "newvalue": "Up"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "graphs": [
+            {
+                "uuid": "fd40ae001dce434489c2ec4441e4b7ce",
+                "name": "[cPanel] cPHulk attacks",
+                "graph_items": [
+                    {
+                        "color": "2774A4",
+                        "calc_fnc": "ALL",
+                        "item": {
+                            "host": "zt-web-cpanel",
+                            "key": "whmapi.get_cphulk_brutes"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "A54F10",
+                        "calc_fnc": "ALL",
+                        "item": {
+                            "host": "zt-web-cpanel",
+                            "key": "whmapi.get_cphulk_excessive_brutes"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "FC6EA3",
+                        "calc_fnc": "ALL",
+                        "item": {
+                            "host": "zt-web-cpanel",
+                            "key": "whmapi.get_cphulk_failed_logins"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "7049661f803e4171b6c93363cf0023f5",
+                "name": "[cPanel] ea-php version count",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-web-cpanel",
+                            "key": "whmapi.php_get_vhost_versions[ea-php56]"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-web-cpanel",
+                            "key": "whmapi.php_get_vhost_versions[ea-php71]"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "90f6a1c2eb3e4e3abbce89d1335f1a4c",
+                "name": "[cPanel] service statuses",
+                "show_work_period": "NO",
+                "show_triggers": "NO",
+                "type": "STACKED",
+                "graph_items": [
+                    {
+                        "color": "C80000",
+                        "item": {
+                            "host": "zt-web-cpanel",
+                            "key": "net.tcp.service[tcp,,2082]"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "00C800",
+                        "item": {
+                            "host": "zt-web-cpanel",
+                            "key": "net.tcp.service[tcp,,2083]"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "0000C8",
+                        "item": {
+                            "host": "zt-web-cpanel",
+                            "key": "net.tcp.service[tcp,,2086]"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "C800C8",
+                        "item": {
+                            "host": "zt-web-cpanel",
+                            "key": "net.tcp.service[tcp,,2087]"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "color": "00C8C8",
+                        "item": {
+                            "host": "zt-web-cpanel",
+                            "key": "net.tcp.service[tcp,,2095]"
+                        }
+                    },
+                    {
+                        "sortorder": "5",
+                        "color": "C8C800",
+                        "item": {
+                            "host": "zt-web-cpanel",
+                            "key": "net.tcp.service[tcp,,2096]"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

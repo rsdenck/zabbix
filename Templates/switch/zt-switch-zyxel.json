@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "6de4b3b218374f089514a0104d242a51",
+                "name": "ztg-network"
+            },
+            {
+                "uuid": "de97314a64d54f32a585dece6d38dbf3",
+                "name": "ztg-network/switchs"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "b920ccb440e44baca207ea2e1e256c32",
+                "template": "zt-switch-zyxel",
+                "name": "zt-switch-zyxel",
+                "description": "Template para monitorar switches Zyxel",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/switchs"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "switch"
+                    }
+                ]
+            }
+        ]
+    }
+}

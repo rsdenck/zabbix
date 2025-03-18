@@ -1,0 +1,751 @@
+{
+    "zabbix_export": {
+        "version": "6.0",
+        "date": "2025-03-13T10:58:38Z",
+        "groups": [
+            {
+                "uuid": "a571c0d144b14fd4a87a9d9b2aa9fcd6",
+                "name": "Templates/Applications"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "014a194b5345479ea52113b93b1f6cad",
+                "template": "zt-vmware-guest",
+                "name": "zt-vmware-guest",
+                "description": "Template tooling version used: 0.41",
+                "groups": [
+                    {
+                        "name": "Templates/Applications"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "f9ff0022318948e3b0228583ee1e476e",
+                        "name": "VMware: Cluster name",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.cluster.name[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "delay": "1h",
+                        "history": "7d",
+                        "trends": "0",
+                        "value_type": "CHAR",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Cluster name of the guest VM.",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "1d"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "cluster"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "5471f6c0654a4e4e9ead4a006a9221e4",
+                        "name": "VMware: CPU latency in percents",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.cpu.latency[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Percentage of time the virtual machine is unable to run because it is contending for access to the physical CPU(s).",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "cpu"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2db44abc49f04881bcc82b7ef5596987",
+                        "name": "VMware: Number of virtual CPUs",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.cpu.num[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "delay": "1h",
+                        "history": "7d",
+                        "trends": "90d",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Number of virtual CPUs assigned to the guest.",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "1d"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "cpu"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "5a4db81b7385403aa2b01a071fe0261c",
+                        "name": "VMware: CPU readiness latency in percents",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.cpu.readiness[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Percentage of time that the virtual machine was ready, but could not get scheduled to run on the physical CPU.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "cpu"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "5420bc2cc6d94ae1aa2cf964faa58b18",
+                        "name": "VMware: CPU ready",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.cpu.ready[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "ms",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Time that the virtual machine was ready, but could not get scheduled to run on the physical CPU during last measurement interval (VMware vCenter/ESXi Server performance counter sampling interval - 20 seconds)",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "cpu"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "89ad145c896943d396c78abd3e6062dd",
+                        "name": "VMware: CPU swap-in latency in percents",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.cpu.swapwait[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "%",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Percentage of CPU time spent waiting for swap-in.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "cpu"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7783b3dfd76f42ac9f5430d6ebb18dc9",
+                        "name": "VMware: CPU usage in percents",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.cpu.usage.perf[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "%",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "CPU usage as a percentage during the interval.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "cpu"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1aaf93947f3d4cfbbd86dfc9d8625016",
+                        "name": "VMware: CPU usage",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.cpu.usage[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "Hz",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "cpu"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9cfa6a6f14174c6a83f923df1738a84e",
+                        "name": "VMware: Datacenter name",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.datacenter.name[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "delay": "1h",
+                        "history": "7d",
+                        "trends": "0",
+                        "value_type": "CHAR",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Datacenter name of the guest VM.",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "1d"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "datacenter"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "35c77859d71c416294b2e9c6d25dc613",
+                        "name": "VMware: Guest memory swapped",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.guest.memory.size.swapped[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "B",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Amount of guest physical memory that is swapped out to the swap space.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1c891cc02f6a4eb6a4b7d39f12f93c23",
+                        "name": "VMware: Uptime of guest OS",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.guest.osuptime[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "uptime",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Total time elapsed since the last operating system boot-up (in seconds).",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "system"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "49df4979a5c5475391cd1193447eba64",
+                        "name": "VMware: Hypervisor name",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.hv.name[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "delay": "1h",
+                        "history": "7d",
+                        "trends": "0",
+                        "value_type": "CHAR",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Hypervisor name of the guest VM.",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "1d"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "hypervisor"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "c66fdb1fc84a4cf296439ee93c2f37e6",
+                        "name": "VMware: Ballooned memory",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.memory.size.ballooned[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "60d",
+                        "units": "B",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "543d09ab7aaf4134b3603e2447636f64",
+                        "name": "VMware: Compressed memory",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.memory.size.compressed[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "B",
+                        "username": "vmware.vm.memory.size.compressed[{$VMWARE.URL},{$VMWARE.VM.UUID}",
+                        "password": "vmware.vm.memory.size.compressed[{$VMWARE.URL},{$VMWARE.VM.UUID}",
+                        "description": "The amount of memory currently in the compression cache for this VM.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "3c13123fdf314cf490882f85d43a910d",
+                        "name": "VMware: Host memory consumed",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.memory.size.consumed[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "B",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Amount of host physical memory consumed for backing up guest physical memory pages.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "72da4fc963774c4690239cd7b033d9de",
+                        "name": "VMware: Private memory",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.memory.size.private[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "B",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Amount of memory backed by host memory and not being shared.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "abdf825b2d2046ecab3e48cc34500cce",
+                        "name": "VMware: Shared memory",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.memory.size.shared[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "B",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "The amount of guest physical memory shared through transparent page sharing.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6fa14e4edf914670a5b05282f53e2d8b",
+                        "name": "VMware: Swapped memory",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.memory.size.swapped[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "B",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "The amount of guest physical memory swapped out to the VM's swap device by ESX.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "82fc80ad36db4c15802f93cd9139bd05",
+                        "name": "VMware: Guest memory usage",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.memory.size.usage.guest[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "B",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "The amount of guest physical memory that is being used by the VM.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "8714a9d3b38b45f0848a9ac877abc453",
+                        "name": "VMware: Host memory usage",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.memory.size.usage.host[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "b",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "The amount of host physical memory allocated to the VM, accounting for saving from memory sharing with other VMs.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "56f56c7cbe384aae863f57798c0e29e4",
+                        "name": "VMware: Memory size",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.memory.size[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "delay": "1h",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "B",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Total size of configured memory.",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "1d"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "012db5375fa94feabd0d10d94a5b36c7",
+                        "name": "VMware: Host memory usage in percents",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.memory.usage[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Percentage of host physical memory that has been consumed.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f92345a19a2e4d8a98f7c273eef24b66",
+                        "name": "VMware: Power state",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.powerstate[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "The current power state of the virtual machine.",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "1h"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "power"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "8eb268a68bc34a63beecf667b7cee62f",
+                        "name": "VMware: Committed storage space",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.storage.committed[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "B",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "storage"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f5c7bb77635c4cf0aafe994fdaa925ab",
+                        "name": "VMware: Uncommitted storage space",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.storage.uncommitted[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "B",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Additional storage space, in bytes, potentially used by this virtual machine on all datastores.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "storage"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "982ce25b44e9494ca465c636d45dd7c1",
+                        "name": "VMware: Unshared storage space",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.storage.unshared[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "B",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Total storage space, in bytes, occupied by the virtual machine across all datastores, that is not shared with any other virtual machine.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "storage"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "653caf6ce4ed4b02b4b7be2261508a5a",
+                        "name": "VMware: Uptime",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.uptime[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "units": "uptime",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "System uptime.",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "system"
+                            }
+                        ]
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "uuid": "6297c72ae0914a2c889d7854a917df1f",
+                        "name": "Network device discovery",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.net.if.discovery[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "delay": "1h",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "item_prototypes": [
+                            {
+                                "uuid": "550bda7a2cf44265899c000fa5a84969",
+                                "name": "VMware: Number of bytes received on interface {#IFDESC}",
+                                "type": "SIMPLE",
+                                "key": "vmware.vm.net.if.in[{$VMWARE.URL},{$VMWARE.VM.UUID},{#IFNAME},bps]",
+                                "trends": "90d",
+                                "value_type": "FLOAT",
+                                "units": "Bps",
+                                "username": "{$VMWARE.USERNAME}",
+                                "password": "{$VMWARE.PASSWORD}",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "interface"
+                                    },
+                                    {
+                                        "tag": "interface",
+                                        "value": "{#IFDESC}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "56d11b67ed8a4463bc37087824a92cc1",
+                                "name": "VMware: Number of packets received on interface {#IFDESC}",
+                                "type": "SIMPLE",
+                                "key": "vmware.vm.net.if.in[{$VMWARE.URL},{$VMWARE.VM.UUID},{#IFNAME},pps]",
+                                "trends": "90d",
+                                "username": "{$VMWARE.USERNAME}",
+                                "password": "{$VMWARE.PASSWORD}",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "interface"
+                                    },
+                                    {
+                                        "tag": "interface",
+                                        "value": "{#IFDESC}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "f26fde6c22bd46f189422c7627234754",
+                                "name": "VMware: Number of bytes transmitted on interface {#IFDESC}",
+                                "type": "SIMPLE",
+                                "key": "vmware.vm.net.if.out[{$VMWARE.URL},{$VMWARE.VM.UUID},{#IFNAME},bps]",
+                                "trends": "90d",
+                                "units": "Bps",
+                                "username": "{$VMWARE.USERNAME}",
+                                "password": "{$VMWARE.PASSWORD}",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "interface"
+                                    },
+                                    {
+                                        "tag": "interface",
+                                        "value": "{#IFDESC}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "40e28df24c7a4d80a070c31ed41b57b2",
+                                "name": "VMware: Number of packets transmitted on interface {#IFDESC}",
+                                "type": "SIMPLE",
+                                "key": "vmware.vm.net.if.out[{$VMWARE.URL},{$VMWARE.VM.UUID},{#IFNAME},pps]",
+                                "history": "7d",
+                                "trends": "7d",
+                                "username": "{$VMWARE.USERNAME}",
+                                "password": "{$VMWARE.PASSWORD}",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "interface"
+                                    },
+                                    {
+                                        "tag": "interface",
+                                        "value": "{#IFDESC}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "26cee52cd3c8409d892bce7d6c025aa7",
+                                "name": "VMware: Network utilization on interface {#IFDESC}",
+                                "type": "SIMPLE",
+                                "key": "vmware.vm.net.if.usage[{$VMWARE.URL},{$VMWARE.VM.UUID},{#IFNAME}]",
+                                "trends": "90d",
+                                "value_type": "FLOAT",
+                                "units": "Bps",
+                                "username": "{$VMWARE.USERNAME}",
+                                "password": "{$VMWARE.PASSWORD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "1024"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "interface"
+                                    },
+                                    {
+                                        "tag": "interface",
+                                        "value": "{#IFDESC}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a54dd3ae9a8a4a169a128ecf48e2d15b",
+                        "name": "Disk device discovery",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.vfs.dev.discovery[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "delay": "1h",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}",
+                        "description": "Discovery of all disk devices."
+                    },
+                    {
+                        "uuid": "aa02c13604f649a48e8947c04328f387",
+                        "name": "Mounted filesystem discovery",
+                        "type": "SIMPLE",
+                        "key": "vmware.vm.vfs.fs.discovery[{$VMWARE.URL},{$VMWARE.VM.UUID}]",
+                        "delay": "1h",
+                        "username": "{$VMWARE.USERNAME}",
+                        "password": "{$VMWARE.PASSWORD}"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "class",
+                        "value": "software"
+                    },
+                    {
+                        "tag": "target",
+                        "value": "vmware"
+                    },
+                    {
+                        "tag": "target",
+                        "value": "vmware-guest"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$VMWARE.PASSWORD}",
+                        "description": "VMware service {$USERNAME} user password"
+                    },
+                    {
+                        "macro": "{$VMWARE.URL}",
+                        "description": "VMware service (vCenter or ESX hypervisor) SDK URL (https://servername/sdk)"
+                    },
+                    {
+                        "macro": "{$VMWARE.USERNAME}",
+                        "description": "VMware service user name"
+                    }
+                ],
+                "valuemaps": [
+                    {
+                        "uuid": "5762bf28ae1c40a99659667dd7dd0e36",
+                        "name": "VMware VirtualMachinePowerState",
+                        "mappings": [
+                            {
+                                "value": "0",
+                                "newvalue": "poweredOff"
+                            },
+                            {
+                                "value": "1",
+                                "newvalue": "poweredOn"
+                            },
+                            {
+                                "value": "2",
+                                "newvalue": "suspended"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,460 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "d483c422329740379b2066d99cc46133",
+                "name": "ztg-os"
+            },
+            {
+                "uuid": "3d6997142fcc4ab79b1765d622621f9c",
+                "name": "ztg-os/windows"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "7d94637deaf042e698cd2d73fefea169",
+                "template": "zt-os-windows-ad",
+                "name": "zt-os-windows-ad",
+                "description": "Nome:  zt-os-win-adaudit\n---------------------------------------------------------------------------------\nObs: Monitoramento via Agent Ativo\n---------------------------------------------------------------------------------\nRepo: https://github.com/apexmonitoring/ zt-os-win-adaudit\n---------------------------------------------------------------------------------\nAutor: Ranlens Denck",
+                "groups": [
+                    {
+                        "name": "ztg-os"
+                    },
+                    {
+                        "name": "ztg-os/windows"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "16665d2c61c144d09ea9b92728b01a7c",
+                        "name": "ClearAuditJournal",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,1102]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u041e\u0447\u0438\u0441\u0442\u043a\u0430 \u0436\u0443\u0440\u043d\u0430\u043b\u0430 \u0430\u0443\u0434\u0438\u0442\u0430",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "6daf27d15cbd408cbfa3c51d28a400fb",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,1102],,\"1102\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,1102],5s)=0",
+                                "name": "\u041e\u0447\u0438\u0449\u0435\u043d \u0436\u0443\u0440\u043d\u0430\u043b \u0430\u0443\u0434\u0438\u0442\u0430",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "505ae260ab4c40428ddbed4002b628b3",
+                        "name": "LogInSuccessfully",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4624]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0412\u0445\u043e\u0434 \u0441 \u0443\u0447\u0435\u0442\u043d\u043e\u0439 \u0437\u0430\u043f\u0438\u0441\u044c\u044e \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d \u0443\u0441\u043f\u0435\u0448\u043d\u043e",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "c0c293d549ab4bc6a18f746947927419",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4624],,\"4624\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4624],5s)=0",
+                                "name": "\u0412\u0445\u043e\u0434 \u0441 \u0443\u0447\u0435\u0442\u043d\u043e\u0439 \u0437\u0430\u043f\u0438\u0441\u044c\u044e \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d",
+                                "status": "DISABLED",
+                                "priority": "DISASTER",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e0c5ab5ecb21424795f5143172906ed0",
+                        "name": "LogInDenied",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4625]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0423\u0447\u0435\u0442\u043d\u043e\u0439 \u0437\u0430\u043f\u0438\u0441\u0438 \u043d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0432\u044b\u043f\u043e\u043b\u043d\u0438\u0442\u044c \u0432\u0445\u043e\u0434 \u0432 \u0441\u0438\u0441\u0442\u0435\u043c\u0443",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "126555911cd84bf0996082bca22a3969",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4625],,\"4625\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4625],5s)=0",
+                                "name": "\u0423\u0447\u0451\u0442\u043d\u043e\u0439 \u0437\u0430\u043f\u0438\u0441\u0438 \u043d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0432\u044b\u043f\u043e\u043b\u043d\u0438\u0442\u044c \u0432\u0445\u043e\u0434 \u0432 \u0441\u0438\u0441\u0442\u0435\u043c\u0443",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1b04818cd9c84c7cb56c7a46528ec1a2",
+                        "name": "UserProfileHasBeenCreated",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4720]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0421\u043e\u0437\u0434\u0430\u043d\u0430 \u0443\u0447\u0435\u0442\u043d\u0430\u044f \u0437\u0430\u043f\u0438\u0441\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "269d765cec454003a20c551b3a6d769d",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4720],,\"4720\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4720],5s)=0",
+                                "name": "\u0421\u043e\u0437\u0434\u0430\u043d\u0430 \u0443\u0447\u0451\u0442\u043d\u0430\u044f \u0437\u0430\u043f\u0438\u0441\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b9a5ce9fe54041a9a952b7079e1708fd",
+                        "name": "AttemptToResetTheAccountPassword",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4724]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u041f\u043e\u043f\u044b\u0442\u043a\u0430 \u0441\u0431\u0440\u043e\u0441\u0438\u0442\u044c \u043f\u0430\u0440\u043e\u043b\u044c \u0443\u0447\u0435\u0442\u043d\u043e\u0439 \u0437\u0430\u043f\u0438\u0441\u0438",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "592a9fd2b2c548149f2016bdf56d67ec",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4724],,\"4724\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4724],5s)=0",
+                                "name": "\u041f\u043e\u043f\u044b\u0442\u043a\u0430 \u0441\u0431\u0440\u043e\u0441\u0438\u0442\u044c \u043f\u0430\u0440\u043e\u043b\u044c \u0443\u0447\u0451\u0442\u043d\u043e\u0439 \u0437\u0430\u043f\u0438\u0441\u0438",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7a66144d4cf64061ae4c8a3e7715b6ce",
+                        "name": "UserProfileDisabled",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4725]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u041e\u0442\u043a\u043b\u044e\u0447\u0435\u043d\u0430 \u0443\u0447\u0435\u0442\u043d\u0430\u044f \u0437\u0430\u043f\u0438\u0441\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "404c9dba957143c5b082c88814c1eee8",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4725],,\"4725\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4725],5s)=0",
+                                "name": "\u041e\u0442\u043a\u043b\u044e\u0447\u0435\u043d\u0430 \u0443\u0447\u0451\u0442\u043d\u0430\u044f \u0437\u0430\u043f\u0438\u0441\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "01fd6ce684174aa8ba025f171a29ffb9",
+                        "name": "UserProfileDeleted",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4726]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0423\u0447\u0435\u0442\u043d\u0430\u044f \u0437\u0430\u043f\u0438\u0441\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f \u0443\u0434\u0430\u043b\u0435\u043d\u0430",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "4eebf495004e4819bf322265711bde91",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4726],,\"4726\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4726],5s)=0",
+                                "name": "\u0423\u0434\u0430\u043b\u0435\u043d\u0430 \u0443\u0447\u0451\u0442\u043d\u0430\u044f \u0437\u0430\u043f\u0438\u0441\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0bdbf8a271704bac84458c40f0b5bb6e",
+                        "name": "SecureLocalGroupHasBeenCreated",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4731]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0421\u043e\u0437\u0434\u0430\u043d\u0430 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0430\u044f \u0437\u0430\u0449\u0438\u0449\u0435\u043d\u043d\u0430\u044f \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0430\u044f \u0433\u0440\u0443\u043f\u043f\u0430 \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "eff0f0fb86cc41f1a789ba3299c87c04",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4731],,\"4731\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4731],5s)=0",
+                                "name": "\u0421\u043e\u0437\u0434\u0430\u043d\u0430 \u0437\u0430\u0449\u0438\u0449\u0451\u043d\u043d\u0430\u044f \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0430\u044f \u0433\u0440\u0443\u043f\u043f\u0430 \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "fe68da4bf8a540d3aef392ced36d48e5",
+                        "name": "AddMemberLocalSecureGroup",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4732]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0414\u043e\u0431\u0430\u0432\u043b\u0435\u043d \u0443\u0447\u0430\u0441\u0442\u043d\u0438\u043a \u0432 \u0437\u0430\u0449\u0438\u0449\u0451\u043d\u043d\u0443\u044e \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0443\u044e \u0433\u0440\u0443\u043f\u043f\u0443",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "fae991f5c2b249c3b7ef3251622860b8",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4732],,\"4732\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4732],5s)=0",
+                                "name": "\u0414\u043e\u0431\u0430\u0432\u043b\u0435\u043d \u0443\u0447\u0430\u0441\u0442\u043d\u0438\u043a \u0432 \u0437\u0430\u0449\u0438\u0449\u0451\u043d\u043d\u0443\u044e \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0443\u044e \u0433\u0440\u0443\u043f\u043f\u0443",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ecc5a520ae18499b9fbd94fd17313347",
+                        "name": "DeleteMemberLocalSecureGroup",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4733]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0423\u0434\u0430\u043b\u0435\u043d \u0443\u0447\u0430\u0441\u0442\u043d\u0438\u043a \u0438\u0437 \u0437\u0430\u0449\u0438\u0449\u0451\u043d\u043d\u043e\u0439 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u043e\u0439 \u0433\u0440\u0443\u043f\u043f\u044b",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "bd987c3ee51f423e884d96a857549dec",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4733],,\"4733\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4733],5s)=0",
+                                "name": "\u0423\u0434\u0430\u043b\u0435\u043d \u0443\u0447\u0430\u0441\u0442\u043d\u0438\u043a \u0438\u0437 \u0437\u0430\u0449\u0438\u0449\u0451\u043d\u043d\u043e\u0439 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u043e\u0439 \u0433\u0440\u0443\u043f\u043f\u044b",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0cfd157516c945be99690d845a391900",
+                        "name": "DeleteSecureLocalGroup",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4734]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0423\u0434\u0430\u043b\u0435\u043d\u0430 \u0437\u0430\u0449\u0438\u0449\u0451\u043d\u043d\u0430\u044f \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0430\u044f \u0433\u0440\u0443\u043f\u043f\u0430 \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "89c1b65ff06642838bba1e726a21c1e2",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4734],,\"4734\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4734],5s)=0",
+                                "name": "\u0423\u0434\u0430\u043b\u0435\u043d\u0430 \u0437\u0430\u0449\u0438\u0449\u0451\u043d\u043d\u0430\u044f \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0430\u044f \u0433\u0440\u0443\u043f\u043f\u0430 \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "bf4750bdcc9e4e0e9627b9bec4087b1a",
+                        "name": "ModifySecureLocalGroup",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4735]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0430 \u0437\u0430\u0449\u0438\u0449\u0451\u043d\u043d\u0430\u044f \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0430\u044f \u0433\u0440\u0443\u043f\u043f\u0430 \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "51abac61d88d49619e09ad2bdb0ddacc",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4735],,\"4735\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4735],5s)=0",
+                                "name": "\u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0430 \u0437\u0430\u0449\u0438\u0449\u0451\u043d\u043d\u0430\u044f \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0430\u044f \u0433\u0440\u0443\u043f\u043f\u0430 \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ebb89ae1711c454aa3550f105cce86e7",
+                        "name": "ModifyUserProfile",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4738]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0430 \u0443\u0447\u0451\u0442\u043d\u0430\u044f \u0437\u0430\u043f\u0438\u0441\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "c5bfd442cdcd4611abdc1beb6f6b8982",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4738],,\"4738\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4738],5s)=0",
+                                "name": "\u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0430 \u0443\u0447\u0451\u0442\u043d\u0430\u044f \u0437\u0430\u043f\u0438\u0441\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "197ae4d6bc10495b938c422f35fd3b33",
+                        "name": "UserProfileHasBeenBlocked",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4740]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0417\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u0430 \u0443\u0447\u0451\u0442\u043d\u0430\u044f \u0437\u0430\u043f\u0438\u0441\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "b9635528871b4434b65eb003dbd978fd",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4740],,\"4740\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4740],5s)=0",
+                                "name": "\u0417\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u0430 \u0443\u0447\u0451\u0442\u043d\u0430\u044f \u0437\u0430\u043f\u0438\u0441\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a348634eb6cb4ac8a7496436ee646694",
+                        "name": "UserNameHasBeenModify",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "eventlog[Security,,,,4781]",
+                        "delay": "30s",
+                        "history": "90d",
+                        "value_type": "LOG",
+                        "trends": "0",
+                        "description": "\u0418\u043c\u044f \u0443\u0447\u0451\u0442\u043d\u043e\u0439 \u0437\u0430\u043f\u0438\u0441\u0438 \u0431\u044b\u043b\u043e \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u043e",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Audit"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "8292faa8bd6043bdb568b3cd597e3cba",
+                                "expression": "logeventid(/zt-os-windows-ad/eventlog[Security,,,,4781],,\"4781\")=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "nodata(/zt-os-windows-ad/eventlog[Security,,,,4781],5s)=0",
+                                "name": "\u0418\u043c\u044f \u0443\u0447\u0451\u0442\u043d\u043e\u0439 \u0437\u0430\u043f\u0438\u0441\u0438 \u0431\u044b\u043b\u043e \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u043e",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "windows"
+                    }
+                ]
+            }
+        ]
+    }
+}

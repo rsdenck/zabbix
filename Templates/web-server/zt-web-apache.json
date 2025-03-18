@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "8058a5017da04a848f326dea5ebad7bb",
+                "name": "ztg-web"
+            },
+            {
+                "uuid": "b5ed3a362b3c45e9bf2640142c63bd84",
+                "name": "ztg-web/apache"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "d9dfcf45dae14a248f6e3b7c96f74fb2",
+                "template": "zt-web-apache",
+                "name": "zt-web-apache",
+                "description": "Template para monitorar Apache HTTP Server",
+                "groups": [
+                    {
+                        "name": "ztg-web"
+                    },
+                    {
+                        "name": "ztg-web/apache"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "application",
+                        "value": "web"
+                    }
+                ]
+            }
+        ]
+    }
+}

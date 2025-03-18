@@ -1,0 +1,31 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "8058a5017da04a848f326dea5ebad7bb",
+                "name": "ztg-web"
+            },
+            {
+                "uuid": "1a33b57faa1949faaf5f73cbbb634a6b",
+                "name": "ztg-web/iis"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "8dbacfd97d5946beb7bdee7ddc95e74c",
+                "template": "zt-web-iis",
+                "name": "zt-web-iis",
+                "description": "Template para monitoramento de Microsoft IIS.",
+                "groups": [
+                    {
+                        "name": "ztg-web"
+                    },
+                    {
+                        "name": "ztg-web/iis"
+                    }
+                ]
+            }
+        ]
+    }
+}

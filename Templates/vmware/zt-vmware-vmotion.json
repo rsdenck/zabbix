@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5cb6eeb994e94d40910c92095cbea7c3",
+                "name": "ztg-virtualization"
+            },
+            {
+                "uuid": "8f511de0f8d347dfa41c2646aa9d08e5",
+                "name": "ztg-virtualization/esxi-vsphere"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "8da952a280b44f17802d78a77d3d9521",
+                "template": "zt-vmware-vmotion",
+                "name": "zt-vmware-vmotion",
+                "description": "Template para monitorar VMware vMotion",
+                "groups": [
+                    {
+                        "name": "ztg-virtualization"
+                    },
+                    {
+                        "name": "ztg-virtualization/esxi-vsphere"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "vmware"
+                    }
+                ]
+            }
+        ]
+    }
+}

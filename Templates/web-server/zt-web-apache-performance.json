@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "8058a5017da04a848f326dea5ebad7bb",
+                "name": "ztg-web"
+            },
+            {
+                "uuid": "b5ed3a362b3c45e9bf2640142c63bd84",
+                "name": "ztg-web/apache"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "c259f2a1bb4c49c197ec54e426c15132",
+                "template": "zt-web-apache-performance",
+                "name": "zt-web-apache-performance",
+                "description": "Template para monitorar o desempenho do Apache",
+                "groups": [
+                    {
+                        "name": "ztg-web"
+                    },
+                    {
+                        "name": "ztg-web/apache"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "application",
+                        "value": "web"
+                    }
+                ]
+            }
+        ]
+    }
+}

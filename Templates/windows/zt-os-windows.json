@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "d483c422329740379b2066d99cc46133",
+                "name": "ztg-os"
+            },
+            {
+                "uuid": "3d6997142fcc4ab79b1765d622621f9c",
+                "name": "ztg-os/windows"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "9c175015476e412c9c08c30c780c465c",
+                "template": "zt-os-windows",
+                "name": "zt-os-windows",
+                "description": "Nome:  zt-os-windows\n---------------------------------------------------------------------------------\nObs: Monitoramento via Agent Ativo\n---------------------------------------------------------------------------------\nRepo: https://github.com/apexmonitoring/zt-os-windows\n---------------------------------------------------------------------------------\nAutor: Ranlens Denck",
+                "groups": [
+                    {
+                        "name": "ztg-os"
+                    },
+                    {
+                        "name": "ztg-os/windows"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "windows"
+                    }
+                ]
+            }
+        ]
+    }
+}

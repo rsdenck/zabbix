@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "6de4b3b218374f089514a0104d242a51",
+                "name": "ztg-network"
+            },
+            {
+                "uuid": "c4505ff5bbfe4881acfd31f6f9c8f248",
+                "name": "ztg-network/wireless"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "eff4221e349147d5bcfc197b6ba6a72d",
+                "template": "zt-wireless-aruba-instant-iap-225",
+                "name": "zt-wireless-aruba-instant-iap-225",
+                "description": "Template para monitorar AP Aruba Instant IAP-225",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/wireless"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "network",
+                        "value": "wireless"
+                    }
+                ]
+            }
+        ]
+    }
+}
