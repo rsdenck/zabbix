@@ -1,0 +1,31 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "4981c0092eff4738b7affa6181091774",
+                "name": "ztg-zabbix"
+            },
+            {
+                "uuid": "66c94d3719cb412ab5f2e8f408d3dfaf",
+                "name": "ztg-zabbix/frontend"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "a376fc7f8a5940d29d2fd136918016ee",
+                "template": "zt-zabbix-web",
+                "name": "zt-zabbix-web",
+                "description": "Template para Monitorar o Front-End do zabbix ( Nginx )",
+                "groups": [
+                    {
+                        "name": "ztg-zabbix"
+                    },
+                    {
+                        "name": "ztg-zabbix/frontend"
+                    }
+                ]
+            }
+        ]
+    }
+}

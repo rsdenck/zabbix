@@ -1,0 +1,31 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "4981c0092eff4738b7affa6181091774",
+                "name": "ztg-zabbix"
+            },
+            {
+                "uuid": "ad637b3c84a24b86845c3bd7e5aa4abe",
+                "name": "ztg-zabbix/database"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "288e7ef298d24b3bb84a2c47f7bac84b",
+                "template": "zt-zabbix-database",
+                "name": "zt-zabbix-database",
+                "description": "Template para Monitorar o Database do Zabbix ( Postgres )",
+                "groups": [
+                    {
+                        "name": "ztg-zabbix"
+                    },
+                    {
+                        "name": "ztg-zabbix/database"
+                    }
+                ]
+            }
+        ]
+    }
+}

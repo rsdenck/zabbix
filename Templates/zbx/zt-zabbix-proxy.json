@@ -1,0 +1,31 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "4981c0092eff4738b7affa6181091774",
+                "name": "ztg-zabbix"
+            },
+            {
+                "uuid": "eaed5900b10c46199baf475008b11768",
+                "name": "ztg-zabbix/proxy"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "0818a1e0d11946fc9bc5307b446e109f",
+                "template": "zt-zabbix-proxy",
+                "name": "zt-zabbix-proxy",
+                "description": "Template para Monitorar o Zabbix Proxy",
+                "groups": [
+                    {
+                        "name": "ztg-zabbix"
+                    },
+                    {
+                        "name": "ztg-zabbix/proxy"
+                    }
+                ]
+            }
+        ]
+    }
+}

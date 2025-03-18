@@ -1,0 +1,31 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5cb6eeb994e94d40910c92095cbea7c3",
+                "name": "ztg-virtualization"
+            },
+            {
+                "uuid": "8661904d75b6486da2a0cb04cba8a2e3",
+                "name": "ztg-virtualization/xenserver"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "0eac83bf41544082afeda49c5fae321c",
+                "template": "zt-xenserver",
+                "name": "zt-xenserver",
+                "description": "Template para monitoramento de Citrix XenServer (ou Xen Orchestra).",
+                "groups": [
+                    {
+                        "name": "ztg-virtualization"
+                    },
+                    {
+                        "name": "ztg-virtualization/xenserver"
+                    }
+                ]
+            }
+        ]
+    }
+}

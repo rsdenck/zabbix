@@ -1,0 +1,56 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "4981c0092eff4738b7affa6181091774",
+                "name": "ztg-zabbix"
+            },
+            {
+                "uuid": "46d2ce75e0c04c86927fbd4f43a8e25f",
+                "name": "ztg-zabbix/server"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "2b61c3362f0e488a81847a8447a436d9",
+                "template": "zt-zabbix-server",
+                "name": "zt-zabbix-server",
+                "description": "Template para Monitoramento da Aplica\u00e7\u00e3o do Zabbix Server em ( HA, ou All in One ) Apenas para o Server\n\nObs: Se aplica ao 6 | 6.4 | 7",
+                "groups": [
+                    {
+                        "name": "ztg-zabbix"
+                    },
+                    {
+                        "name": "ztg-zabbix/server"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "e5e61b56b27b44a6b34b41846705fa86",
+                        "name": "zabbix agent status",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "agent.ping",
+                        "delay": "10s",
+                        "trends": "7d",
+                        "description": "Status do Agent via ping no Host",
+                        "tags": [
+                            {
+                                "tag": "network",
+                                "value": "ping"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "960c568e95564533873d8b7e7d5d83cd",
+                                "expression": "nodata(/zt-zabbix-server/agent.ping,10)=1",
+                                "name": "Zabbix Agent sem comunica\u00e7\u00e3o com o Server",
+                                "priority": "AVERAGE"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
