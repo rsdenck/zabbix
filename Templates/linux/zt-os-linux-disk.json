@@ -1,0 +1,444 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "d483c422329740379b2066d99cc46133",
+                "name": "ztg-os"
+            },
+            {
+                "uuid": "4d9451048e804fcbb895329a09f7bac2",
+                "name": "ztg-os/linux"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "5ef51986aa9544da92a64204439e04ee",
+                "template": "zt-os-linux-disk",
+                "name": "zt-os-linux-disk",
+                "description": "Nome:  zt-os-linux-disk\n---------------------------------------------------------------------------------\nObs: Monitoramento via Agent Ativo\n---------------------------------------------------------------------------------\nRepo: https://github.com/apexmonitoring/zt_apex/zt-os-linux-disk\n---------------------------------------------------------------------------------\nAutor: Ranlens Denck",
+                "templates": [
+                    {
+                        "name": "zt-os-linux-disk-perf"
+                    }
+                ],
+                "groups": [
+                    {
+                        "name": "ztg-os"
+                    },
+                    {
+                        "name": "ztg-os/linux"
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "uuid": "2445914150c644ab93317baf78c2a8fb",
+                        "name": "Software RAID discovery",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "md.discover",
+                        "delay": "1h",
+                        "filter": {
+                            "conditions": [
+                                {
+                                    "macro": "{#MDNAME}",
+                                    "value": ".*",
+                                    "formulaid": "A"
+                                }
+                            ]
+                        },
+                        "lifetime": "30d",
+                        "enabled_lifetime_type": "DISABLE_NEVER",
+                        "description": "inspired by Roman Kudlay roman@kudlay.pro\nhttps://github.com/krom/zabbix_template_md",
+                        "item_prototypes": [
+                            {
+                                "uuid": "390fa3b40cd74133a7730c0c79a66901",
+                                "name": "{#MDNAME}: degraded",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "md.degraded[{#MDNAME}]",
+                                "delay": "5m",
+                                "history": "1w",
+                                "description": "Get number of degraded disks",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Software RAID {#MDNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "f3d8bb2cf38e47c2b66406f4ed6fcafb",
+                                        "expression": "last(/zt-os-linux-disk/md.degraded[{#MDNAME}])>0",
+                                        "name": "{#MDNAME}: MD is degraded",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "b975fd2d4da546d885ea59abb3144de1",
+                                "name": "{#MDNAME}: raid disks",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "md.raid_disks[{#MDNAME}]",
+                                "delay": "1h",
+                                "history": "1w",
+                                "description": "Get number of all disks",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Software RAID {#MDNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "011a0845846a40e091624a4c3166bb1a",
+                                        "expression": "(last(/zt-os-linux-disk/md.raid_disks[{#MDNAME}],#1)<>last(/zt-os-linux-disk/md.raid_disks[{#MDNAME}],#2))>0",
+                                        "name": "{#MDNAME}: number of disks changed",
+                                        "priority": "WARNING",
+                                        "manual_close": "YES"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "7c6c9970fbac439e835499aab31b4fa5",
+                                "name": "{#MDNAME}: sync action",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "md.sync_action[{#MDNAME}]",
+                                "delay": "5m",
+                                "history": "1w",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "description": "Get current sync action",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Software RAID {#MDNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "97f82dad988b4afb81d8139046f2259b",
+                                        "expression": "find(/zt-os-linux-disk/md.sync_action[{#MDNAME}],,\"like\",\"recover\")=1",
+                                        "name": "{#MDNAME}: MD in recovery mode",
+                                        "priority": "INFO",
+                                        "manual_close": "YES"
+                                    }
+                                ]
+                            }
+                        ],
+                        "graph_prototypes": [
+                            {
+                                "uuid": "8c1486e5584c450baf9253a52ff3139a",
+                                "name": "{#MDNAME} degration",
+                                "graph_items": [
+                                    {
+                                        "color": "1A7C11",
+                                        "item": {
+                                            "host": "zt-os-linux-disk",
+                                            "key": "md.degraded[{#MDNAME}]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2e75741a426d4eaabc89b37efb99b122",
+                        "name": "Mounted filesystem discovery",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "vfs.fs.discovery",
+                        "delay": "1h",
+                        "filter": {
+                            "conditions": [
+                                {
+                                    "macro": "{#FSNAME}",
+                                    "value": "{$DISK.MOUNTPOINT.DISCOVERY.EXCLUDE}",
+                                    "operator": "NOT_MATCHES_REGEX",
+                                    "formulaid": "A"
+                                },
+                                {
+                                    "macro": "{#FSTYPE}",
+                                    "value": "{$DISK.FILESYSTEM.DISCOVERY}",
+                                    "formulaid": "B"
+                                }
+                            ]
+                        },
+                        "lifetime": "30d",
+                        "enabled_lifetime_type": "DISABLE_NEVER",
+                        "description": "Discovery of file systems of different types as defined in global regular expression \"File systems for discovery\".",
+                        "item_prototypes": [
+                            {
+                                "uuid": "19e10f39394d46d18855888e14b00471",
+                                "name": "{#FSNAME}: Free inodes percent for 12h linear forecast shifted",
+                                "type": "CALCULATED",
+                                "key": "vfs.fs.inode.forecast12hshifted[{#FSNAME}]",
+                                "history": "1w",
+                                "value_type": "FLOAT",
+                                "units": "%",
+                                "params": "100 - (  (last(//vfs.fs.inode.forecast12h[{#FSNAME}],#1:now-12h)  /  last(//vfs.fs.inode[{#FSNAME},total]))*100)",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Filesystem {#FSNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "e9a55d62740f415cbd2827861aa30a76",
+                                        "expression": "last(/zt-os-linux-disk/vfs.fs.inode.forecast12hshifted[{#FSNAME}])<{$DISK.INODE.MIN.PCT:\"{#FSNAME}\"}",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "last(/zt-os-linux-disk/vfs.fs.inode.forecast12hshifted[{#FSNAME}])>({$DISK.INODE.MIN.PCT:\"{#FSNAME}\"}+3)",
+                                        "name": "{#FSNAME}: FORECAST Free inodes is less than {$DISK.INODE.MIN.PCT:\"{#FSNAME}\"}%",
+                                        "priority": "WARNING",
+                                        "manual_close": "YES"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "cd8fc01345154a8fab082a6809bf0fec",
+                                "name": "{#FSNAME}: Used inodes for 12h linear forecast",
+                                "type": "CALCULATED",
+                                "key": "vfs.fs.inode.forecast12h[{#FSNAME}]",
+                                "history": "1w",
+                                "params": "last(//vfs.fs.inode[{#FSNAME},total]) - forecast(//vfs.fs.inode[{#FSNAME},free],12h,12h)",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Filesystem {#FSNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "628bed874a0747ee843ba2e5d0ded186",
+                                "name": "{#FSNAME}: Free inodes",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "vfs.fs.inode[{#FSNAME},free]",
+                                "history": "1w",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Filesystem {#FSNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e3d8becc5d514082acb4181bb4601a63",
+                                "name": "{#FSNAME}: Free inodes percentage",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "vfs.fs.inode[{#FSNAME},pfree]",
+                                "history": "1w",
+                                "value_type": "FLOAT",
+                                "units": "%",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Filesystem {#FSNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "1379c490be1049d5abbbc2b7c551b8ca",
+                                        "expression": "last(/zt-os-linux-disk/vfs.fs.inode[{#FSNAME},pfree])<{$DISK.INODE.MIN.PCT:\"{#FSNAME}\"}",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "last(/zt-os-linux-disk/vfs.fs.inode[{#FSNAME},pfree])>({$DISK.INODE.MIN.PCT:\"{#FSNAME}\"}+3)",
+                                        "name": "{#FSNAME}: Free inodes is less than {$DISK.INODE.MIN.PCT:\"{#FSNAME}\"}",
+                                        "priority": "WARNING",
+                                        "manual_close": "YES"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "555e3a68acb64918a4606a7e95e94474",
+                                "name": "{#FSNAME}: Max inodes",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "vfs.fs.inode[{#FSNAME},total]",
+                                "history": "1w",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Filesystem {#FSNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "b276f58aa96341108e3c7765ae944459",
+                                "name": "{#FSNAME}: Used disk space for 12h linear forecast shifted",
+                                "type": "CALCULATED",
+                                "key": "vfs.fs.size.forecast12hshifted[{#FSNAME}]",
+                                "history": "1w",
+                                "units": "B",
+                                "params": "last(//vfs.fs.size.forecast12h[{#FSNAME}],#1:now-12h)",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Filesystem {#FSNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "9143525c2b664f6a9d1473f8933d5fcd",
+                                "name": "{#FSNAME}: Used disk space for 12h linear forecast",
+                                "type": "CALCULATED",
+                                "key": "vfs.fs.size.forecast12h[{#FSNAME}]",
+                                "history": "1w",
+                                "params": "forecast(//vfs.fs.size[{#FSNAME},used],12h,12h)",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Filesystem {#FSNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "50991f8d718e4a94be9354ccd671d668",
+                                "name": "{#FSNAME}: Espa\u00e7o livre em disco",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "vfs.fs.size[{#FSNAME},free]",
+                                "history": "1w",
+                                "units": "B",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Filesystem {#FSNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "9000128b8c874fe6a2fc225e93a3f634",
+                                        "expression": "last(/zt-os-linux-disk/vfs.fs.size[{#FSNAME},free])<{$DISK.FILESYSTEM.SPACE.LIMIT:\"{#FSNAME}\"}",
+                                        "name": "{#FSNAME}: Free disk space is less than {$DISK.FILESYSTEM.SPACE.LIMIT:\"{#FSNAME}\"}",
+                                        "priority": "WARNING",
+                                        "description": "last(/zt-os-linux-disk/vfs.fs.size[{#FSNAME},free])>{$DISK.FILESYSTEM.SPACE.LIMIT:\"{#FSNAME}\"}",
+                                        "manual_close": "YES"
+                                    },
+                                    {
+                                        "uuid": "509f6b467f084bb198c21260fa4cbe40",
+                                        "expression": "last(/zt-os-linux-disk/vfs.fs.size[{#FSNAME},free])<{$DISK.FILESYSTEM.SPACE.LIMIT:\"{#FSNAME}\"}",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "last(/zt-os-linux-disk/vfs.fs.size[{#FSNAME},free])>{$DISK.FILESYSTEM.SPACE.LIMIT:\"{#FSNAME}\"}",
+                                        "name": "{#FSNAME}: Free disk space is less than {$DISK.FILESYSTEM.SPACE.LIMIT:\"{#FSNAME}\"}",
+                                        "priority": "WARNING",
+                                        "manual_close": "YES"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "2a065e18675a4ebda12546f152936c75",
+                                "name": "{#FSNAME}: Free disk space percentage",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "vfs.fs.size[{#FSNAME},pfree]",
+                                "history": "1w",
+                                "value_type": "FLOAT",
+                                "units": "%",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Filesystem {#FSNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "36933d08116446fdb075d03ce9d8b223",
+                                "name": "{#FSNAME}: Total disk space",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "vfs.fs.size[{#FSNAME},total]",
+                                "delay": "1h",
+                                "history": "1w",
+                                "units": "B",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Filesystem {#FSNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "08707f54cbe842cc84def63b7182ff38",
+                                "name": "{#FSNAME}: Used disk space",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "vfs.fs.size[{#FSNAME},used]",
+                                "history": "1w",
+                                "units": "B",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Filesystem {#FSNAME}"
+                                    }
+                                ]
+                            }
+                        ],
+                        "graph_prototypes": [
+                            {
+                                "uuid": "744e490d96104727ab98642cd7996f29",
+                                "name": "Filesystem {#FSNAME} space usage",
+                                "width": "600",
+                                "height": "340",
+                                "show_work_period": "NO",
+                                "show_triggers": "NO",
+                                "graph_items": [
+                                    {
+                                        "color": "C80000",
+                                        "type": "GRAPH_SUM",
+                                        "item": {
+                                            "host": "zt-os-linux-disk",
+                                            "key": "vfs.fs.size[{#FSNAME},total]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "1",
+                                        "drawtype": "FILLED_REGION",
+                                        "color": "00EE00",
+                                        "item": {
+                                            "host": "zt-os-linux-disk",
+                                            "key": "vfs.fs.size[{#FSNAME},used]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "2",
+                                        "drawtype": "DASHED_LINE",
+                                        "color": "2774A4",
+                                        "item": {
+                                            "host": "zt-os-linux-disk",
+                                            "key": "vfs.fs.size.forecast12h[{#FSNAME}]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "component",
+                        "value": "disk"
+                    },
+                    {
+                        "tag": "metrics",
+                        "value": "performance"
+                    },
+                    {
+                        "tag": "os",
+                        "value": "linux"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$DISK.FILESYSTEM.DISCOVERY}",
+                        "value": "^(btrfs|ext2|ext3|ext4|reiser|xfs|ffs|ufs|jfs|jfs2|vxfs|hfs|apfs|refs|ntfs|fat32|zfs)$"
+                    },
+                    {
+                        "macro": "{$DISK.FILESYSTEM.SPACE.LIMIT}",
+                        "value": "5G"
+                    },
+                    {
+                        "macro": "{$DISK.INODE.MIN.PCT}",
+                        "value": "5"
+                    },
+                    {
+                        "macro": "{$DISK.MOUNTPOINT.DISCOVERY.EXCLUDE}",
+                        "value": "^(/var/lib/docker/devicemapper/.*|/var/lib/docker/containers/.*)$"
+                    }
+                ]
+            }
+        ]
+    }
+}

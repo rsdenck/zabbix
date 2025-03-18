@@ -1,0 +1,17 @@
+# Desenvolvido por: Bee Solutions
+# Autor: Fernando Almondes
+# Data: 21/11/2023 13:06
+# Item: Monitoramento BGP Juniper (Testado em: MX204 e servidor Zabbix com Debian 11 e Ubuntu 20.04)
+
+# Instruções
+- Importe os templates no Zabbix e vincule ao host
+- Importe o json no Grafan (ajuste o json antes caso necessario)
+- Copie os scripts mxdiscoveryv4 mxdiscoveryv6 para o disretório de scripts do Zabbix
+- Se o script estiver com a extensao .sh, renomei o arquivo: (mv mxdiscoveryv4.sh mxdiscoveryv4 e mv mxdiscoveryv6.sh mxdiscoveryv6)
+- De permissao de execucao (chmod +x mxdiscoveryv4 e chmod +x mxdiscoveryv6)
+- Instale o snmpwalk: apt install snmp
+- Crie o diretorio base adicional: mkdir /var/tmp/zabbix/
+- Ajuste a permissao do diretorio: chown -R zabbix:zabbix /var/tmp/zabbix/
+
+# Obs:
+- Adicione junto ao host os templates para icmp, monitoramento de tráfego de vlan e interfaces físicas já disponibilizado anterioramente.

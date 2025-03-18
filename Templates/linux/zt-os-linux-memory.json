@@ -1,0 +1,1448 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "d483c422329740379b2066d99cc46133",
+                "name": "ztg-os"
+            },
+            {
+                "uuid": "4d9451048e804fcbb895329a09f7bac2",
+                "name": "ztg-os/linux"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "ed1131bc4b6548ab9e12d22a22ba6d46",
+                "template": "zt-os-linux-memory",
+                "name": "zt-os-linux-memory",
+                "description": "Nome: zt-os-linux-memory\n---------------------------------------------------------------------------------\nObs: Monitoramento via Agent Ativo\n---------------------------------------------------------------------------------\nRepo: https://github.com/apexmonitoring/zt-os-linux-memory\n---------------------------------------------------------------------------------\nAutor: Ranlens Denck",
+                "groups": [
+                    {
+                        "name": "ztg-os"
+                    },
+                    {
+                        "name": "ztg-os/linux"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "2562c39ea3b24f30b5b20f3df58900ab",
+                        "name": "Meminfo: Active",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.active",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Memory that has been used more recently and usually not swapped out or reclaimed.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "Active: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f1dedfabb1a641eab497398b2507ea91",
+                        "name": "Meminfo: Anon Huge Pages",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.anonhugepages",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "The total amount of memory, in kibibytes, used by huge pages that are not backed by files and are mapped into userspace page tables.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "AnonHugePages: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "21c5021e958c48e7ad199ce7b44c26f2",
+                        "name": "Meminfo: Anon Pages",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.anonpages",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "The total amount of memory, in kibibytes, used by pages that are not backed by files and are mapped into userspace page tables.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "AnonPages: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7b24e9f1af404c8b88561898eca4dc95",
+                        "name": "Meminfo: Buffers",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.buffers",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Memory in buffer cache, so relatively temporary storage for raw disk blocks. This shouldn't get very large.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "Buffers: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2ba6f97521634229bc8b356d5bdbef02",
+                        "name": "Meminfo: Cached",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.cached",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Memory in the pagecache (Diskcache and Shared Memory)",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "Cached: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2db4b0adce7c46b8920c992326d92145",
+                        "name": "Meminfo: Commited AS",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.commitedas",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "The total amount of memory, in kibibytes, estimated to complete the workload. This value represents the worst case scenario value, and also includes swap memory.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "Committed_AS: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f43bb475dfd34a608bf479caa020dc0c",
+                        "name": "Meminfo: Commit Limit",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.commitlimit",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "The total amount of memory currently available to be allocated on the system based on the overcommit ratio (vm.overcommit_ratio). This limit is only adhered to if strict overcommit accounting is enabled (mode 2 in vm.overcommit_memory).",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "CommitLimit: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a151d1a14f334928a3bda048e8f7fdd6",
+                        "name": "Meminfo: Dirty",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.dirty",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Memory waiting to be written back to disk.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "Dirty: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "cf9eb6b1f26f42fea638fadfe3b414b7",
+                        "name": "Meminfo: Get data",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "custom.meminfo.discovery",
+                        "delay": "5m",
+                        "history": "1h",
+                        "value_type": "TEXT",
+                        "trends": "0",
+                        "description": "cat /proc/meminfo text",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "5h"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d93d193810bb47b68048a6ef175e0350",
+                        "name": "Meminfo: Hardware Corrupted",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.hardwarecorrupted",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "The amount of RAM the kernel identified as corrupted / not working",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "HardwareCorrupted: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "4845b61cbd124302b524e28d410c6feb",
+                                "expression": "last(/zt-os-linux-memory/custom.meminfo.hardwarecorrupted)>1",
+                                "name": "Memory:  Mem\u00f3ria corrompida por falha de hardware",
+                                "priority": "HIGH",
+                                "description": "HardwareCorrupted - indica a quantidade de mem\u00f3ria em \"p\u00e1ginas envenenadas\", ou seja, mem\u00f3ria com falha detectada por ECC (C\u00f3digo de Corre\u00e7\u00e3o de Erros).",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9b774dabb3444ee5ab7126ecffa0653c",
+                        "name": "Meminfo: Huge Pages Free",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.hugepagesfree",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "The total number of hugepages available for the system. This statistic only appears on the x86, Itanium, and AMD64 architectures.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "HugePages_Free: *([0-9]+)",
+                                    "\\1"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1b393634249f42b681769335d871184e",
+                        "name": "Meminfo: Huge Pages Rsvd",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.hugepagesrsvd",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "The number of hugepages for which a commitment to allocate from the pool has been made, but no allocation has yet been made.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "HugePages_Rsvd: *([0-9]+)",
+                                    "\\1"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "5b3397f3d11140a79a8ac1767aff2ba3",
+                        "name": "Meminfo: Huge Pages Surp",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.hugepagessurp",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "The number of surplus huge pages.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "HugePages_Surp: *([0-9]+)",
+                                    "\\1"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7c1184110b984ddd8d9cec1edfd9fbd0",
+                        "name": "Meminfo: Huge Pages Total",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.hugepagestotal",
+                        "delay": "0",
+                        "history": "7d",
+                        "description": "Number of hugepages being allocated by the kernel (Defined with vm.nr_hugepages)",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "HugePages_Total: *([0-9]+)",
+                                    "\\1"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2116e54bc31b4e84b9bf1b41d1a10bb0",
+                        "name": "Meminfo: Inactive",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.inactive",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Memory that has not been used recently and can be swapped out or reclaimed.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "Inactive: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9156a45c6adb4ca29857b2b70867fc3a",
+                        "name": "Meminfo: Memory Available",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.memavailable",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "An estimate of how much memory is available for starting new applications, without swapping.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "MemAvailable: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9585af9238af4a468be75ce127a2edb7",
+                        "name": "Meminfo: Memory Free",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.memfree",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "The amount of physical memory not used by the system",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "MemFree: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "8688b837b21a4a87995475fc93ccca23",
+                        "name": "Meminfo: Memory Total",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.memtotal",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Total usable memory",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "MemTotal: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ddbaa2fe8f254dca9fc587452737574f",
+                        "name": "Meminfo: Mlocked",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.mlocked",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Pages locked to memory using the mlock() system call. Mlocked pages are also Unevictable.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "Mlocked: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "293c9aacfff145c28cb42e2f47470787",
+                        "name": "Meminfo: Shared Memory",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.shmem",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "The total amount of memory, in kibibytes, used by shared memory (shmem) and tmpfs.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "Shmem: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "17fe0e4d111149bba423c10c24899cff",
+                        "name": "Meminfo: Slab",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.slab",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "The total amount of memory, in kibibytes, used by the kernel to cache data structures for its own use.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "Slab: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "55cdfd4410a742e7b0be0ccdb3437693",
+                        "name": "Meminfo: Slab Reclaimable",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.sreclaimable",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "The part of Slab that can be reclaimed, such as caches.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "SReclaimable: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "fc1a52d3b1bd44daa6b48b7b3a17b14a",
+                        "name": "Meminfo: Slab Unreclaim",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.sunreclaim",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "The part of Slab that cannot be reclaimed even when lacking memory.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "SUnreclaim: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "99025cda487647e79d79608da3e88eb7",
+                        "name": "Meminfo: Swap Cached",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.swapcached",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Memory that is present within main memory, but also in the swapfile. (If memory is needed this area does not need to be swapped out AGAIN because it is already in the swapfile. This saves I/O and increases performance if machine runs short on memory.)",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "SwapCached: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "c864e90a5ecb41a49735e4c44ba3517f",
+                        "name": "Meminfo: Swap Free",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.swapfree",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "The remaining swap space available.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "SwapFree: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9f936ae27cce47e0a860e1bd2cdb74aa",
+                        "name": "Meminfo: Swap Total",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.swaptotal",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Total swap space available.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "SwapTotal: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6bcc805732dd41909139300831d4d890",
+                        "name": "Meminfo: Swap Used",
+                        "type": "CALCULATED",
+                        "key": "custom.meminfo.swapused",
+                        "delay": "5m",
+                        "history": "7d",
+                        "units": "B",
+                        "params": "last(//custom.meminfo.swaptotal)-last(//custom.meminfo.swapfree)",
+                        "description": "Swap Used (calculated)",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "5h"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f57357d978b9496ebdf09be83978d9f6",
+                        "name": "Meminfo: Swap Used w/o cached",
+                        "type": "CALCULATED",
+                        "key": "custom.meminfo.swapusedwocached",
+                        "delay": "5m",
+                        "history": "7d",
+                        "units": "B",
+                        "params": "last(//custom.meminfo.swapused)-last(//custom.meminfo.swapcached)",
+                        "description": "Swap usado sem cache",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "5h"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d7dbb2f6ed644e0bb66f252a6e2d2c6f",
+                        "name": "Meminfo: Unevictable",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.unevictable",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Unevictable pages can't be swapped out for a variety of reasons.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "Unevictable: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9fef49af8f5c46e49d942d8f60d60139",
+                        "name": "Meminfo: Writeback",
+                        "type": "DEPENDENT",
+                        "key": "custom.meminfo.writeback",
+                        "delay": "0",
+                        "history": "7d",
+                        "units": "B",
+                        "description": "Mem\u00f3ria que est\u00e1 sendo ativamente gravada de volta no disco.",
+                        "preprocessing": [
+                            {
+                                "type": "REGEX",
+                                "parameters": [
+                                    "Writeback: *([0-9]+) kB",
+                                    "\\1"
+                                ]
+                            },
+                            {
+                                "type": "MULTIPLIER",
+                                "parameters": [
+                                    "1024"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "custom.meminfo.discovery"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "29e8e12a3d9745c69b8ed6c743be8c9f",
+                        "name": "Swap: Swap In pages/sec",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.swap.in[,pages]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "units": "p/s",
+                        "description": "Swap in (from device into memory) statistics.",
+                        "preprocessing": [
+                            {
+                                "type": "CHANGE_PER_SECOND",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "dcccf72d98404a7bafdc41fdbf682c2e",
+                        "name": "Swap: Swap Out pages/sec",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.swap.out[,pages]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "units": "p/s",
+                        "description": "Swap out (from memory onto device) statistics.",
+                        "preprocessing": [
+                            {
+                                "type": "CHANGE_PER_SECOND",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b467dc4865514149b536706132222e20",
+                        "name": "Swap: Free space",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.swap.size[,free]",
+                        "delay": "5m",
+                        "history": "1w",
+                        "units": "B",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0bde8b19acfe4423b5d924bedbc6539b",
+                        "name": "Swap: Free space in %",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.swap.size[,pfree]",
+                        "delay": "5m",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9e209321c2de4f5689c411e85f136bb5",
+                        "name": "Swap: Total space",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.swap.size[,total]",
+                        "delay": "1h",
+                        "history": "30d",
+                        "units": "B",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "5h"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d012f766234c4988a6964c9a33f6ccb6",
+                        "name": "Memory: Mem\u00f3ria dispon\u00edvel",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "vm.memory.size[available]",
+                        "history": "30d",
+                        "units": "B",
+                        "description": "A mem\u00f3ria dispon\u00edvel \u00e9 definida como a mem\u00f3ria livre + a mem\u00f3ria em cache + a mem\u00f3ria de buffers.",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "5h"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "4856d304dad84bdcba24b24355b5bd0a",
+                                "expression": "last(/zt-os-linux-memory/vm.memory.size[available])<{$MEMORY.AVAILABLE.MIN}",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "last(/zt-os-linux-memory/vm.memory.size[available])>{$MEMORY.AVAILABLE.MIN}",
+                                "name": "Memory: Lack of available memory",
+                                "priority": "AVERAGE",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b0af517e225240bd821428f853448826",
+                        "name": "Memory: Occupied",
+                        "type": "CALCULATED",
+                        "key": "vm.memory.size[occupied]",
+                        "delay": "5m",
+                        "history": "1h",
+                        "trends": "1d",
+                        "units": "B",
+                        "params": "last(//vm.memory.size[total]) - last(//vm.memory.size[available])",
+                        "description": "Occupied memory: total - available;",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0de51602ead54836a3f9afdb91884968",
+                        "name": "Memory: Total memory",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "vm.memory.size[total]",
+                        "delay": "1h",
+                        "history": "1w",
+                        "units": "B",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "24h"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Memory"
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "component",
+                        "value": "memory"
+                    },
+                    {
+                        "tag": "os",
+                        "value": "linux"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$MEMORY.AVAILABLE.MIN}",
+                        "value": "20M"
+                    },
+                    {
+                        "macro": "{$MEMORY.OVERCOMMITED.RATIO}",
+                        "value": "95"
+                    }
+                ]
+            }
+        ],
+        "triggers": [
+            {
+                "uuid": "42e0bfffda934ac4871d2041e98355a8",
+                "expression": "last(/zt-os-linux-memory/custom.meminfo.commitedas)>last(/zt-os-linux-memory/custom.meminfo.commitlimit)*({$MEMORY.OVERCOMMITED.RATIO}/100)",
+                "name": "Memory: Overcommited memory (over {$MEMORY.OVERCOMMITED.RATIO}%)",
+                "priority": "AVERAGE",
+                "description": "Please check graph -  Memory Overcommit\n\nDebug:\n1. Open top\n2. Check rss and vss column\n3. Get process wich using much memory",
+                "manual_close": "YES"
+            }
+        ],
+        "graphs": [
+            {
+                "uuid": "04f18ddabfe444a7acfcaf057b722d2a",
+                "name": "Memory Activity (Detailed for old system)",
+                "type": "STACKED",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.inactive"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.active"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "869be45ce3f5433fa298894bd46ebe8e",
+                "name": "Memory Overcommit",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.commitedas"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.commitlimit"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "75fcee99a6024d59b0e14753801cac58",
+                "name": "Memory Overview",
+                "type": "STACKED",
+                "graph_items": [
+                    {
+                        "color": "EE0000",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.hardwarecorrupted"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "003300",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.sunreclaim"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "003333",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.mlocked"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "000000",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.shmem"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "color": "DD00DD",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.sreclaimable"
+                        }
+                    },
+                    {
+                        "sortorder": "5",
+                        "color": "BB2A02",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.anonhugepages"
+                        }
+                    },
+                    {
+                        "sortorder": "6",
+                        "color": "0000AA",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.anonpages"
+                        }
+                    },
+                    {
+                        "sortorder": "7",
+                        "color": "FFFF33",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.cached"
+                        }
+                    },
+                    {
+                        "sortorder": "8",
+                        "color": "BBBB00",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.buffers"
+                        }
+                    },
+                    {
+                        "sortorder": "9",
+                        "color": "00DD00",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.memfree"
+                        }
+                    },
+                    {
+                        "sortorder": "10",
+                        "color": "EE0000",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.swapused"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "6d5fa21a0d9c41cba9ff8127b6308894",
+                "name": "Memory Swap usage",
+                "type": "STACKED",
+                "graph_items": [
+                    {
+                        "color": "33FF33",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.swapfree"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "007700",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.swapcached"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "990000",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "custom.meminfo.swapusedwocached"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "0000DD",
+                        "yaxisside": "RIGHT",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "system.swap.in[,pages]"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "color": "DD0000",
+                        "yaxisside": "RIGHT",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "system.swap.out[,pages]"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "c1475316533446b89a41d646cec29664",
+                "name": "Memory usage",
+                "ymin_type_1": "FIXED",
+                "ymax_type_1": "ITEM",
+                "ymax_item_1": {
+                    "host": "zt-os-linux-memory",
+                    "key": "vm.memory.size[total]"
+                },
+                "graph_items": [
+                    {
+                        "drawtype": "GRADIENT_LINE",
+                        "color": "00C800",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "vm.memory.size[available]"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "63630fe6be4f4475a25ba9ff7a6481c2",
+                "name": "Swap usage",
+                "width": "600",
+                "height": "340",
+                "show_work_period": "NO",
+                "show_triggers": "NO",
+                "graph_items": [
+                    {
+                        "color": "AA0000",
+                        "type": "GRAPH_SUM",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "system.swap.size[,total]"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "00AA00",
+                        "item": {
+                            "host": "zt-os-linux-memory",
+                            "key": "system.swap.size[,free]"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,336 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "d483c422329740379b2066d99cc46133",
+                "name": "ztg-os"
+            },
+            {
+                "uuid": "4d9451048e804fcbb895329a09f7bac2",
+                "name": "ztg-os/linux"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "98440b0658f34984a5325b58e77641cb",
+                "template": "zt-os-linux-network",
+                "name": "zt-os-linux-network",
+                "description": "Nome: zt-os-linux-network\n---------------------------------------------------------------------------------\nObs: Monitoramento via Agent Ativo\n---------------------------------------------------------------------------------\nRepo: https://github.com/apexmonitoring/zt-os-linux-network\n---------------------------------------------------------------------------------\nAutor: Ranlens Denck",
+                "groups": [
+                    {
+                        "name": "ztg-os"
+                    },
+                    {
+                        "name": "ztg-os/linux"
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "uuid": "d222641a11d848b0952d2fc6b23dcbf4",
+                        "name": "Network interface discovery",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "net.if.discovery",
+                        "delay": "1h",
+                        "filter": {
+                            "conditions": [
+                                {
+                                    "macro": "{#IFNAME}",
+                                    "value": "{$NETWORK.INTERFACE.FILTER.EXCLUDE}",
+                                    "operator": "NOT_MATCHES_REGEX",
+                                    "formulaid": "A"
+                                }
+                            ]
+                        },
+                        "lifetime": "30d",
+                        "enabled_lifetime_type": "DISABLE_NEVER",
+                        "description": "Discovery of network interfaces as defined in global regular expression \"Network interfaces for discovery\".",
+                        "item_prototypes": [
+                            {
+                                "uuid": "f1b9c4b223b5492d82f19da2367c4766",
+                                "name": "{#IFNAME}: Network address",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.netif.address[{#IFNAME}]",
+                                "delay": "1h",
+                                "history": "1w",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "description": "KernelVersion:\t2.6.12\nHardware address currently assigned to this interface.\nFormat is a string, e.g: 00:11:22:33:44:55 for an Ethernet MAC address.",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Interface {#IFNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "cb597ba190cc46649d5f5e9e0c3efced",
+                                "name": "{#IFNAME}: Network addr_assign_type",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.netif.addr_assign_type[{#IFNAME}]",
+                                "history": "1w",
+                                "description": "KernelVersion:\t3.2\nIndicates the address assignment type. Possible values are:\n0: permanent address\n1: randomly generated\n2: stolen from another device\n3: set using dev_set_mac_address",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Interface {#IFNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "f35aed45f8a44860ab56a53ae8fcbccb",
+                                "name": "{#IFNAME}: Network carrier",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.netif.carrier[{#IFNAME}]",
+                                "history": "1w",
+                                "description": "KernelVersion:\t2.6.12\nIndicates the current physical link state of the interface.\nPosssible values are:\n0: physical link is down\n1: physical link is up\nNote: some special devices, e.g: bonding and team drivers will\nallow this attribute to be written to force a link state for\noperating correctly and designating another fallback interface.",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Interface {#IFNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "efc4dff08cf8489db8624641e9aab03a",
+                                        "expression": "(last(/zt-os-linux-network/custom.netif.carrier[{#IFNAME}],#1)<>last(/zt-os-linux-network/custom.netif.carrier[{#IFNAME}],#2))>0",
+                                        "name": "{#IFNAME}: Changed network carrier on",
+                                        "priority": "WARNING",
+                                        "manual_close": "YES"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "47a26f0168264aee8ff2f4c74667500c",
+                                "name": "{#IFNAME}: Network dev_id",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.netif.dev_id[{#IFNAME}]",
+                                "delay": "1h",
+                                "history": "1w",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "description": "KernelVersion:\t2.6.26\nIndicates the device unique identifier. Format is an hexadecimal\nvalue. This is used to disambiguate interfaces which might be\nstacked (e.g: VLAN interfaces) but still have the same MAC\naddress as their parent device.",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Interface {#IFNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "db0552b01df9449da87fcaa23726826e",
+                                "name": "{#IFNAME}: Network duplex",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.netif.duplex[{#IFNAME}]",
+                                "history": "1w",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "description": "KernelVersion:\t2.6.33\nIndicates the interface latest or current duplex value. Possible\nvalues are:\nhalf: half duplex\nfull: full duplex\nNote: This attribute is only valid for interfaces that implement\nthe ethtool get_settings method (mostly Ethernet).",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Interface {#IFNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "7374d035cda34679b97740fc963564f4",
+                                        "expression": "(last(/zt-os-linux-network/custom.netif.duplex[{#IFNAME}],#1)<>last(/zt-os-linux-network/custom.netif.duplex[{#IFNAME}],#2))>0",
+                                        "name": "{#IFNAME}: Changed network duplex",
+                                        "priority": "WARNING",
+                                        "manual_close": "YES"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "651aa1bd14ba47d7911b4a04d7a342ff",
+                                "name": "{#IFNAME}: Network name_assign_type",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.netif.name_assign_type[{#IFNAME}]",
+                                "history": "1w",
+                                "description": "KernelVersion:\t3.17\nIndicates the name assignment type. Possible values are:\n1: enumerated by the kernel, possibly in an unpredictable way\n2: predictably named by the kernel\n3: named by userspace\n4: renamed",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Interface {#IFNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "4d168996ddc34481adb7ef7dc518044a",
+                                "name": "{#IFNAME}: Network operstate",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.netif.operstate[{#IFNAME}]",
+                                "history": "1w",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "description": "KernelVersion:\t2.6.17\nIndicates the interface RFC2863 operational state as a string.\nPossible values are:\n\"unknown\", \"notpresent\", \"down\", \"lowerlayerdown\", \"testing\",\n\"dormant\", \"up\".",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Interface {#IFNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "d1c6e63e4c344bef8c30c269dc62c681",
+                                        "expression": "(last(/zt-os-linux-network/custom.netif.operstate[{#IFNAME}],#1)<>last(/zt-os-linux-network/custom.netif.operstate[{#IFNAME}],#2))>0",
+                                        "name": "{#IFNAME}: Changed network operation state",
+                                        "priority": "WARNING",
+                                        "manual_close": "YES"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "41e6b55c62b44318ad9e17151b12a380",
+                                "name": "{#IFNAME}: Network speed",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.netif.speed[{#IFNAME}]",
+                                "history": "1w",
+                                "units": "b/s",
+                                "description": "KernelVersion:\t2.6.33\nIndicates the interface latest or current speed value. Value is\nan integer representing the link speed in Mbits/sec.\nNote: this attribute is only valid for interfaces that implement\nthe ethtool get_settings method (mostly Ethernet ).",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "1000000"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Interface {#IFNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "10fd5091bfc94c5a9b982701aa4b37b2",
+                                        "expression": "(last(/zt-os-linux-network/custom.netif.speed[{#IFNAME}],#1)<>last(/zt-os-linux-network/custom.netif.speed[{#IFNAME}],#2))>0",
+                                        "name": "{#IFNAME}: Changed network speed",
+                                        "priority": "WARNING",
+                                        "manual_close": "YES"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "56811942a3d14d7e9a90fd1900a0b334",
+                                "name": "{#IFNAME}: Network type",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.netif.type[{#IFNAME}]",
+                                "delay": "1h",
+                                "history": "1w",
+                                "description": "KernelVersion:\t2.6.12\nIndicates the interface protocol type as a decimal value. See\ninclude/uapi/linux/if_arp.h for all possible values.",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Interface {#IFNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "43b10e2747a042a4b62df8e4f22221d8",
+                                "name": "{#IFNAME}: Incoming network traffic",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "net.if.in[{#IFNAME}]",
+                                "history": "1w",
+                                "value_type": "FLOAT",
+                                "units": "bps",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    },
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "8"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Interface {#IFNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "fb7c7fa7164841e3903d5b276d848370",
+                                "name": "{#IFNAME}: Outgoing network traffic",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "net.if.out[{#IFNAME}]",
+                                "history": "1w",
+                                "value_type": "FLOAT",
+                                "units": "bps",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    },
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "8"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Interface {#IFNAME}"
+                                    }
+                                ]
+                            }
+                        ],
+                        "graph_prototypes": [
+                            {
+                                "uuid": "1cfeb1b251754006a3356bc9072f91d9",
+                                "name": "Network traffic on {#IFNAME}",
+                                "graph_items": [
+                                    {
+                                        "drawtype": "FILLED_REGION",
+                                        "color": "0000EE",
+                                        "item": {
+                                            "host": "zt-os-linux-network",
+                                            "key": "net.if.out[{#IFNAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "1",
+                                        "drawtype": "FILLED_REGION",
+                                        "color": "DD0000",
+                                        "item": {
+                                            "host": "zt-os-linux-network",
+                                            "key": "net.if.in[{#IFNAME}]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "component",
+                        "value": "network"
+                    },
+                    {
+                        "tag": "os",
+                        "value": "linux"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$NETWORK.INTERFACE.FILTER.EXCLUDE}",
+                        "value": "^(veth.*|^[Ll]o[0-9.]*|NULL[0-9.]*|Nu[0-9.]*)$"
+                    }
+                ]
+            }
+        ]
+    }
+}

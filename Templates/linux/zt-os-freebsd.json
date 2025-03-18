@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "d483c422329740379b2066d99cc46133",
+                "name": "ztg-os"
+            },
+            {
+                "uuid": "19082aef6d8e4c3cb7c861ae264e7a6e",
+                "name": "ztg-os/freebsd"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "896dd56978fd42ff9badca95888399d2",
+                "template": "zt-os-freebsd",
+                "name": "zt-os-freebsd",
+                "description": "Template para Monitoramento de sistemas FreeBSD, incluindo uso de CPU, mem\u00f3ria, disco, status de servi\u00e7os e logs do sistema.",
+                "groups": [
+                    {
+                        "name": "ztg-os"
+                    },
+                    {
+                        "name": "ztg-os/freebsd"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "freebsd"
+                    }
+                ]
+            }
+        ]
+    }
+}

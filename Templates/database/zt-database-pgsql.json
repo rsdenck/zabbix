@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5176ac338e104c78b919dedfcad6ddda",
+                "name": "ztg-database"
+            },
+            {
+                "uuid": "a2c18daf07ef4f7293173e12294a5139",
+                "name": "ztg-database/pgsql"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "b22b07cf79254b019e0f15eb3f65f5c3",
+                "template": "zt-database-pgsql",
+                "name": "zt-database-pgsql",
+                "description": "Template para monitoramento de bancos de dados PostgreSQL (queries, conex\u00f5es, consumo, etc.).",
+                "groups": [
+                    {
+                        "name": "ztg-database"
+                    },
+                    {
+                        "name": "ztg-database/pgsql"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "application",
+                        "value": "database"
+                    }
+                ]
+            }
+        ]
+    }
+}

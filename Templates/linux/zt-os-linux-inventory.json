@@ -1,0 +1,240 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "d483c422329740379b2066d99cc46133",
+                "name": "ztg-os"
+            },
+            {
+                "uuid": "4d9451048e804fcbb895329a09f7bac2",
+                "name": "ztg-os/linux"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "803b785d1670477b978f1e389bd9a7f4",
+                "template": "zt-os-linux-inventory",
+                "name": "zt-os-linux-inventory",
+                "description": "Nome: zt-os-linux-inventory\n---------------------------------------------------------------------------------\nObs: Monitoramento via Agent Ativo\n---------------------------------------------------------------------------------\nRepo: https://github.com/apexmonitoring/zt-os-linux-inventory\n---------------------------------------------------------------------------------\nAutor: Ranlens Denck",
+                "groups": [
+                    {
+                        "name": "ztg-os"
+                    },
+                    {
+                        "name": "ztg-os/linux"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "3e653da91c9e4b22b1016e1755b68d78",
+                        "name": "OS: number of running processes",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "proc.num[,,run]",
+                        "history": "1w",
+                        "description": "Number of processes in running state.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "OS"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "fdd3a3758b044eaf90122aea519de035",
+                        "name": "OS: number of processes",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "proc.num[]",
+                        "history": "1w",
+                        "description": "Total number of processes in any state.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "OS"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "66a27beae245423481ee1a92216f083a",
+                        "name": "OS: boot time",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.boottime",
+                        "delay": "10m",
+                        "history": "1w",
+                        "units": "unixtime",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "OS"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e7eec9de13f24e13b85546308fdc0009",
+                        "name": "OS: hostname",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.hostname",
+                        "delay": "1h",
+                        "history": "1w",
+                        "value_type": "CHAR",
+                        "trends": "0",
+                        "description": "System host name.",
+                        "inventory_link": "NAME",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "OS"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "2a8b8ad851dd45798d494deae7c33b14",
+                                "expression": "(last(/zt-os-linux-inventory/system.hostname,#1)<>last(/zt-os-linux-inventory/system.hostname,#2))>0",
+                                "name": "OS: Hostname was changed",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "dcb52efd119740498f4ccd8ef4482d85",
+                        "name": "OS: time",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.localtime[utc]",
+                        "history": "7d",
+                        "trends": "0",
+                        "units": "unixtime",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "OS"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "390c3eccc59d4f389090cbb1f7745815",
+                                "expression": "fuzzytime(/zt-os-linux-inventory/system.localtime[utc],{$OS.FUZZY.TIME.MAX})=0",
+                                "name": "OS: It is necessary to adjust the local time (over {$OS.FUZZY.TIME.MAX} s)",
+                                "priority": "WARNING",
+                                "description": "Check local time",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7f8b8bd163c34047b62f1a9abe29c3ba",
+                        "name": "OS: information",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.uname",
+                        "delay": "1h",
+                        "history": "1w",
+                        "value_type": "CHAR",
+                        "trends": "0",
+                        "description": "The information as normally returned by 'uname -a'.",
+                        "inventory_link": "OS_FULL",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "OS"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "a4a871e68bf845e7831e879b2978befa",
+                                "expression": "(last(/zt-os-linux-inventory/system.uname,#1)<>last(/zt-os-linux-inventory/system.uname,#2))>0",
+                                "name": "OS: Host information was changed",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "661041ffefff4a048efc0c97707b7026",
+                        "name": "OS: uptime",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.uptime",
+                        "delay": "10m",
+                        "history": "1w",
+                        "units": "uptime",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "OS"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "fdf5d15e159f47c39ce8500b45c6c76e",
+                                "expression": "change(/zt-os-linux-inventory/system.uptime)<0",
+                                "name": "OS: {HOST.NAME} has just been restarted",
+                                "priority": "INFO",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "8ea11cc61c05444f9b5aac85de8fd830",
+                        "name": "OS: number of logged in users",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.users.num",
+                        "history": "1w",
+                        "description": "Number of users who are currently logged in.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "OS"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "Security"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "209272f87f244ae489bf7a7fafb091d2",
+                        "name": "OS: Checksum of /etc/passwd",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "vfs.file.cksum[/etc/passwd]",
+                        "delay": "1h",
+                        "history": "1w",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "OS"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "Security"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "0912b6e786644fe5a83580aeb55a41e1",
+                                "expression": "(last(/zt-os-linux-inventory/vfs.file.cksum[/etc/passwd],#1)<>last(/zt-os-linux-inventory/vfs.file.cksum[/etc/passwd],#2))>0",
+                                "name": "OS: /etc/passwd has been changed",
+                                "priority": "WARNING",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "component",
+                        "value": "os"
+                    },
+                    {
+                        "tag": "os",
+                        "value": "linux"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$OS.FUZZY.TIME.MAX}",
+                        "value": "30"
+                    }
+                ]
+            }
+        ]
+    }
+}

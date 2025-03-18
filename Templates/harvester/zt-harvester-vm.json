@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5cb6eeb994e94d40910c92095cbea7c3",
+                "name": "ztg-virtualization"
+            },
+            {
+                "uuid": "b8d2b03fe5d1490e93ba31e61699a0c8",
+                "name": "ztg-virtualization/harvester"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "fc471c80c7734c4981de50b91110430b",
+                "template": "zt-harvester-vm",
+                "name": "zt-harvester-vm",
+                "description": "Template para monitorar VMs no Harvester",
+                "groups": [
+                    {
+                        "name": "ztg-virtualization"
+                    },
+                    {
+                        "name": "ztg-virtualization/harvester"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "harvester"
+                    }
+                ]
+            }
+        ]
+    }
+}

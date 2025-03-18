@@ -1,0 +1,80 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "d483c422329740379b2066d99cc46133",
+                "name": "ztg-os"
+            },
+            {
+                "uuid": "4d9451048e804fcbb895329a09f7bac2",
+                "name": "ztg-os/linux"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "e2307c94f1744af7a8f1f458a67af424",
+                "template": "zt-os-linux",
+                "name": "zt-os-linux",
+                "description": "Nome:  zt-os-linux\n---------------------------------------------------------------------------------\nObs: Monitoramento via Agent Ativo\n---------------------------------------------------------------------------------\nRepo: https://github.com/apexmonitoring/zt_apex/zt-os-linux\n---------------------------------------------------------------------------------\nAutor: Ranlens Denck",
+                "templates": [
+                    {
+                        "name": "zt-os-linux-cpu"
+                    },
+                    {
+                        "name": "zt-os-linux-disk-perf"
+                    },
+                    {
+                        "name": "zt-os-linux-inventory"
+                    },
+                    {
+                        "name": "zt-os-linux-memory"
+                    },
+                    {
+                        "name": "zt-os-linux-network"
+                    }
+                ],
+                "groups": [
+                    {
+                        "name": "ztg-os"
+                    },
+                    {
+                        "name": "ztg-os/linux"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "component",
+                        "value": "disk"
+                    },
+                    {
+                        "tag": "metrics",
+                        "value": "performance"
+                    },
+                    {
+                        "tag": "os",
+                        "value": "linux"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$DISK.FILESYSTEM.DISCOVERY}",
+                        "value": "^(btrfs|ext2|ext3|ext4|reiser|xfs|ffs|ufs|jfs|jfs2|vxfs|hfs|apfs|refs|ntfs|fat32|zfs)$"
+                    },
+                    {
+                        "macro": "{$DISK.FILESYSTEM.SPACE.LIMIT}",
+                        "value": "5G"
+                    },
+                    {
+                        "macro": "{$DISK.INODE.MIN.PCT}",
+                        "value": "5"
+                    },
+                    {
+                        "macro": "{$DISK.MOUNTPOINT.DISCOVERY.EXCLUDE}",
+                        "value": "^(/var/lib/docker/devicemapper/.*|/var/lib/docker/containers/.*)$"
+                    }
+                ]
+            }
+        ]
+    }
+}

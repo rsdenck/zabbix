@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "6de4b3b218374f089514a0104d242a51",
+                "name": "ztg-network"
+            },
+            {
+                "uuid": "372e4773775941189227e8b0561339e4",
+                "name": "ztg-network/firewalls"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "161873e6bbed4a1281a33e740f8006dc",
+                "template": "zt-firewall-a10-fortigate",
+                "name": "zt-firewall-a10-fortigate",
+                "description": "Template para monitorar FortiGate",
+                "groups": [
+                    {
+                        "name": "ztg-network"
+                    },
+                    {
+                        "name": "ztg-network/firewalls"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "firewall"
+                    }
+                ]
+            }
+        ]
+    }
+}

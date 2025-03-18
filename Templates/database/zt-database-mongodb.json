@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5176ac338e104c78b919dedfcad6ddda",
+                "name": "ztg-database"
+            },
+            {
+                "uuid": "7c872823e1da4a39818e1d421ae0b519",
+                "name": "ztg-database/mongodb"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "d03c5cc0dfc24cec947d26509b3224c1",
+                "template": "zt-database-mongodb",
+                "name": "zt-database-mongodb",
+                "description": "Template para monitoramento de MongoDB (status do cluster, replica set, etc.).",
+                "groups": [
+                    {
+                        "name": "ztg-database"
+                    },
+                    {
+                        "name": "ztg-database/mongodb"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "application",
+                        "value": "database"
+                    }
+                ]
+            }
+        ]
+    }
+}

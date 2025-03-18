@@ -1,0 +1,622 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "d483c422329740379b2066d99cc46133",
+                "name": "ztg-os"
+            },
+            {
+                "uuid": "4d9451048e804fcbb895329a09f7bac2",
+                "name": "ztg-os/linux"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "1f73f8ea168449099459ec37a011d7d1",
+                "template": "zt-os-linux-disk-perf",
+                "name": "zt-os-linux-disk-perf",
+                "description": "Nome:  zt-os-linux-disk-perf\n---------------------------------------------------------------------------------\nObs: Monitoramento via Agent Ativo\n---------------------------------------------------------------------------------\nRepo: https://github.com/apexmonitoring/zt_apex/zt-os-linux-disk-perf\n---------------------------------------------------------------------------------\nAutor: Ranlens Denck",
+                "groups": [
+                    {
+                        "name": "ztg-os"
+                    },
+                    {
+                        "name": "ztg-os/linux"
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "uuid": "9fa746a28d4e4fa49b80d188a0f12246",
+                        "name": "Disk discovery",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "custom.vfs.dev.discovery",
+                        "delay": "1h",
+                        "lifetime": "30d",
+                        "enabled_lifetime_type": "DISABLE_NEVER",
+                        "item_prototypes": [
+                            {
+                                "uuid": "6bdc3f14d88c47828f5300b9badf80f2",
+                                "name": "{#DEVICENAME}: Discards merged",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.discards.merged[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "ops/s",
+                                "description": "Field 13 -- # of discards merged\n    See the description of field 2",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e5f67d7820814a5187353a6c23317188",
+                                "name": "{#DEVICENAME}: Discards ms",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.discards.ms[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "ms",
+                                "description": "Field 10 -- # of milliseconds spent doing I/Os\n    This field increases so long as field 9 is nonzero.",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "47d32248beab460baae1fae18fe678bd",
+                                "name": "{#DEVICENAME}: Discards Ops per second",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.discards.ops[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "ops/s",
+                                "description": "Field 12 -- # of discards completed\n    This is the total number of discards completed successfully.",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e59be1e7be2f443c9bd09acf7a50b657",
+                                "name": "{#DEVICENAME}: IO Currently Active",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.io.active[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "io",
+                                "description": "Field  9 -- # of I/Os currently in progress\n    The only field that should go to zero. Incremented as requests are\n    given to appropriate struct request_queue and decremented as they finish.",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "70251039c64b4f6aa438b1b0adb33803",
+                                "name": "{#DEVICENAME}: Util",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.io.ms[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "%",
+                                "description": "Field 10 -- # of milliseconds spent doing I/Os\n    This field increases so long as field 9 is nonzero.",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "0.1"
+                                        ]
+                                    },
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "53607b0ffae141c580f3c00e96ee387b",
+                                "name": "{#DEVICENAME}: Read Latency",
+                                "type": "CALCULATED",
+                                "key": "custom.vfs.dev.read.latency[{#DEVICENAME}]",
+                                "history": "1w",
+                                "value_type": "FLOAT",
+                                "units": "s",
+                                "params": "last(//custom.vfs.dev.read.ms[{#DEVICENAME}]) / (last(//custom.vfs.dev.read.ops[{#DEVICENAME}]) + 1) / 1000",
+                                "description": "4 / 1",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "0ef98336ab9c4719ab1f0bba4275b089",
+                                "name": "{#DEVICENAME}: Read Merged",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.read.merged[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "Ops/s",
+                                "description": "Field  2 -- # of reads merged, field 6 -- # of writes merged\n    Reads and writes which are adjacent to each other may be merged for\n    efficiency.  Thus two 4K reads may become one 8K read before it is\n    ultimately handed to the disk, and so it will be counted (and queued)\n    as only one I/O.  This field lets you know how often this was done.",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "fe4943c1666c4cfd932e89a595ae6499",
+                                "name": "{#DEVICENAME}: Read ms",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.read.ms[{#DEVICENAME}]",
+                                "history": "1w",
+                                "value_type": "FLOAT",
+                                "units": "ms",
+                                "description": "Field #7\nNumber of milliseconds spent reading\nThis is the total number of milliseconds spent by all reads (as measured from __make_request() to end_that_request_last()).",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "85ed187b963e448eb413dc174429fbde",
+                                "name": "{#DEVICENAME}: Read Ops per second",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.read.ops[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "ops/s",
+                                "description": "Field  1 -- # of reads completed\n    This is the total number of reads completed successfully.",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e7c34c7e567743d9b0bc66daa70a39e1",
+                                "name": "{#DEVICENAME}: Read Bytes/sec",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.read.sectors[{#DEVICENAME}]",
+                                "history": "1w",
+                                "value_type": "FLOAT",
+                                "units": "B/sec",
+                                "description": "Field  4 -- # of milliseconds spent reading\n    This is the total number of milliseconds spent by all reads (as\n    measured from __make_request() to end_that_request_last()).",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    },
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "512"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "73f10c7c743c4e25ad047cb29b2b2e98",
+                                "name": "{#DEVICENAME}: IO Weight ms",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.weight.io.ms[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "ms",
+                                "description": "Field 11 -- weighted # of milliseconds spent doing I/Os\n    This field is incremented at each I/O start, I/O completion, I/O\n    merge, or read of these stats by the number of I/Os in progress\n    (field 9) times the number of milliseconds spent doing I/O since the\n    last update of this field.  This can provide an easy measure of both\n    I/O completion time and the backlog that may be accumulating.",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "70aeedcf222f432e940d1a5ff6ab3190",
+                                "name": "{#DEVICENAME}: Write Latency",
+                                "type": "CALCULATED",
+                                "key": "custom.vfs.dev.write.latency[{#DEVICENAME}]",
+                                "history": "1w",
+                                "value_type": "FLOAT",
+                                "units": "s",
+                                "params": "last(//custom.vfs.dev.write.ms[{#DEVICENAME}]) / (last(//custom.vfs.dev.write.ops[{#DEVICENAME}]) + 1) / 1000",
+                                "description": "8 / 5",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "4ba3092793984dafa77fe50c4bbac026",
+                                "name": "{#DEVICENAME}: Write Merged",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.write.merged[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "Ops/s",
+                                "description": "Field  6 -- # of writes merged\n    See the description of field 2.",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "abe5b16a29b74cf695596fc20a840040",
+                                "name": "{#DEVICENAME}: Write ms",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.write.ms[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "ms",
+                                "description": "Field  8 -- # of milliseconds spent writing\n    This is the total number of milliseconds spent by all writes (as\n    measured from __make_request() to end_that_request_last()).",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "ccce4c665458426b8acb3a9552b12753",
+                                "name": "{#DEVICENAME}: Write Ops per second",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.write.ops[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "ops/s",
+                                "description": "Field  5 -- # of writes completed\n    This is the total number of writes completed successfully.",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "881904708cb4473081f29e3227183c65",
+                                "name": "{#DEVICENAME}: Write Bytes/sec",
+                                "type": "ZABBIX_ACTIVE",
+                                "key": "custom.vfs.dev.write.sectors[{#DEVICENAME}]",
+                                "history": "1w",
+                                "units": "B/sec",
+                                "description": "Field #10\nThis is the total number of sectors written successfully.",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    },
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "512"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Disk performance {#DEVICENAME}"
+                                    }
+                                ]
+                            }
+                        ],
+                        "graph_prototypes": [
+                            {
+                                "uuid": "871480f64ca740fbb18da78d81b855ca",
+                                "name": "Disk {#DEVICENAME} await",
+                                "graph_items": [
+                                    {
+                                        "color": "FF4000",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.io.ms[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "1",
+                                        "color": "80FF00",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.read.latency[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "2",
+                                        "color": "0040FF",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.write.latency[{#DEVICENAME}]"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "1f3a662d9a604ecc9004d680620e328a",
+                                "name": "Disk {#DEVICENAME} bytes/second",
+                                "graph_items": [
+                                    {
+                                        "drawtype": "FILLED_REGION",
+                                        "color": "0080FF",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.write.sectors[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "1",
+                                        "drawtype": "FILLED_REGION",
+                                        "color": "80FF00",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.read.sectors[{#DEVICENAME}]"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "5983daf6c45e4d63af02075f01ee72e5",
+                                "name": "Disk {#DEVICENAME} Merged",
+                                "graph_items": [
+                                    {
+                                        "color": "FF4000",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.write.merged[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "1",
+                                        "color": "80FF00",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.read.merged[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "2",
+                                        "color": "0040FF",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.discards.merged[{#DEVICENAME}]"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "cc8d0686bf204788aabd4fa3458fbf14",
+                                "name": "Disk {#DEVICENAME} ops/second",
+                                "percent_right": "100",
+                                "graph_items": [
+                                    {
+                                        "drawtype": "FILLED_REGION",
+                                        "color": "F44336",
+                                        "yaxisside": "RIGHT",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.io.ms[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "1",
+                                        "color": "0080FF",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.write.ops[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "2",
+                                        "color": "80FF00",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.read.ops[{#DEVICENAME}]"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e317c8e73a8340b79c8255cc321556d6",
+                                "name": "Disk {#DEVICENAME} overview",
+                                "graph_items": [
+                                    {
+                                        "color": "00C8C8",
+                                        "calc_fnc": "ALL",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.io.active[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "1",
+                                        "yaxisside": "RIGHT",
+                                        "calc_fnc": "ALL",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.write.sectors[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "2",
+                                        "color": "960096",
+                                        "calc_fnc": "ALL",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.write.merged[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "3",
+                                        "color": "000096",
+                                        "calc_fnc": "ALL",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.write.ops[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "4",
+                                        "color": "C8C800",
+                                        "yaxisside": "RIGHT",
+                                        "calc_fnc": "ALL",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.read.sectors[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "5",
+                                        "color": "960000",
+                                        "calc_fnc": "ALL",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.read.merged[{#DEVICENAME}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "6",
+                                        "color": "C8C8C8",
+                                        "calc_fnc": "ALL",
+                                        "item": {
+                                            "host": "zt-os-linux-disk-perf",
+                                            "key": "custom.vfs.dev.read.ops[{#DEVICENAME}]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "component",
+                        "value": "disk.performance"
+                    },
+                    {
+                        "tag": "os",
+                        "value": "linux"
+                    }
+                ]
+            }
+        ]
+    }
+}

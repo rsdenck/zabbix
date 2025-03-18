@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5176ac338e104c78b919dedfcad6ddda",
+                "name": "ztg-database"
+            },
+            {
+                "uuid": "8773139737904d27855490a9469863d8",
+                "name": "ztg-database/oracle"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "3d528b25a9ef4bf086fea3747158757b",
+                "template": "zt-database-oracle",
+                "name": "zt-database-oracle",
+                "description": "Template para monitoramento de Oracle Database (performance, tablespaces, etc.).",
+                "groups": [
+                    {
+                        "name": "ztg-database"
+                    },
+                    {
+                        "name": "ztg-database/oracle"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "application",
+                        "value": "database"
+                    }
+                ]
+            }
+        ]
+    }
+}

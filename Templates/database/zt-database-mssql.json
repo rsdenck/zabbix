@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5176ac338e104c78b919dedfcad6ddda",
+                "name": "ztg-database"
+            },
+            {
+                "uuid": "a3d4faf05f1c4ae587195e476f9b596e",
+                "name": "ztg-database/mssql"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "b61c157084e341a4be5c1f16d20a258d",
+                "template": "zt-database-mssql",
+                "name": "zt-database-mssql",
+                "description": "Template para monitoramento de Microsoft SQL Server.",
+                "groups": [
+                    {
+                        "name": "ztg-database"
+                    },
+                    {
+                        "name": "ztg-database/mssql"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "application",
+                        "value": "database"
+                    }
+                ]
+            }
+        ]
+    }
+}

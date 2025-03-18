@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5176ac338e104c78b919dedfcad6ddda",
+                "name": "ztg-database"
+            },
+            {
+                "uuid": "445823430fe94b7da9c15f405d16cd90",
+                "name": "ztg-database/mariadb"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "24b8be0c32e54605821db4e4b1303a2d",
+                "template": "zt-database-mariadb",
+                "name": "zt-database-mariadb",
+                "description": "Template para monitoramento de MariaDB/MySQL.",
+                "groups": [
+                    {
+                        "name": "ztg-database"
+                    },
+                    {
+                        "name": "ztg-database/mariadb"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "application",
+                        "value": "database"
+                    }
+                ]
+            }
+        ]
+    }
+}

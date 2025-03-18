@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5cb6eeb994e94d40910c92095cbea7c3",
+                "name": "ztg-virtualization"
+            },
+            {
+                "uuid": "4c189b9c07554245885d9841c229d75a",
+                "name": "ztg-virtualization/hyperv"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "11aed724442f4bd48d8906822f7c5c69",
+                "template": "zt-hyperv-cluster",
+                "name": "zt-hyperv-cluster",
+                "description": "Template para monitorar Hyper-V Cluster",
+                "groups": [
+                    {
+                        "name": "ztg-virtualization"
+                    },
+                    {
+                        "name": "ztg-virtualization/hyperv"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "hyperv"
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,432 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "d483c422329740379b2066d99cc46133",
+                "name": "ztg-os"
+            },
+            {
+                "uuid": "4d9451048e804fcbb895329a09f7bac2",
+                "name": "ztg-os/linux"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "da53e44145304098b4c3ff749996e3e7",
+                "template": "zt-os-linux-cpu",
+                "name": "zt-os-linux-cpu",
+                "description": "Nome:  zt-os-linux-cpu\n---------------------------------------------------------------------------------\nObs: Monitoramento via Agent Ativo\n---------------------------------------------------------------------------------\nRepo: https://github.com/apexmonitoring/zt_apex/zt-os-linux-cpu\n---------------------------------------------------------------------------------\nAutor: Ranlens Denck",
+                "groups": [
+                    {
+                        "name": "ztg-os"
+                    },
+                    {
+                        "name": "ztg-os/linux"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "ffb5d49bd5ab49e599b275acdea482ae",
+                        "name": "CPU: tempo de ocupa\u00e7\u00e3o",
+                        "type": "CALCULATED",
+                        "key": "custom.system.cpu.util[,busy]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "params": "100 - last(//system.cpu.util[,idle])",
+                        "description": "CPU: busy time - Indica o percentual de tempo em que a CPU est\u00e1 ocupada",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Utilization"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "4ce91073d4a344a1bbbdb5f98a48ade4",
+                        "name": "CPU: Interrupts per second",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.intr",
+                        "history": "1w",
+                        "units": "ips",
+                        "preprocessing": [
+                            {
+                                "type": "CHANGE_PER_SECOND",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Utilization"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ef74b0e09d3049f7870c617a5693bc8a",
+                        "name": "CPU: Load (1 min average per core)",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.load[percpu,avg1]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "description": "The processor load is calculated as system CPU load divided by number of CPU cores.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Load"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "05d98b8d4f594fb2aebb4a9c9c790ca0",
+                                "expression": "avg(/zt-os-linux-cpu/system.cpu.load[percpu,avg1],30m)>{$CPU.LOAD.MAX.PCT}",
+                                "name": "CPU: Load is too high (over {$CPU.LOAD.MAX.PCT}% for 30m)",
+                                "priority": "AVERAGE",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "performance",
+                                        "value": "cpu"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "204bb77d182c4e91a2f098229bd405df",
+                        "name": "CPU: Load (5 min average per core)",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.load[percpu,avg5]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "description": "The processor load is calculated as system CPU load divided by number of CPU cores.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Load"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6c3b5f84e6b046bfac2fb12fa752450a",
+                        "name": "CPU: Load (15 min average per core)",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.load[percpu,avg15]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "description": "The processor load is calculated as system CPU load divided by number of CPU cores.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Load"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2524a63bea9d44858b4b0a068360a3ad",
+                        "name": "CPU: Context switches per second",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.switches",
+                        "history": "1w",
+                        "units": "sps",
+                        "description": "CPU: Context switches per second - N\u00famero de trocas de contexto realizadas pela CPU em um segundo",
+                        "preprocessing": [
+                            {
+                                "type": "CHANGE_PER_SECOND",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Utilization"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b2f6d924272d4b84bf26cd497a85d24f",
+                        "name": "CPU: Idle time",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.util[,idle]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "CPU: Idle time - Tempo que a CPU passou sem fazer nada.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Utilization"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "4eae770bff5f404481f2c57673fc8b3d",
+                        "name": "CPU: Interrupt time",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.util[,interrupt]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "CPU: Interrupt time -  Tempo de CPU dedicada a processos cr\u00edticos",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Utilization"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e8d5b76517c946b18b7d55c9ff2c23cb",
+                        "name": "CPU: Iowait time",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.util[,iowait]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "Amount of time the CPU has been waiting for I/O to complete.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Utilization"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "219d45ae319b40d1a113647e3060919d",
+                                "expression": "avg(/zt-os-linux-cpu/system.cpu.util[,iowait],30m)>{$CPU.IOWAIT.MAX}",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "avg(/zt-os-linux-cpu/system.cpu.util[,iowait],1h)<{$CPU.IOWAIT.MAX}",
+                                "name": "CPU: Waiting I/O (over {$CPU.IOWAIT.MAX} for 30m)",
+                                "priority": "WARNING",
+                                "description": "OS spends significant time waiting for I/O (input/output) operations. It could be indicator of performance issues with storage system.",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f67af9ba78054119806eb8ee6bbe6759",
+                        "name": "CPU: Nice time",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.util[,nice]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "The time the CPU has spent running users' processes that have been niced.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Utilization"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "c86a06e45ce449158e90ba1843fa73be",
+                        "name": "CPU: Softirq time",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.util[,softirq]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "The amount of time the CPU has been servicing software interrupts.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Utilization"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "676c1243ad404ec7b4bbdfcf1a230c8f",
+                        "name": "CPU: Steal time",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.util[,steal]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "The amount of CPU 'stolen' from this virtual machine by the hypervisor for other tasks (such as running another virtual machine).",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Utilization"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "768051f0019b4823a34cd1e7c03e507d",
+                        "name": "CPU: System time",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.util[,system]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "The time the CPU has spent running the kernel and its processes.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Utilization"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "28b99eefcae047fe8dee348ddbb96728",
+                        "name": "CPU: User time",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "system.cpu.util[,user]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "The time the CPU has spent running users' processes that are not niced.",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "CPU Utilization"
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "component",
+                        "value": "cpu"
+                    },
+                    {
+                        "tag": "os",
+                        "value": "linux"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$CPU.IOWAIT.MAX}",
+                        "value": "30"
+                    },
+                    {
+                        "macro": "{$CPU.LOAD.MAX.PCT}",
+                        "value": "85"
+                    },
+                    {
+                        "macro": "{$CPU.LOAD.MIN.PCT}",
+                        "value": "70"
+                    }
+                ]
+            }
+        ],
+        "graphs": [
+            {
+                "uuid": "b611e167c1d2462db15328c6afee5de8",
+                "name": "CPU load",
+                "ymin_type_1": "FIXED",
+                "graph_items": [
+                    {
+                        "color": "009900",
+                        "item": {
+                            "host": "zt-os-linux-cpu",
+                            "key": "system.cpu.load[percpu,avg1]"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "000099",
+                        "item": {
+                            "host": "zt-os-linux-cpu",
+                            "key": "system.cpu.load[percpu,avg5]"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "990000",
+                        "item": {
+                            "host": "zt-os-linux-cpu",
+                            "key": "system.cpu.load[percpu,avg15]"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "f84144f3b6eb4491a62710c3520b8818",
+                "name": "CPU utilization",
+                "show_triggers": "NO",
+                "type": "STACKED",
+                "ymin_type_1": "FIXED",
+                "ymax_type_1": "FIXED",
+                "graph_items": [
+                    {
+                        "drawtype": "FILLED_REGION",
+                        "color": "FF5555",
+                        "item": {
+                            "host": "zt-os-linux-cpu",
+                            "key": "system.cpu.util[,steal]"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "drawtype": "FILLED_REGION",
+                        "color": "55FF55",
+                        "item": {
+                            "host": "zt-os-linux-cpu",
+                            "key": "system.cpu.util[,softirq]"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "drawtype": "FILLED_REGION",
+                        "color": "009999",
+                        "item": {
+                            "host": "zt-os-linux-cpu",
+                            "key": "system.cpu.util[,interrupt]"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "drawtype": "FILLED_REGION",
+                        "color": "990099",
+                        "item": {
+                            "host": "zt-os-linux-cpu",
+                            "key": "system.cpu.util[,nice]"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "drawtype": "FILLED_REGION",
+                        "color": "999900",
+                        "item": {
+                            "host": "zt-os-linux-cpu",
+                            "key": "system.cpu.util[,iowait]"
+                        }
+                    },
+                    {
+                        "sortorder": "5",
+                        "drawtype": "FILLED_REGION",
+                        "color": "990000",
+                        "item": {
+                            "host": "zt-os-linux-cpu",
+                            "key": "system.cpu.util[,system]"
+                        }
+                    },
+                    {
+                        "sortorder": "6",
+                        "drawtype": "FILLED_REGION",
+                        "color": "000099",
+                        "item": {
+                            "host": "zt-os-linux-cpu",
+                            "key": "system.cpu.util[,user]"
+                        }
+                    },
+                    {
+                        "sortorder": "7",
+                        "drawtype": "FILLED_REGION",
+                        "color": "009900",
+                        "item": {
+                            "host": "zt-os-linux-cpu",
+                            "key": "system.cpu.util[,idle]"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
