@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "d483c422329740379b2066d99cc46133",
+                "name": "ztg-os"
+            },
+            {
+                "uuid": "6c3a5c6ab26d4bd5811a58c095f4d9af",
+                "name": "ztg-os/mac"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "ae6420204ecc485c9256b1ebbcf805b2",
+                "template": "zt-os-mac",
+                "name": "zt-os-mac",
+                "description": "Template para monitoramento de sistemas macOS.",
+                "groups": [
+                    {
+                        "name": "ztg-os"
+                    },
+                    {
+                        "name": "ztg-os/mac"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "mac"
+                    }
+                ]
+            }
+        ]
+    }
+}

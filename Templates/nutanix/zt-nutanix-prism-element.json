@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5cb6eeb994e94d40910c92095cbea7c3",
+                "name": "ztg-virtualization"
+            },
+            {
+                "uuid": "c33e3202280e46daaa0c72fab5863867",
+                "name": "ztg-virtualization/nutanix"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "2ee05930bee6418ca63ee098c357b260",
+                "template": "zt-nutanix-prism-element",
+                "name": "zt-nutanix-prism-element",
+                "description": "Template para monitorar Nutanix Prism Element",
+                "groups": [
+                    {
+                        "name": "ztg-virtualization"
+                    },
+                    {
+                        "name": "ztg-virtualization/nutanix"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "nutanix"
+                    }
+                ]
+            }
+        ]
+    }
+}

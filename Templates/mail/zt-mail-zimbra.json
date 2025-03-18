@@ -1,0 +1,2283 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "dab029e8cd2347abbdd3ea68b1fd9900",
+                "name": "ztg-mail"
+            },
+            {
+                "uuid": "82e45af3bb834482912c02d55b1e38aa",
+                "name": "ztg-mail/zimbra"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "70052ff6071e47c3a10aea54bae9c501",
+                "template": "zt-mail-zimbra",
+                "name": "zt-mail-zimbra",
+                "description": "ZT  - Zabbix Template\n--------------------------------\n\n- Defina a Cron para os Scripts Bash\n- Defina UserParameter\n- Defina Permiss\u00f5es do user zabbix",
+                "groups": [
+                    {
+                        "name": "ztg-mail"
+                    },
+                    {
+                        "name": "ztg-mail/zimbra"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "24805f9db5bf464da164487d0477dbf7",
+                        "name": "Account cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.account_cache_hit_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "LDAP account cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "aa46a6dffb8b4669845329ba554aefd3",
+                        "name": "LDAP account cache size",
+                        "type": "TRAP",
+                        "key": "zimbra.account_cache_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "10496d4c7dd44ab9991f73a9248bbbd1",
+                        "name": "LDAP ACL cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.acl_cache_hit_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "LDAP ACL cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "770a93b8174f46c78bdc0755d93c574d",
+                        "name": "Number of times that the file descriptor cache read message data from disk",
+                        "type": "TRAP",
+                        "key": "zimbra.bis_read",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of times that the file descriptor cache read message data from disk",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e7f1bb0a60ea4a36b9c5b46cffea25dc",
+                        "name": "Percentage of file descriptor cache disk reads that required a seek",
+                        "type": "TRAP",
+                        "key": "zimbra.bis_seek_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "description": "Percentage of file descriptor cache disk reads that required a seek",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b879811569ec4c51bd526f0d742fc8fb",
+                        "name": "Hit rate of calendar summary cache, counting cache hit from both memory and file",
+                        "type": "TRAP",
+                        "key": "zimbra.calcache_hit",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "Hit rate of calendar summary cache, counting cache hit from both memory and file",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "051ee94faa3a4823a665829029a9c14e",
+                        "name": "Number of calendars (folders) in the calendar summary cache LRU in Java heap",
+                        "type": "TRAP",
+                        "key": "zimbra.calcache_lru_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "description": "Number of calendars (folders) in the calendar summary cache LRU in Java heap",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e343f83e725a47e9b1eff31750e45be2",
+                        "name": "Hit rate of calendar summary cache, counting cache hit from memory only",
+                        "type": "TRAP",
+                        "key": "zimbra.calcache_mem_hit",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "Hit rate of calendar summary cache, counting cache hit from memory only",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "89726bfb556649d281857efafc73270e",
+                        "name": "LDAP COS cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.cos_cache_hit_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "LDAP COS cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e52f454bfccd40f3bbf8c9a87d394a23",
+                        "name": "LDAP COS cache size",
+                        "type": "TRAP",
+                        "key": "zimbra.cos_cache_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "LDAP COS cache size",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "434af93ae4e040a586efa999cd9e4653",
+                        "name": "Number of times that the server got a database connection from the pool",
+                        "type": "TRAP",
+                        "key": "zimbra.db_conn_count",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of times that the server got a database connection from the pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d68eb72360774afc87b8299b3960e16f",
+                        "name": "Average latency (ms) of getting a database connection from the pool",
+                        "type": "TRAP",
+                        "key": "zimbra.db_conn_ms_avg",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "description": "Average latency (ms) of getting a database connection from the pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1455a8df36454e38b698496c028db25d",
+                        "name": "Number of database connections in use",
+                        "type": "TRAP",
+                        "key": "zimbra.db_pool_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of database connections in use",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e1e8ed55380349ec8b0f43753a2ac82e",
+                        "name": "LDAP domain cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.domain_cache_hit_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "LDAP domain cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "706e3592b97c4bcda62022d73a7609df",
+                        "name": "LDAP domain cache size",
+                        "type": "TRAP",
+                        "key": "zimbra.domain_cache_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "LDAP domain cache size",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "83e05002cfe7468d94f5647d240aad9c",
+                        "name": "File descriptor cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.fd_cache_hit_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "File descriptor cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d0883254f53b49558b8e07e822cb690f",
+                        "name": "Number of open file descriptors that reference message content",
+                        "type": "TRAP",
+                        "key": "zimbra.fd_cache_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of open file descriptors that reference message content",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "94a56c76e6c74719a01bc094249aa8fe",
+                        "name": "Number of times that concurrentmarksweep GC was invoked",
+                        "type": "TRAP",
+                        "key": "zimbra.gc_concurrentmarksweep_count",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of times that concurrentmarksweep GC was invoked",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "462e002ddb0642ed93e17bbe075fee98",
+                        "name": "Time (ms) spent on concurrentmarksweep GC",
+                        "type": "TRAP",
+                        "key": "zimbra.gc_concurrentmarksweep_ms",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Time (ms) spent on concurrentmarksweep GC",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ce6235a7007141cbb5bbb2a6aec2cc90",
+                        "name": "Number of times that major GC was invoked",
+                        "type": "TRAP",
+                        "key": "zimbra.gc_major_count",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of times that major GC was invoked",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "dc383ebdde4f42d4affd9223087038a8",
+                        "name": "Time (ms) spent on major GC",
+                        "type": "TRAP",
+                        "key": "zimbra.gc_major_ms",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Time (ms) spent on major GC",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b8a3ddc0c0944df9bda5009679b517b1",
+                        "name": "Number of times that minor GC was invoked",
+                        "type": "TRAP",
+                        "key": "zimbra.gc_minor_count",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of times that minor GC was invoked",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "73cb8fd9c85d480e81b90ef49d4e9d2a",
+                        "name": "Time (ms) spent on minor GC",
+                        "type": "TRAP",
+                        "key": "zimbra.gc_minor_ms",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Time (ms) spent on minor GC",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9f03d945719b4dd2bc521d25d1a69045",
+                        "name": "Number of times that parnew GC was invoked",
+                        "type": "TRAP",
+                        "key": "zimbra.gc_parnew_count",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of times that parnew GC was invoked",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "86fe1b26f09245059690b82c524755f9",
+                        "name": "Time (ms) spent on parnew GC",
+                        "type": "TRAP",
+                        "key": "zimbra.gc_parnew_ms",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Time (ms) spent on parnew GC",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b85b9aaaf63f43aabf30b05c3e7b31f1",
+                        "name": "LDAP group cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.group_cache_hit_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "LDAP group cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "3edd0278534445ba9f3964ff03b396dd",
+                        "name": "LDAP group cache size",
+                        "type": "TRAP",
+                        "key": "zimbra.group_cache_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "LDAP group cache size",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2c85b1d59ec94038912a3745f31f5d53",
+                        "name": "Number of bytes free in the entire JVM heap",
+                        "type": "TRAP",
+                        "key": "zimbra.heap_free",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes free in the entire JVM heap",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "895c7f040f6a49019a211120ee107ade",
+                        "name": "Number of bytes used in the entire JVM heap",
+                        "type": "TRAP",
+                        "key": "zimbra.heap_used",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes used in the entire JVM heap",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d407e828997641fa9d161bf70ee6d9b4",
+                        "name": "Number of idle HTTP handler threads",
+                        "type": "TRAP",
+                        "key": "zimbra.http_idle_threads",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of idle HTTP handler threads",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0fce6a749356429cab39d02b270485b8",
+                        "name": "Number of HTTP handler threads",
+                        "type": "TRAP",
+                        "key": "zimbra.http_threads",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of HTTP handler threads",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "54e6c6ab933f45e8a86d9a1df4bf9cb6",
+                        "name": "Accumulated bytes read by Lucene",
+                        "type": "TRAP",
+                        "key": "zimbra.idx_bytes_read",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Accumulated bytes read by Lucene",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "c6e09cff284e418bb1b452dbc1915ded",
+                        "name": "Average of idx_bytes_read",
+                        "type": "TRAP",
+                        "key": "zimbra.idx_bytes_read_avg",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "B",
+                        "description": "Average of idx_bytes_read",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a0f402ab237d40a8ae55cf021e30d12a",
+                        "name": "Accumulated bytes written by Lucene",
+                        "type": "TRAP",
+                        "key": "zimbra.idx_bytes_written",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Accumulated bytes written by Lucene",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "080cf8c296124d7ea6b4739fdb7d02ca",
+                        "name": "Average of idx_bytes_written",
+                        "type": "TRAP",
+                        "key": "zimbra.idx_bytes_written_avg",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "B",
+                        "description": "Average of idx_bytes_written",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0337f9aae60548419ac966df8f301b87",
+                        "name": "Average number of concurrent index writers",
+                        "type": "TRAP",
+                        "key": "zimbra.idx_wrt_avg",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "description": "Average number of concurrent index writers",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f719ebfb8aa5475b983caf7cf55c020f",
+                        "name": "Accumulated number of index writers opened",
+                        "type": "TRAP",
+                        "key": "zimbra.idx_wrt_opened",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Accumulated number of index writers opened",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f9f8eff71d314dd7b531c742986f74c2",
+                        "name": "Accumulated number of cache hits when opening an index writer",
+                        "type": "TRAP",
+                        "key": "zimbra.idx_wrt_opened_cache_hit",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Accumulated number of cache hits when opening an index writer",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "095b60b45e38443bb43be0ddc4a3a183",
+                        "name": "Number of cleartext IMAP connections",
+                        "type": "TRAP",
+                        "key": "zimbra.imap_conn",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of cleartext IMAP connections",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d2844efaab334a49a9833118341fefdc",
+                        "name": "Number of IMAP requests received",
+                        "type": "TRAP",
+                        "key": "zimbra.imap_count",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of IMAP requests received",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "22544a645c5f4bc5b7165f4a781e6d23",
+                        "name": "Average processing time (ms) of IMAP requests",
+                        "type": "TRAP",
+                        "key": "zimbra.imap_ms_avg",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "description": "Average processing time (ms) of IMAP requests",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ce5a6d1164bd4d0391cb2b7799743b95",
+                        "name": "Number of SSL IMAP connections",
+                        "type": "TRAP",
+                        "key": "zimbra.imap_ssl_conn",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of SSL IMAP connections",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "4773470f83a74c65aecee7ab791bb89f",
+                        "name": "Number of IMAP SSL handler threads",
+                        "type": "TRAP",
+                        "key": "zimbra.imap_ssl_threads",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of IMAP SSL handler threads",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e87ccd881ba44fbf9a8fb96d617f12d4",
+                        "name": "Number of IMAP handler threads",
+                        "type": "TRAP",
+                        "key": "zimbra.imap_threads",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of IMAP handler threads",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a9ff77643a8d4a97a55690bface04a9c",
+                        "name": "InnoDB buffer pool hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.innodb_bp_hit_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "%",
+                        "description": "InnoDB buffer pool hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "da64f56a963c46278f258030961734ca",
+                        "name": "Number of times that the server got an LDAP directory context",
+                        "type": "TRAP",
+                        "key": "zimbra.ldap_dc_count",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of times that the server got an LDAP directory context",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2daba6ad0c5d48609425c5ea2066405c",
+                        "name": "Average latency (ms) of getting an LDAP directory context",
+                        "type": "TRAP",
+                        "key": "zimbra.ldap_dc_ms_avg",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Average latency (ms) of getting an LDAP directory context",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "bf9f152f3d2744bd9888f179fb7d9f37",
+                        "name": "Number of LMTP connections",
+                        "type": "TRAP",
+                        "key": "zimbra.lmtp_conn",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of LMTP connections",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "97975c8e57704b3694fd4c39c034f839",
+                        "name": "Number of bytes of data delivered to mailboxes as a result of LMTP delivery",
+                        "type": "TRAP",
+                        "key": "zimbra.lmtp_dlvd_bytes",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes of data delivered to mailboxes as a result of LMTP delivery",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e507eec3025648979b42716305f5f9dc",
+                        "name": "Number of messages delivered to mailboxes as a result of LMTP delivery",
+                        "type": "TRAP",
+                        "key": "zimbra.lmtp_dlvd_msgs",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of messages delivered to mailboxes as a result of LMTP delivery",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "99b3066f87dc4e10a89d59ba41610717",
+                        "name": "Number of bytes received over LMTP",
+                        "type": "TRAP",
+                        "key": "zimbra.lmtp_rcvd_bytes",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes received over LMTP",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "bfe7c1e83c8f4bd290934e5055a8bcde",
+                        "name": "Number of messages received over LMTP",
+                        "type": "TRAP",
+                        "key": "zimbra.lmtp_rcvd_msgs",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of messages received over LMTP",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "71da9482038c4328a634406e0d13ac27",
+                        "name": "Number of LMTP recipients",
+                        "type": "TRAP",
+                        "key": "zimbra.lmtp_rcvd_rcpt",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of LMTP recipients",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b40d7b2a3a8f4e01a53d884ed4210776",
+                        "name": "Number of LMTP handler threads",
+                        "type": "TRAP",
+                        "key": "zimbra.lmtp_threads",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of LMTP handler threads",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "40a254462187445789d0d878092dc7e1",
+                        "name": "Number of messages that were added to a mailbox",
+                        "type": "TRAP",
+                        "key": "zimbra.mbox_add_msg_count",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of messages that were added to a mailbox",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9df3bc659c044d6ab612cae8a49d2346",
+                        "name": "Average latency (ms) of adding a message to a mailbox",
+                        "type": "TRAP",
+                        "key": "zimbra.mbox_add_msg_ms_avg",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "description": "Average latency (ms) of adding a message to a mailbox",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ec92ff5c42554bd6ad46629ff97e08a1",
+                        "name": "Mailbox cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.mbox_cache",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "Mailbox cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6e119de3e08244fb89f72e4073c94d9b",
+                        "name": "Number of mailboxes cached in memory",
+                        "type": "TRAP",
+                        "key": "zimbra.mbox_cache_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of mailboxes cached in memory",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "4c73750ab27b4fb8ab40968ae2cb1383",
+                        "name": "Number of times that the server got a mailbox from the cache",
+                        "type": "TRAP",
+                        "key": "zimbra.mbox_get_count",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of times that the server got a mailbox from the cache",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "fd8099fc64204f78bb793033122b97ea",
+                        "name": "Average latency (ms) of getting a mailbox from the cache",
+                        "type": "TRAP",
+                        "key": "zimbra.mbox_get_ms_avg",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "description": "Average latency (ms) of getting a mailbox from the cache",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "08400af43a2545df8b0056b093a6ccd0",
+                        "name": "Item cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.mbox_item_cache",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "Item cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "499e10274c434d9d9c9174b749c12850",
+                        "name": "Message cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.mbox_msg_cache",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "Message cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1a35264981cf4031ac1b491a315cbbe1",
+                        "name": "Number of bytes free in the cms old gen memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_cms_old_gen_free",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes free in the cms old gen memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "231dd2989f8b4bb0bb5765882ce7a87e",
+                        "name": "Number of bytes used in the cms old gen memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_cms_old_gen_used",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes used in the cms old gen memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ec9eafa64f4749df8ac4d7ffdfef36f0",
+                        "name": "Number of bytes free in the code cache memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_code_cache_free",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes free in the code cache memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "60a5370a86974ca28965f26d20ddd39f",
+                        "name": "Number of bytes used in the code cache memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_code_cache_used",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes used in the code cache memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "58fb8b22535c4c60ab081e4eb4a762b3",
+                        "name": "Number of bytes free in the compressed class space memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_compressed_class_space_free",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes free in the compressed class space memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9c5ced6addef48d68bd001c2bcbb5c58",
+                        "name": "Number of bytes used in the compressed class space memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_compressed_class_space_used",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes used in the compressed class space memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "967469da768149d3bd2e98f1571a22a1",
+                        "name": "Number of bytes free in the metaspace memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_metaspace_free",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes free in the metaspace memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2d5492e4c2d04b8e8a27a3a0937369b9",
+                        "name": "Number of bytes used in the metaspace memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_metaspace_used",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes used in the metaspace memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6d82ab7e83624fa7a2a3644cd7399db7",
+                        "name": "Number of bytes free in the par eden space memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_par_eden_space_free",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes free in the par eden space memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0f35cc0e81534548a74674301a33fa22",
+                        "name": "Number of bytes used in the par eden space memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_par_eden_space_used",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes used in the par eden space memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a23209713c5a4891872c1d988d7014c4",
+                        "name": "Number of bytes free in the par survivor space memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_par_survivor_space_free",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes free in the par survivor space memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1e558a3101474540b65b878225aee5a6",
+                        "name": "Number of bytes used in the par survivor space memory pool",
+                        "type": "TRAP",
+                        "key": "zimbra.mpool_par_survivor_space_used",
+                        "delay": "0",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Number of bytes used in the par survivor space memory pool",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2f6c8e9459e8454b85f59b33b8b3e94b",
+                        "name": "Number of message structures cached in memory",
+                        "type": "TRAP",
+                        "key": "zimbra.msg_cache_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of message structures cached in memory",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d453a620cba548d78310b766d379410b",
+                        "name": "Number of cleartext POP3 connections",
+                        "type": "TRAP",
+                        "key": "zimbra.pop_conn",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of cleartext POP3 connections",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6aa0570b9fc149ec945eaa25517ef686",
+                        "name": "Number of POP3 requests received",
+                        "type": "TRAP",
+                        "key": "zimbra.pop_count",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of POP3 requests received",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ac6f09a2e67d4215bf4900d9ce1b3f9e",
+                        "name": "Average processing time (ms) of POP3 requests",
+                        "type": "TRAP",
+                        "key": "zimbra.pop_ms_avg",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Average processing time (ms) of POP3 requests",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "558904b1766641bca9403bfcff4ed02b",
+                        "name": "Number of SSL POP3 connections",
+                        "type": "TRAP",
+                        "key": "zimbra.pop_ssl_conn",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of SSL POP3 connections",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9796c7d615a349d6b2d3972d30763837",
+                        "name": "Number of POP3 SSL handler threads",
+                        "type": "TRAP",
+                        "key": "zimbra.pop_ssl_threads",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of POP3 SSL handler threads",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "69442b8f3359484ba9a8bf467860f2c5",
+                        "name": "Number of POP3 handler threads",
+                        "type": "TRAP",
+                        "key": "zimbra.pop_threads",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of POP3 handler threads",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1a965f8c6b6d4cac94ae32322c2799fa",
+                        "name": "LDAP server cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.server_cache_hit_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "LDAP server cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d7d1cc39f2694e9fb7a05ad833debb70",
+                        "name": "LDAP server cache size",
+                        "type": "TRAP",
+                        "key": "zimbra.server_cache_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "LDAP server cache size",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "00323ec01b3a4a65b28c2a1d55517135",
+                        "name": "Number of SOAP requests received",
+                        "type": "TRAP",
+                        "key": "zimbra.soap_count",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of SOAP requests received",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "67655ccf14fd481a8a115fb64b33739a",
+                        "name": "Average processing time (ms) of SOAP requests",
+                        "type": "TRAP",
+                        "key": "zimbra.soap_ms_avg",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "description": "Average processing time (ms) of SOAP requests",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "fb1f145532fe4031ba89e2b2d5c6b2b1",
+                        "name": "Number of SOAP sessions",
+                        "type": "TRAP",
+                        "key": "zimbra.soap_sessions",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "Number of SOAP sessions",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "3dd3925f3613475b9e7eb43204be2662",
+                        "name": "Messages bytes delivered",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"bdelivered\"]",
+                        "history": "30d",
+                        "units": "B",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "123f9a5aeb334bb4b7445b09ac2a5e58",
+                        "name": "Messages bounced",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"bounced\"]",
+                        "history": "30d",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "5af646dd938247b189b5dc0e7273bedb",
+                        "name": "Messages bytes received",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"breceived\"]",
+                        "history": "30d",
+                        "units": "B",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f69e612fce5f4e0c9469d6cee80cd6ab",
+                        "name": "Messages deferred",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"deferred\"]",
+                        "history": "30d",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "142bf2619bf84c9c82d803cfb2747d81",
+                        "name": "Messages delivered",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"delivered\"]",
+                        "history": "30d",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1d3b2ee86cc347ed80d3a9fc09a0ce10",
+                        "name": "Messages forwarded",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"forwarded\"]",
+                        "history": "30d",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "90eb3bb6b5ae4df8848cf976b0fa3839",
+                        "name": "Messages received",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"received\"]",
+                        "history": "30d",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9362cbe1367a49ab8fbaf0e51c48a007",
+                        "name": "Messages rejected",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"rejected\"]",
+                        "history": "30d",
+                        "preprocessing": [
+                            {
+                                "type": "SIMPLE_CHANGE",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "20ab81cfd538456791ad7c4db22040d2",
+                        "name": "Total bytes delivered Yesterday",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"total_bdelivered\"]",
+                        "delay": "1d",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Total bytes count delivered yesterday",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "3d3403bc2c23402e8e6399c9b33de9f4",
+                        "name": "Total bytes received Yesterday",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"total_breceived\"]",
+                        "delay": "1d",
+                        "history": "90d",
+                        "units": "B",
+                        "description": "Total bytes count received yesterday",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ba8edc9c2fec43e9be815c48b9e2efca",
+                        "name": "Total messages delivered Yesterday",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"total_delivered\"]",
+                        "delay": "1d",
+                        "history": "90d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "55cbbc4439c34d63bd0faa0679ad8f62",
+                        "name": "Total messages received Yesterday",
+                        "type": "ZABBIX_ACTIVE",
+                        "key": "zimbra.traffic[\"total_received\"]",
+                        "delay": "1d",
+                        "history": "90d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Traffic Statistic"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "88b29ca5e1574bffb047dbe6a504a814",
+                        "name": "LDAP UC service cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.ucservice_cache_hit_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "LDAP UC service cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "60679428cf1748759bcf521faa41c5ad",
+                        "name": "LDAP UC service cache size",
+                        "type": "TRAP",
+                        "key": "zimbra.ucservice_cache_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "LDAP UC service cache size",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0709621c94f6486d982d9927c5f3d6eb",
+                        "name": "LDAP XMPP cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.xmpp_cache_hit_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "LDAP XMPP cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "3f573fb8955f416f9c6699495b9ebe91",
+                        "name": "LDAP XMPP cache size",
+                        "type": "TRAP",
+                        "key": "zimbra.xmpp_cache_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "LDAP XMPP cache size",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a160af442e8e47cd8cae448e8c1eebb5",
+                        "name": "LDAP zimlet cache hit rate",
+                        "type": "TRAP",
+                        "key": "zimbra.zimlet_cache_hit_rate",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "description": "LDAP zimlet cache hit rate",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2f08bd9295444dc88256b685fd704ed1",
+                        "name": "LDAP zimlet cache size",
+                        "type": "TRAP",
+                        "key": "zimbra.zimlet_cache_size",
+                        "delay": "0",
+                        "history": "90d",
+                        "description": "LDAP zimlet cache size",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Zimbra Statistics"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "graphs": [
+            {
+                "uuid": "d6bdb188e273444b83999a26691f38fc",
+                "name": "Zimbra cache hit rate",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.account_cache_hit_rate"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.fd_cache_hit_rate"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "2774A4",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mbox_item_cache"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "A54F10",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mbox_cache"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "color": "FC6EA3",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mbox_msg_cache"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "0119c8d1712249f78bd5570a490bc760",
+                "name": "Zimbra invoked GC",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.gc_concurrentmarksweep_count"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.gc_major_count"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "2774A4",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.gc_minor_count"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "A54F10",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.gc_parnew_count"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "d5d9e3f0a15b4786863df0643720d548",
+                "name": "Zimbra LDAP cache hit rate",
+                "graph_items": [
+                    {
+                        "color": "A54F10",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.acl_cache_hit_rate"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "FC6EA3",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.cos_cache_hit_rate"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "6C59DC",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.domain_cache_hit_rate"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "AC8C14",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.group_cache_hit_rate"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "color": "611F27",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.server_cache_hit_rate"
+                        }
+                    },
+                    {
+                        "sortorder": "5",
+                        "color": "F230E0",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.ucservice_cache_hit_rate"
+                        }
+                    },
+                    {
+                        "sortorder": "6",
+                        "color": "5CCD18",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.xmpp_cache_hit_rate"
+                        }
+                    },
+                    {
+                        "sortorder": "7",
+                        "color": "BB2A02",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.zimlet_cache_hit_rate"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "ba4eed92dc224c45adec665f5b6cf4b3",
+                "name": "Zimbra LDAP cache size",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.account_cache_size"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.cos_cache_size"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "2774A4",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.domain_cache_size"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "A54F10",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.group_cache_size"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "color": "FC6EA3",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.server_cache_size"
+                        }
+                    },
+                    {
+                        "sortorder": "5",
+                        "color": "6C59DC",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.ucservice_cache_size"
+                        }
+                    },
+                    {
+                        "sortorder": "6",
+                        "color": "AC8C14",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.xmpp_cache_size"
+                        }
+                    },
+                    {
+                        "sortorder": "7",
+                        "color": "611F27",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.zimlet_cache_size"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "f47b3877a3904665a797217cb70204f6",
+                "name": "Zimbra memory pool free bytes",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_cms_old_gen_free"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_code_cache_free"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "2774A4",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_compressed_class_space_free"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "A54F10",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_metaspace_free"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "color": "FC6EA3",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_par_eden_space_free"
+                        }
+                    },
+                    {
+                        "sortorder": "5",
+                        "color": "6C59DC",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_par_survivor_space_free"
+                        }
+                    },
+                    {
+                        "sortorder": "6",
+                        "color": "AC8C14",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.heap_free"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "0d6c405fae9a4dc7bfd0232359d8ac08",
+                "name": "Zimbra memory pool used bytes",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_cms_old_gen_used"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_code_cache_used"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "2774A4",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_compressed_class_space_used"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "A54F10",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.heap_used"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "color": "FC6EA3",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_metaspace_used"
+                        }
+                    },
+                    {
+                        "sortorder": "5",
+                        "color": "6C59DC",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_par_eden_space_used"
+                        }
+                    },
+                    {
+                        "sortorder": "6",
+                        "color": "AC8C14",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.mpool_par_survivor_space_used"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "3fc2b9e93dc84f86a2167b7ec3bfd95c",
+                "name": "Zimbra number of threads",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.http_threads"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.http_idle_threads"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "2774A4",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.imap_threads"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "A54F10",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.imap_ssl_threads"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "color": "FC6EA3",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.lmtp_threads"
+                        }
+                    },
+                    {
+                        "sortorder": "5",
+                        "color": "6C59DC",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.pop_threads"
+                        }
+                    },
+                    {
+                        "sortorder": "6",
+                        "color": "AC8C14",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.pop_ssl_threads"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "aefccc9e0938450495b747bf1c8edcc9",
+                "name": "Zimbra timings GC",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.gc_concurrentmarksweep_ms"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.gc_major_ms"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "2774A4",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.gc_minor_ms"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "A54F10",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.gc_parnew_ms"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "7ae46715bc054c01a6acbbd08e3b84ed",
+                "name": "Zimbra Traffic Bytes",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.traffic[\"bdelivered\"]"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.traffic[\"breceived\"]"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "1332a21787744fada20ebe94423e8b27",
+                "name": "Zimbra Traffic Counters",
+                "graph_items": [
+                    {
+                        "color": "1A7C11",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.traffic[\"bounced\"]"
+                        }
+                    },
+                    {
+                        "sortorder": "1",
+                        "color": "F63100",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.traffic[\"deferred\"]"
+                        }
+                    },
+                    {
+                        "sortorder": "2",
+                        "color": "2774A4",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.traffic[\"delivered\"]"
+                        }
+                    },
+                    {
+                        "sortorder": "3",
+                        "color": "A54F10",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.traffic[\"forwarded\"]"
+                        }
+                    },
+                    {
+                        "sortorder": "4",
+                        "color": "FC6EA3",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.traffic[\"received\"]"
+                        }
+                    },
+                    {
+                        "sortorder": "5",
+                        "color": "6C59DC",
+                        "item": {
+                            "host": "zt-mail-zimbra",
+                            "key": "zimbra.traffic[\"rejected\"]"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

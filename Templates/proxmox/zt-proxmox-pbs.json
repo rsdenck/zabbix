@@ -1,0 +1,63 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5cb6eeb994e94d40910c92095cbea7c3",
+                "name": "ztg-virtualization"
+            },
+            {
+                "uuid": "3dc0f024264b47319a0b226a081b7480",
+                "name": "ztg-virtualization/proxmox"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "0f0e1922f0484eda9494a77bd22750ee",
+                "template": "zt-proxmox-pbs",
+                "name": "zt-proxmox-pbs",
+                "description": "Template para monitorar Proxmox Backup Server",
+                "groups": [
+                    {
+                        "name": "ztg-virtualization"
+                    },
+                    {
+                        "name": "ztg-virtualization/proxmox"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "proxmox"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$PBS.DATASTORE.AVAILABLE.MIN}",
+                        "description": "10737418240"
+                    },
+                    {
+                        "macro": "{$PBS.HOST}",
+                        "description": "{HOST.CONN}"
+                    },
+                    {
+                        "macro": "{$PBS.PORT}",
+                        "description": "8007"
+                    },
+                    {
+                        "macro": "{$PBS.TASKS.DAYS}",
+                        "description": "2"
+                    },
+                    {
+                        "macro": "{$PBS.TOKEN.ID}",
+                        "type": "SECRET_TEXT"
+                    },
+                    {
+                        "macro": "{$PBS.TOKEN.SECRET}",
+                        "type": "SECRET_TEXT"
+                    }
+                ]
+            }
+        ]
+    }
+}

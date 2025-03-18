@@ -1,0 +1,37 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5cb6eeb994e94d40910c92095cbea7c3",
+                "name": "ztg-virtualization"
+            },
+            {
+                "uuid": "c33e3202280e46daaa0c72fab5863867",
+                "name": "ztg-virtualization/nutanix"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "b73ccfecba2743f6a6f61b841e019c7d",
+                "template": "zt-nutanix-aos-6",
+                "name": "zt-nutanix-aos-6",
+                "description": "Template para monitorar Nutanix AOS 6",
+                "groups": [
+                    {
+                        "name": "ztg-virtualization"
+                    },
+                    {
+                        "name": "ztg-virtualization/nutanix"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "system",
+                        "value": "nutanix"
+                    }
+                ]
+            }
+        ]
+    }
+}
