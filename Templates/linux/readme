@@ -1,1 +1,46 @@
 
+# ZT-OS-LINUX: Template de Monitoramento de Segurança para Servidores Linux
+
+## Descrição
+
+O **ZT-OS-LINUX** é um template para o Zabbix que visa o monitoramento avançado de segurança em servidores Linux. Ele contém itens e triggers focados em aspectos de segurança cibernética, utilizando o Zabbix Agent para coletar dados e automatizar a descoberta de recursos e serviços do sistema.
+
+Este template é uma excelente opção para ambientes de TI que buscam manter servidores Linux seguros e monitorados de forma contínua e eficiente.
+
+## Funcionalidades
+
+O template **ZT-OS-LINUX** oferece os seguintes recursos de monitoramento:
+
+- **Descoberta de serviços**: Monitoramento de serviços críticos em execução no servidor.
+- **Status de serviços**: Verifica o estado dos serviços essenciais do sistema.
+- **Monitoramento de memória**: Coleta informações sobre o uso de memória do sistema.
+- **Segurança**: Itens relacionados à configuração e status de segurança no servidor.
+- **Configuração do SSH**: Verifica a segurança e configurações do SSH.
+- **Monitoramento de ferramentas de segurança**: Como o `sshguard` e outras ferramentas de defesa.
+
+## Estrutura de Diretórios
+
+O template utiliza a seguinte estrutura de diretórios para organização dos arquivos:
+
+- **/etc/zabbix/temp/**: Diretório utilizado para armazenar arquivos temporários, como JSONs gerados pelos scripts.
+- **/etc/zabbix/script/**: Diretório utilizado para armazenar os scripts bash utilizados pelos itens de monitoramento.
+- **/etc/zabbix/zabbix_agentd.d/**: Diretório para configuração dos arquivos `UserParameter=`, que são organizados por função, como:
+  - `os_linux_memory.conf`
+  - `os_services_discovery.conf`
+  - `os_linux_services_status.conf`
+  - `os_linux_docker.conf`
+  - `os_linux_sshguard.conf`
+  - `os_linux_security.conf`
+  - `os_linux_toolkit.conf`
+
+## Requisitos
+
+- **Zabbix Agent**: O template foi projetado para ser utilizado com o Zabbix Agent. Certifique-se de que a versão do Zabbix Agent seja compatível.
+- **Sistema Operacional**: O template é específico para sistemas Linux, como CentOS, RHEL, Rocky Linux e Ubuntu.
+
+## Instalação
+
+1. Clone ou baixe o template **ZT-OS-LINUX** para o seu servidor Zabbix.
+   
+   ```bash
+   git clone https://github.com/seu-usuario/zt-os-linux.git
