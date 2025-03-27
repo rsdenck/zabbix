@@ -1,0 +1,2618 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "5780c9471b2d4f3093b467941f2a36d6",
+                "name": "ztg-database"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "f428ed016e134baa9da757bb5ebfe4ed",
+                "template": "zt-db-oracle",
+                "name": "zt-db-oracle",
+                "description": "ZT = Zabbix Template",
+                "groups": [
+                    {
+                        "name": "ztg-database"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "89b2de4b23e44bd09f9b979011791f03",
+                        "name": "Archived log Primary-Standby gap",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[archive log gap,{$DSN}]",
+                        "delay": "10m",
+                        "history": "7d",
+                        "params": "select (select max(sequence#) from v$archived_log) - (select max(sequence#) from v$archived_log where applied = 'YES')\nfrom dual;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "f86106dfb4c643f480289ef89fc8a99b",
+                                "expression": "last(/zt-db-oracle/db.odbc.select[archive log gap,{$DSN}])>=5",
+                                "name": "DB - DG archive gap detected => {ITEM.VALUE1}",
+                                "priority": "WARNING",
+                                "dependencies": [
+                                    {
+                                        "name": "DB - DG massive archive gap detected => {ITEM.VALUE1}",
+                                        "expression": "last(/zt-db-oracle/db.odbc.select[archive log gap,{$DSN}])>=10"
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "d73dad3d452e424b975e1321f3e5fdb2",
+                                "expression": "last(/zt-db-oracle/db.odbc.select[archive log gap,{$DSN}])>=10",
+                                "name": "DB - DG massive archive gap detected => {ITEM.VALUE1}",
+                                "priority": "HIGH",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d3264f03baa14bf4940916bb4a6714ec",
+                        "name": "Last 24h backup details",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[backup status,{$BACKUP_DSN}]",
+                        "delay": "1h",
+                        "history": "1d",
+                        "value_type": "FLOAT",
+                        "params": "select * from (\nselect case\n    when status = 'COMPLETED' then 1\n    when status = 'FAILED' then -1\n    when status like 'WITH WARNINGS'  then 2\n    when status like 'WITH ERRORS'  then 3\n    else 0 end\nfrom v$rman_status\nwhere trunc(start_time) = trunc(sysdate-{$ORACLE_BACKUP_HOUR}/24) and operation = 'BACKUP' and (object_type='DB INCR' or object_type='DB FULL')\norder by start_time asc)\nwhere rownum=1;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "description": "when status = 'COMPLETED' then 1\nwhen status = 'FAILED' then -1\nwhen status like 'WITH WARNINGS'  then 2\nwhen status like 'WITH ERRORS'  then 3\nelse 0",
+                        "valuemap": {
+                            "name": "Oracle backup status"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "dac69876069d4542bb990bc7e8e2a50d",
+                                "expression": "last(/zt-db-oracle/db.odbc.select[backup status,{$BACKUP_DSN}])=-1\nor\nnodata(/zt-db-oracle/db.odbc.select[backup status,{$BACKUP_DSN}],24h)=1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "last(/zt-db-oracle/db.odbc.select[backup status,{$BACKUP_DSN}])>=0",
+                                "name": "Database has no backup last 24hrs",
+                                "priority": "AVERAGE",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "a4155b73ce084c1eadd2bd623f0100c4",
+                                "expression": "last(/zt-db-oracle/db.odbc.select[backup status,{$BACKUP_DSN}])=3",
+                                "name": "Last DB backup contains errors",
+                                "priority": "HIGH",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "ac50eae681c94bef9c08ff29ff9f4fc8",
+                                "expression": "last(/zt-db-oracle/db.odbc.select[backup status,{$BACKUP_DSN}])=2",
+                                "name": "Last DB backup contains warnings",
+                                "priority": "WARNING",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "1f82a3f9cc074bb6b5ba04c9c05d5a92",
+                                "expression": "last(/zt-db-oracle/db.odbc.select[backup status,{$BACKUP_DSN}])=-1",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "last(/zt-db-oracle/db.odbc.select[backup status,{$BACKUP_DSN}])>=0",
+                                "name": "Last DB backup is failed",
+                                "priority": "HIGH",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "16b310e9133341beb372c72a6531c956",
+                        "name": "Blocked sessions count",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Blocked sessions count,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "params": "select count(distinct sid) from v$session_blockers;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "Locks"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a1f559a1ee65459ab665570b9226771b",
+                        "name": "Buffer Cache Hit Ratio",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Buffer Cache Hit Ratio,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Buffer Cache Hit Ratio' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b99d3803ef1e45088f293950d4fdb7dc",
+                        "name": "Cursor Cache Hit Ratio",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Cursor Cache Hit Ratio,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Cursor Cache Hit Ratio' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "69f9e13095084f0386f70af6567bd7a9",
+                        "name": "Database CPU Time Ratio",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Database CPU Time Ratio,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Database CPU Time Ratio' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2df34eb7d1ab44548fe91335620b642d",
+                        "name": "Database lock count",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Database lock count,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "params": "select count(1)\nfrom v$lock;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "Locks"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "45522f4c4ebe4b9e99f661fd51ea6eeb",
+                        "name": "Database session count",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[db session count,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "params": "select count(1) from v$session;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2bfd2afdaecc4bcd827f02de0108fb2b",
+                        "name": "Global DB name",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[global_db_name,{$DSN}]",
+                        "delay": "1d",
+                        "history": "30d",
+                        "value_type": "TEXT",
+                        "trends": "0",
+                        "params": "select property_value\nfrom database_properties\nwhere property_name='GLOBAL_DB_NAME';",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ef0e8779256542bf81b7e5f38d2f4ab3",
+                        "name": "Host CPU Utilization %",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Host CPU Utilization,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Host CPU Utilization (%)' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "89097830271042628bd22dc6db564181",
+                        "name": "Instance CPU count",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Instance CPU count,{$DSN}]",
+                        "delay": "1h",
+                        "history": "7d",
+                        "params": "select value from\nv$system_parameter2\nwhere name='cpu_count';",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d359f0aaa1154dfaa0492fd640e5565b",
+                        "name": "Instance status",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Instance Status,{$DSN}]",
+                        "delay": "60",
+                        "history": "7d",
+                        "value_type": "TEXT",
+                        "trends": "0",
+                        "params": "select status from v$instance",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "b3ec821784244b698628b7bc9d559659",
+                                "expression": "count(/zt-db-oracle/db.odbc.select[Instance Status,{$DSN}],#1,\"eq\",\"OPEN\")=0\nor\nnodata(/zt-db-oracle/db.odbc.select[Instance Status,{$DSN}],150s)=1",
+                                "name": "Database Is Down",
+                                "priority": "DISASTER",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b059113824144ac9bfc9bcd925d08c63",
+                        "name": "Instance name",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[instance_name,{$DSN}]",
+                        "delay": "1d",
+                        "history": "30d",
+                        "value_type": "TEXT",
+                        "trends": "0",
+                        "params": "select instance_name from v$instance;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6093294086fb43ad93661f792b23f500",
+                        "name": "Long table scans per sec",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Long Table Scans Per Sec,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Long Table Scans Per Sec' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "750745d5ea9140b78df30cbcf4668efe",
+                        "name": "Max applied archived log",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[max applied archived log,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "params": "select max(sequence#) from v$archived_log  where applied = 'YES';",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "53f870a9408148898d1e7613f154bc98",
+                        "name": "Max archived log",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[max archived log,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "params": "select case\nwhen max(sequence#) is null then 0\nelse max(sequence#) end\nfrom v$archived_log;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "6daa7e19a140485fa536ae7162bbfc6c",
+                                "expression": "last(/zt-db-oracle/db.odbc.select[max archived log,{$DSN}])=0",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "last(/zt-db-oracle/db.odbc.select[max archived log,{$DSN}])>0",
+                                "name": "Database is not in archive mode",
+                                "priority": "WARNING",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "aee2062f2c824f0db1122805592346db",
+                        "name": "Maximum processes",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[max number of processes,{$DSN}]",
+                        "delay": "1h",
+                        "history": "7d",
+                        "params": "select value from v$system_parameter\nwhere name ='processes';",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6f64a6223e68409ead51f4ee98668a76",
+                        "name": "Maximum sessions",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[max number of sessions,{$DSN}]",
+                        "delay": "1h",
+                        "history": "7d",
+                        "params": "select value from v$system_parameter\nwhere name ='sessions';",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "60e3053bdf9e499db74922c87f0e827a",
+                        "name": "PGA Cache Hit %",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[PGA Cache Hit Percentage,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='PGA Cache Hit %' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6f4a5718bec942b3813c5cae00283906",
+                        "name": "Physical Read Bytes Per Sec",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Physical Read Bytes Per Sec,{$DSN}]",
+                        "delay": "2m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "Bps",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Physical Read Bytes Per Sec' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "IO"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "00d0c6656d824c669d9ea7338765868c",
+                                "expression": "avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],15m) / (avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],1w) + {$MIN_READ_BPS}) >=1.75",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],#3) / (avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],1w) + {$MIN_READ_BPS}) <1.75",
+                                "name": "Database Read Bps is abnormal => {ITEM.VALUE1}",
+                                "priority": "WARNING",
+                                "manual_close": "YES",
+                                "dependencies": [
+                                    {
+                                        "name": "Database Read Bps is high => {ITEM.VALUE1}",
+                                        "expression": "avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],10m) / (avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],1w) + {$MIN_READ_BPS}) >=2",
+                                        "recovery_expression": "avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],#2) / (avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],1w) + {$MIN_READ_BPS}) <2"
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "b53c87f1e64a420fb92169c76a5c454c",
+                                "expression": "avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],10m) / (avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],1w) + {$MIN_READ_BPS}) >=2",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],#2) / (avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],1w) + {$MIN_READ_BPS}) <2",
+                                "name": "Database Read Bps is high => {ITEM.VALUE1}",
+                                "priority": "AVERAGE",
+                                "manual_close": "YES",
+                                "dependencies": [
+                                    {
+                                        "name": "Database Read Bps is very high => {ITEM.VALUE1}",
+                                        "expression": "avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],5m) / (avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],1w) + {$MIN_READ_BPS}) >=2.25",
+                                        "recovery_expression": "last(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}]) / (avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],1w) + {$MIN_READ_BPS}) <2.25"
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e09c7750937c46d091b0831ae6480faf",
+                                "expression": "avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],5m) / (avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],1w) + {$MIN_READ_BPS}) >=2.25",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "last(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}]) / (avg(/zt-db-oracle/db.odbc.select[Physical Read Bytes Per Sec,{$DSN}],1w) + {$MIN_READ_BPS}) <2.25",
+                                "name": "Database Read Bps is very high => {ITEM.VALUE1}",
+                                "priority": "HIGH",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f69aee55a848435f8abe963eb64ba263",
+                        "name": "Physical reads direct per sec",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Physical reads direct per sec,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "params": "select value\nfrom v$sysstat\nwhere name='physical reads direct';",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "preprocessing": [
+                            {
+                                "type": "CHANGE_PER_SECOND",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "IO"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "8660d1e1942746c39446d4b1aa1d2806",
+                        "name": "Physical reads direct temporary tablespace per sec",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[physical reads direct temporary tablespace per sec,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "params": "select value\nfrom v$sysstat\nwhere name='physical reads direct temporary tablespace';",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "preprocessing": [
+                            {
+                                "type": "CHANGE_PER_SECOND",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "IO"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "09a4b335bda84179aa1e86f62d32d228",
+                        "name": "Physical Reads Per Sec",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Physical Reads Per Sec,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Physical Reads Per Sec' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "IO"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2cc8fad6c27f4af3b2ff2e30072197b2",
+                        "name": "Physical Write Bytes Per Sec",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Physical Write Bytes Per Sec,{$DSN}]",
+                        "delay": "2m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "Bps",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Physical Write Bytes Per Sec' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "IO"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "a80cbed11900467aafd836153f3987d5",
+                                "expression": "avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],15m) / (avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],1w) + {$MIN_WRITE_BPS}) >=1.75",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],#3) / (avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],1w) + {$MIN_WRITE_BPS}) <1.75",
+                                "name": "Database Write Bps is abnormal => {ITEM.VALUE1}",
+                                "priority": "WARNING",
+                                "manual_close": "YES",
+                                "dependencies": [
+                                    {
+                                        "name": "Database Write Bps is high => {ITEM.VALUE1}",
+                                        "expression": "avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],10m) / (avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],1w) + {$MIN_WRITE_BPS}) >=2",
+                                        "recovery_expression": "avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],#2) / (avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],1w) + {$MIN_WRITE_BPS}) <2"
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "ec14c8f249454643941d1c8edfcc205d",
+                                "expression": "avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],10m) / (avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],1w) + {$MIN_WRITE_BPS}) >=2",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],#2) / (avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],1w) + {$MIN_WRITE_BPS}) <2",
+                                "name": "Database Write Bps is high => {ITEM.VALUE1}",
+                                "priority": "AVERAGE",
+                                "manual_close": "YES",
+                                "dependencies": [
+                                    {
+                                        "name": "Database Write Bps is very high => {ITEM.VALUE1}",
+                                        "expression": "avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],5m) / (avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],1w) + {$MIN_WRITE_BPS}) >=2.25",
+                                        "recovery_expression": "last(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}]) / (avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],1w) + {$MIN_WRITE_BPS}) <2.25"
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "2bb25bb31c2a4800bf9181cee389b089",
+                                "expression": "avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],5m) / (avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],1w) + {$MIN_WRITE_BPS}) >=2.25",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "last(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}]) / (avg(/zt-db-oracle/db.odbc.select[Physical Write Bytes Per Sec,{$DSN}],1w) + {$MIN_WRITE_BPS}) <2.25",
+                                "name": "Database Write Bps is very high => {ITEM.VALUE1}",
+                                "priority": "HIGH",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "49e018aad30d48669e278aed3cba9ae0",
+                        "name": "Physical writes direct per sec",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Physical writes direct per sec,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "params": "select value\nfrom v$sysstat\nwhere name='physical writes direct';",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "preprocessing": [
+                            {
+                                "type": "CHANGE_PER_SECOND",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "IO"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a6fdbf1971344feeaa982608550a9bef",
+                        "name": "Physical Writes Per Sec",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Physical Writes Per Sec,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Physical Writes Per Sec' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "IO"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "471d6c6a61354451b8e5f64c440cec48",
+                        "name": "Redo Allocation Hit Ratio",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Redo Allocation Hit Ratio,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Redo Allocation Hit Ratio' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9660ec1f27cc455d818e60c96204dc0a",
+                        "name": "Session blockers count",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[session blockers count,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "params": "select count(distinct blocker_sid) from v$session_blockers;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "Locks"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7d5af116e59a4a73b376df7d0dfc1364",
+                        "name": "Shared Pool Free %",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Shared Pool Free %,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Shared Pool Free %' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "69a9e3445f7844dfa957d3225d649b16",
+                        "name": "Soft Parse Ratio",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Soft Parse Ratio,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "params": "select value\nfrom v$sysmetric\nwhere metric_name='Soft Parse Ratio' and group_id=2;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a4d2f19e4fcb4f55816483f96a2682c8",
+                        "name": "Waiting sessions count",
+                        "type": "ODBC",
+                        "key": "db.odbc.select[Waiting sessions count,{$DSN}]",
+                        "delay": "5m",
+                        "history": "7d",
+                        "params": "select count(1)\nfrom v$session\nwhere username is not null\nand wait_time = 0\nand wait_class# != 6;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Database"
+                            },
+                            {
+                                "tag": "Application",
+                                "value": "Locks"
+                            }
+                        ]
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "uuid": "c2ea8b6a52fd4f37a63e6e7b7fc444ef",
+                        "name": "Active session discovery",
+                        "type": "ODBC",
+                        "key": "db.odbc.discovery[active session discovery,{$DSN}]",
+                        "delay": "5m",
+                        "params": "select distinct sid\nfrom v$session\nwhere username is not null\nand wait_class#!=6;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "lifetime_type": "DELETE_IMMEDIATELY",
+                        "lifetime": "0",
+                        "item_prototypes": [
+                            {
+                                "uuid": "d68534ed02ab457da5b2bddbc9bdd3d5",
+                                "name": "Session {#SID} CPU used in seconds",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[session {#SID} CPU time,{$DSN}]",
+                                "delay": "2m",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "params": "select value/100 from v$sesstat\njoin v$statname using (statistic#)\nwhere name = 'CPU used by this session'\nand sid={#SID};",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Sessions"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Session {#SID}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "858a073eacd54470a2fabe12a601cc1e",
+                                "name": "Session {#SID} SQL ID",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[session {#SID} SQL ID,{$DSN}]",
+                                "delay": "5m",
+                                "history": "1d",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "params": "select sql_id\nfrom v$session\nwhere sid={#SID};",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "86400"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Sessions"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Session {#SID}"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "SQL"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "12433781a693445f8f5a94e834ed5ae3",
+                                "name": "Session {#SID} username",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[session {#SID} username,{$DSN}]",
+                                "delay": "5m",
+                                "history": "1d",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "params": "select username\nfrom v$session\nwhere sid={#SID};",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "86400"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Sessions"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Session {#SID}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "10ba67b024ea4394a4e3bed07675df43",
+                                "name": "Session {#SID} change in CPU time per sec",
+                                "type": "DEPENDENT",
+                                "key": "oracle.db.session.cpu_time_change[{#SID}]",
+                                "delay": "0",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHANGE_PER_SECOND",
+                                        "parameters": [
+                                            ""
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "db.odbc.select[session {#SID} CPU time,{$DSN}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Sessions"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Session {#SID}"
+                                    }
+                                ]
+                            }
+                        ],
+                        "trigger_prototypes": [
+                            {
+                                "uuid": "37fb41cf21ec4d0e9a64fc559297a5d4",
+                                "expression": "last(/zt-db-oracle/db.odbc.select[Host CPU Utilization,{$DSN}])>=60\nand\nlast(/zt-db-oracle/db.odbc.select[session {#SID} CPU time,{$DSN}])>=0.7",
+                                "name": "Session {#SID} is devouring CPU!",
+                                "priority": "HIGH",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Oracle"
+                                    },
+                                    {
+                                        "tag": "Field",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Scope",
+                                        "value": "Infrastructure"
+                                    },
+                                    {
+                                        "tag": "Type",
+                                        "value": "Technical"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "dc4fcbaf305a4f608f5be3917bc98c69",
+                                "expression": "last(/zt-db-oracle/db.odbc.select[Host CPU Utilization,{$DSN}])>=60\nand\nlast(/zt-db-oracle/db.odbc.select[session {#SID} CPU time,{$DSN}])>=0.6",
+                                "name": "Session {#SID} is eating CPU!",
+                                "priority": "AVERAGE"
+                            },
+                            {
+                                "uuid": "011b5e5de0994bac9fba12afefa0ce58",
+                                "expression": "last(/zt-db-oracle/db.odbc.select[Host CPU Utilization,{$DSN}])>=50\nand\nlast(/zt-db-oracle/db.odbc.select[session {#SID} CPU time,{$DSN}])>=0.5",
+                                "name": "Session {#SID} is hogging CPU!",
+                                "priority": "WARNING"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6908ce1a16fd4ebea9c707e58280c61f",
+                        "name": "Archive destination discovery",
+                        "type": "ODBC",
+                        "key": "db.odbc.discovery[Archive destination discovery,{$DSN}]",
+                        "delay": "1h",
+                        "params": "select DEST_ID\nfrom v$archive_DEST_STATUS\nwhere status='VALID'\nand TYPE != 'LOCAL';",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "lifetime_type": "DELETE_IMMEDIATELY",
+                        "lifetime": "0",
+                        "item_prototypes": [
+                            {
+                                "uuid": "61c73c45e1064a08b1b2f38487c16e73",
+                                "name": "Destination {#DEST_ID} status",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Dest {#DEST_ID} status. {#DSN}]",
+                                "delay": "5m",
+                                "history": "7d",
+                                "params": "select STATUS\nfrom v$archive_dest_status\nwhere dest_id={#DEST_ID};",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "description": "'VALID' 1\n'INACTIVE' 2\n'DEFERRED' 3\n'ERROR' 4\n'DISABLED' 5\n'BAD PARAM' 6\n'ALTERNATE' 7\n'FULL' 8\nelse -1",
+                                "preprocessing": [
+                                    {
+                                        "type": "JAVASCRIPT",
+                                        "parameters": [
+                                            "if (value == 'VALID') return 1;\nif (value == 'INACTIVE') return 2;\nif (value == 'DEFERRED') return 3;\nif (value == 'ERROR') return 4;\nif (value == 'DISABLED') return 5;\nif (value == 'BAD PARAM') return 6;\nif (value == 'ALTERNATE') return 7;\nif (value == 'FULL') return 8;\nreturn -1;"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Archival Destination"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Archival Destination {#DEST_ID}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "669876c6cc474defa8dd679206d09185",
+                        "name": "ASM disk discovery",
+                        "type": "ODBC",
+                        "key": "db.odbc.discovery[ASM Disk Discovery,{$DSN}]",
+                        "params": "select name as disk_name, \ncase mount_status\nwhen 'MISSING' then -3\nwhen 'CLOSED' then  -2\nwhen 'CLOSING' then -1\nwhen 'IGNORED' then 0\nwhen 'OPENED' then 1\nwhen 'CACHED' then 2 end as mount_status,\ncase mode_status\nwhen 'OFFLINE' then 0\nwhen 'ONLINE' then 1 end as mode_status,\ncase state\nwhen 'NORMAL' then 1\nwhen 'UNKNOWN' then 0\nwhen 'ADDING' then 2\nwhen 'DROPPING' then 3\nwhen 'HUNG' then -1\nwhen 'FORCING' then -2 end as state,\nos_mb, total_mb, free_mb from v$asm_disk_stat;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "enabled_lifetime_type": "DISABLE_NEVER",
+                        "item_prototypes": [
+                            {
+                                "uuid": "89bd6823bdee4c87becebae6ce9a4693",
+                                "name": "ASM disk: {#DISK_NAME}: mode status",
+                                "type": "CALCULATED",
+                                "key": "oracle.asm.disk.mode_status[{#DISK_NAME}]",
+                                "delay": "5m",
+                                "history": "90d",
+                                "params": "{#MODE_STATUS}",
+                                "description": "when 'OFFLINE' then 0\nwhen 'ONLINE' then 1",
+                                "valuemap": {
+                                    "name": "Oracle ASM disk mount status"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "ASM"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "60d259149bfb48b5a75ed044c4cd8f6c",
+                                "name": "ASM disk: {#DISK_NAME}: mount status",
+                                "type": "CALCULATED",
+                                "key": "oracle.asm.disk.mount_status[{#DISK_NAME}]",
+                                "delay": "5m",
+                                "history": "90d",
+                                "params": "{#MOUNT_STATUS}",
+                                "description": "when  'MISSING' then -3\nwhen 'CLOSED' then  -2\nwhen 'CLOSING' then -1\nwhen 'IGNORED' then 0\nwhen 'OPENED' then 1\nwhen 'CACHED' then 2",
+                                "valuemap": {
+                                    "name": "Oracle ASM disk mount status"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "ASM"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "9538f637cb6a435292a43c195dda9f53",
+                                "name": "ASM disk: {#DISK_NAME}: state",
+                                "type": "CALCULATED",
+                                "key": "oracle.asm.disk.state[{#DISK_NAME}]",
+                                "history": "90d",
+                                "params": "{#STATE}",
+                                "description": "when 'NORMAL' then 1\nwhen 'UNKNOWN' then 0\nwhen 'ADDING' then 2\nwhen 'DROPPING' then 3\nwhen 'HUNG' then -1\nwhen 'FORCING' then -2",
+                                "valuemap": {
+                                    "name": "Oracle ASM disk state"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "ASM"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "c727661454824b2c808d224d01247b01",
+                                        "expression": "last(/zt-db-oracle/oracle.asm.disk.state[{#DISK_NAME}])<>1",
+                                        "name": "ASM disk {#DISK_NAME} is => {ITEM.VALUE1}",
+                                        "priority": "DISASTER",
+                                        "tags": [
+                                            {
+                                                "tag": "Application",
+                                                "value": "Oracle"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Database"
+                                            },
+                                            {
+                                                "tag": "Scope",
+                                                "value": "Infrastructure"
+                                            },
+                                            {
+                                                "tag": "Type",
+                                                "value": "Technical"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "746a91504c054c7684c66e597e8530e8",
+                                "name": "ASM disk: {#DISK_NAME}: total space",
+                                "type": "CALCULATED",
+                                "key": "oracle.asm.disk.total_space[{#DISK_NAME}]",
+                                "delay": "5m",
+                                "history": "1d",
+                                "units": "B",
+                                "params": "{#TOTAL_MB}",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "1048576"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "ASM"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "ae94c701e1ab4e98bbc4f2b10ca90ac1",
+                                "name": "ASM disk: {#DISK_NAME}: free space",
+                                "type": "CALCULATED",
+                                "key": "oracle.db.disk.free_space[{#DISK_NAME}]",
+                                "delay": "5m",
+                                "history": "1d",
+                                "units": "B",
+                                "params": "{#FREE_MB}",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "1048576"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "ASM"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "d772bb931f324c8bbd3f07eed8bcfdcc",
+                                "name": "ASM disk: {#DISK_NAME}: pct free",
+                                "type": "CALCULATED",
+                                "key": "oracle.db.disk.pct_free[{#DISK_NAME}]",
+                                "delay": "5m",
+                                "history": "1d",
+                                "value_type": "FLOAT",
+                                "units": "%",
+                                "params": "{#FREE_MB} / {#TOTAL_MB} * 100",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "1048576"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "ASM"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "686ced4eda4e4ccbb7b695ff546deec4",
+                                        "expression": "last(/zt-db-oracle/oracle.db.disk.pct_free[{#DISK_NAME}]) * {$ASM_USAGE_THRESHOLD} <=5",
+                                        "name": "ASM disk {#DISK_NAME} extremely low free space => {ITEM.VALUE1}",
+                                        "priority": "HIGH",
+                                        "dependencies": [
+                                            {
+                                                "name": "ASM disk {#DISK_NAME} zero free space",
+                                                "expression": "last(/zt-db-oracle/oracle.db.disk.pct_free[{#DISK_NAME}]) <=0.01"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "Application",
+                                                "value": "Oracle"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Database"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Storage"
+                                            },
+                                            {
+                                                "tag": "Scope",
+                                                "value": "Infrastructure"
+                                            },
+                                            {
+                                                "tag": "Type",
+                                                "value": "Technical"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "81518d9aed784fb29e07878369b05f22",
+                                        "expression": "last(/zt-db-oracle/oracle.db.disk.pct_free[{#DISK_NAME}]) * {$ASM_USAGE_THRESHOLD} <=15",
+                                        "name": "ASM disk {#DISK_NAME} low free space => {ITEM.VALUE1}",
+                                        "priority": "WARNING",
+                                        "dependencies": [
+                                            {
+                                                "name": "ASM disk {#DISK_NAME} very low free space => {ITEM.VALUE1}",
+                                                "expression": "last(/zt-db-oracle/oracle.db.disk.pct_free[{#DISK_NAME}]) * {$ASM_USAGE_THRESHOLD} <=10"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "Application",
+                                                "value": "Oracle"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Database"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Storage"
+                                            },
+                                            {
+                                                "tag": "Scope",
+                                                "value": "Infrastructure"
+                                            },
+                                            {
+                                                "tag": "Type",
+                                                "value": "Technical"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "5e0e9735137a4738ba104eb3d767f6c6",
+                                        "expression": "last(/zt-db-oracle/oracle.db.disk.pct_free[{#DISK_NAME}]) * {$ASM_USAGE_THRESHOLD} <=10",
+                                        "name": "ASM disk {#DISK_NAME} very low free space => {ITEM.VALUE1}",
+                                        "priority": "AVERAGE",
+                                        "dependencies": [
+                                            {
+                                                "name": "ASM disk {#DISK_NAME} extremely low free space => {ITEM.VALUE1}",
+                                                "expression": "last(/zt-db-oracle/oracle.db.disk.pct_free[{#DISK_NAME}]) * {$ASM_USAGE_THRESHOLD} <=5"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "Application",
+                                                "value": "Oracle"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Database"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Storage"
+                                            },
+                                            {
+                                                "tag": "Scope",
+                                                "value": "Infrastructure"
+                                            },
+                                            {
+                                                "tag": "Type",
+                                                "value": "Technical"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "43abda8a3325456a9e9dd766b3ed5cdf",
+                                        "expression": "last(/zt-db-oracle/oracle.db.disk.pct_free[{#DISK_NAME}]) <=0.01",
+                                        "name": "ASM disk {#DISK_NAME} zero free space",
+                                        "priority": "DISASTER",
+                                        "tags": [
+                                            {
+                                                "tag": "Application",
+                                                "value": "Oracle"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Database"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Storage"
+                                            },
+                                            {
+                                                "tag": "Scope",
+                                                "value": "Infrastructure"
+                                            },
+                                            {
+                                                "tag": "Type",
+                                                "value": "Technical"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "afa93f182be745459f3aa07835eb56df",
+                        "name": "Blocking session discovery",
+                        "type": "ODBC",
+                        "key": "db.odbc.discovery[blocking sessions discovery,{$DSN}]",
+                        "delay": "5m",
+                        "params": "select distinct blocking_session as SID from v$session where blocking_session is not NULL;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "lifetime_type": "DELETE_IMMEDIATELY",
+                        "lifetime": "0",
+                        "item_prototypes": [
+                            {
+                                "uuid": "8fdecf5388c7466eb542198e7d397381",
+                                "name": "Total wait time on Blocking session: {#SID}",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[waiting time -  {#SID},{$DSN}]",
+                                "delay": "5m",
+                                "history": "90d",
+                                "params": "select  \n   sum(seconds_in_wait)  \"SECONDS_IN_WAIT\"\nfrom \n   v$session\nwhere \n   blocking_session= {#SID} and seconds_in_wait is not null;",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "1eda160759e5420db6b9a24e6ca5bbcc",
+                                        "expression": "last(/zt-db-oracle/db.odbc.select[waiting time -  {#SID},{$DSN}])>{$BLOCK_THRESHOLD}",
+                                        "name": "Session {#SID} is an intensive blocker",
+                                        "priority": "WARNING"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "83478c22e80a43309840fc5218334dca",
+                        "name": "Flash Recovery Area Discovery",
+                        "type": "ODBC",
+                        "key": "db.odbc.discovery[Flash Recovery Area Discovery,{$DSN}]",
+                        "delay": "5m",
+                        "params": "select name, space_limit, space_used\nfrom v$recovery_file_dest;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "lifetime": "30d",
+                        "enabled_lifetime_type": "DISABLE_NEVER",
+                        "item_prototypes": [
+                            {
+                                "uuid": "3036b8400f5a4301b48184e67401488b",
+                                "name": "FRA: {#NAME}: pct_used",
+                                "type": "CALCULATED",
+                                "key": "db.oracle.fra.pct_used[{#NAME}]",
+                                "delay": "4m",
+                                "history": "1d",
+                                "value_type": "FLOAT",
+                                "units": "%",
+                                "params": "{#SPACE_USED}/{#SPACE_LIMIT}*100",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "FRA"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "9192af95a10b4c6f81ee19ee526b9357",
+                                        "expression": "last(/zt-db-oracle/db.oracle.fra.pct_used[{#NAME}]) * {$FRA_USAGE_THRESHOLD} >= 95",
+                                        "name": "FRA is almost full => {ITEM.VALUE1}",
+                                        "priority": "HIGH",
+                                        "dependencies": [
+                                            {
+                                                "name": "FRA is full => {ITEM.VALUE1}",
+                                                "expression": "last(/zt-db-oracle/db.oracle.fra.pct_used[{#NAME}])=100"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "Application",
+                                                "value": "Oracle"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Database"
+                                            },
+                                            {
+                                                "tag": "Scope",
+                                                "value": "Infrastracture"
+                                            },
+                                            {
+                                                "tag": "Type",
+                                                "value": "Technical"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "b9950037b7a549dd92d696663c3d0d15",
+                                        "expression": "last(/zt-db-oracle/db.oracle.fra.pct_used[{#NAME}])=100",
+                                        "name": "FRA is full => {ITEM.VALUE1}",
+                                        "priority": "DISASTER",
+                                        "tags": [
+                                            {
+                                                "tag": "Application",
+                                                "value": "Oracle"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Database"
+                                            },
+                                            {
+                                                "tag": "Scope",
+                                                "value": "Infrastructure"
+                                            },
+                                            {
+                                                "tag": "Type",
+                                                "value": "Technical"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "3139c951357d43999e4146b5f2e976d8",
+                                        "expression": "last(/zt-db-oracle/db.oracle.fra.pct_used[{#NAME}]) * {$FRA_USAGE_THRESHOLD} >=85",
+                                        "name": "FRA space usage is high => {ITEM.VALUE1}",
+                                        "priority": "WARNING",
+                                        "dependencies": [
+                                            {
+                                                "name": "FRA space usage is very high => {ITEM.VALUE1}",
+                                                "expression": "last(/zt-db-oracle/db.oracle.fra.pct_used[{#NAME}]) * {$FRA_USAGE_THRESHOLD} >=90"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "Application",
+                                                "value": "Oracle"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Database"
+                                            },
+                                            {
+                                                "tag": "Scope",
+                                                "value": "Infrastructure"
+                                            },
+                                            {
+                                                "tag": "Type",
+                                                "value": "Technical"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "078c157b3af04172a9301b63e6db9f7b",
+                                        "expression": "last(/zt-db-oracle/db.oracle.fra.pct_used[{#NAME}]) * {$FRA_USAGE_THRESHOLD} >=90",
+                                        "name": "FRA space usage is very high => {ITEM.VALUE1}",
+                                        "priority": "AVERAGE",
+                                        "dependencies": [
+                                            {
+                                                "name": "FRA is almost full => {ITEM.VALUE1}",
+                                                "expression": "last(/zt-db-oracle/db.oracle.fra.pct_used[{#NAME}]) * {$FRA_USAGE_THRESHOLD} >= 95"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "Application",
+                                                "value": "Oracle"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Database"
+                                            },
+                                            {
+                                                "tag": "Scope",
+                                                "value": "Infrastructure"
+                                            },
+                                            {
+                                                "tag": "Type",
+                                                "value": "Technical"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "96567ba94a81463bb0431ea8a305fe8f",
+                                "name": "FRA: {#NAME}: size",
+                                "type": "CALCULATED",
+                                "key": "db.oracle.fra.size[{#NAME}]",
+                                "delay": "4m",
+                                "history": "1d",
+                                "units": "B",
+                                "params": "{#SPACE_LIMIT}",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "FRA"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "b4c43ca988354eb29a1b2c6132219924",
+                                "name": "FRA: {#NAME}: space_used",
+                                "type": "CALCULATED",
+                                "key": "db.oracle.fra.space_used[{#NAME}]",
+                                "delay": "4m",
+                                "history": "1d",
+                                "units": "B",
+                                "params": "{#SPACE_USED}",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "FRA"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "681b65b6c8c14a718f275f7466b69ecd",
+                        "name": "Scheduler jobs discovery",
+                        "type": "ODBC",
+                        "key": "db.odbc.discovery[job discovery,{$DSN}]",
+                        "delay": "5m",
+                        "params": "select job_name, owner,\n  round(cast(req_start_date as date) - date '1970-01-01') * 24 *3600 as req_start_date,\n  round(cast(actual_start_date as date) - date '1970-01-01') * 24 *3600 as actual_start_date,\n  error#, run_duration\n  from user_scheduler_job_run_details\n  where rownum=1\norder by req_start_date desc;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "enabled_lifetime_type": "DISABLE_NEVER"
+                    },
+                    {
+                        "uuid": "4545674abc9948288128be93746eeb63",
+                        "name": "Schema discovery",
+                        "type": "ODBC",
+                        "key": "db.odbc.discovery[Schema Discovery,{$DSN}]",
+                        "delay": "6h",
+                        "params": "select distinct owner\nfrom dba_segments;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "enabled_lifetime_type": "DISABLE_NEVER",
+                        "item_prototypes": [
+                            {
+                                "uuid": "97a29f02a28f4a28a9d3c6cf155fccc3",
+                                "name": "Schema {#OWNER}: size",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Schema {#OWNER} size,{$DSN}]",
+                                "delay": "1h",
+                                "history": "7d",
+                                "units": "B",
+                                "params": "select sum(bytes)\nfrom dba_segments\nwhere owner='{#OWNER}'",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "description": "SIze of the schema.",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Schemas"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "58f4dd2957b74aadb7a286d53ddb7256",
+                        "name": "Tablespace discovery",
+                        "type": "ODBC",
+                        "key": "db.odbc.discovery[Tablespace Discovery,{$DSN}]",
+                        "delay": "1h",
+                        "params": "select tablespace_name, \n    case \n    when contents in ('PERMANENT', 'UNDO') then\n        (select sum(bytes) from dba_data_files where tablespace_name=t.tablespace_name)\n            when contents='TEMPORARY' then\n        (select sum(bytes) from dba_temp_files where tablespace_name=t.tablespace_name) end\n    as \"SIZE\", \n    case\n        when contents in ('PERMANENT', 'UNDO') then\n            (select sum(\n                case \n                when autoextensible = 'YES' then maxbytes \n                else bytes\n                end)\n                from dba_data_files\n            where tablespace_name=t.tablespace_name)\n        when contents='TEMPORARY' then\n            (select sum(\n                     case \n                    when autoextensible = 'YES' then maxbytes \n                    else bytes\n                    end)\n                    from dba_temp_files where tablespace_name=t.tablespace_name) end\n    as \"MAX_SIZE\",\n   case bigfile\n   when 'YES' then 1\n   when 'NO' then 0\n   end \"BIGFILE\", \n   case contents\n   when 'PERMANENT' then 1\n   when 'TEMPORARY' then 2\n   when 'UNDO' then 3\n   end \"CONTENTS\"\nfrom dba_tablespaces t group by tablespace_name, bigfile, contents;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "lifetime": "30d",
+                        "enabled_lifetime_type": "DISABLE_NEVER",
+                        "item_prototypes": [
+                            {
+                                "uuid": "0abb8a0423cd494abf2491c08b359ab2",
+                                "name": "Tablespace: {#TABLESPACE_NAME}: bigfile",
+                                "type": "CALCULATED",
+                                "key": "db.oracle.tablespace.bigfile[{#TABLESPACE_NAME}]",
+                                "delay": "1h",
+                                "history": "1d",
+                                "params": "{#BIGFILE}",
+                                "valuemap": {
+                                    "name": "TruthValue"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Tablespaces"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "f8090a768145433a90c9c48428486244",
+                                "name": "Tablespace: {#TABLESPACE_NAME}: contents",
+                                "type": "CALCULATED",
+                                "key": "db.oracle.tablespace.contents[{#TABLESPACE_NAME}]",
+                                "delay": "4m",
+                                "history": "1d",
+                                "params": "{#CONTENTS}",
+                                "valuemap": {
+                                    "name": "Oracle tablespace contents"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Tablespaces"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "1636e1d1b4664febb7343d65b7b3357d",
+                                "name": "Tablespace: {#TABLESPACE_NAME}: max_size",
+                                "type": "CALCULATED",
+                                "key": "db.oracle.tablespace.max_size[{#TABLESPACE_NAME}]",
+                                "delay": "4m",
+                                "history": "1d",
+                                "units": "B",
+                                "params": "{#MAX_SIZE}",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Tablespaces"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "c8e6cc308fda4f46a409f9f94738bf90",
+                                "name": "Tablespace: {#TABLESPACE_NAME}: pct_used",
+                                "type": "CALCULATED",
+                                "key": "db.oracle.tablespace.pct_used[{#TABLESPACE_NAME}]",
+                                "delay": "4m",
+                                "history": "1d",
+                                "value_type": "FLOAT",
+                                "units": "%",
+                                "params": "{#SIZE}/{#MAX_SIZE}*100",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Tablespaces"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "3778dd4fc3e24b2094eb4a6f6ce7cb9c",
+                                "name": "Tablespace: {#TABLESPACE_NAME}: size",
+                                "type": "CALCULATED",
+                                "key": "db.oracle.tablespace.size[{#TABLESPACE_NAME}]",
+                                "delay": "4m",
+                                "history": "1d",
+                                "units": "B",
+                                "params": "{#SIZE}",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Tablespaces"
+                                    }
+                                ]
+                            }
+                        ],
+                        "trigger_prototypes": [
+                            {
+                                "uuid": "2763742352994e89839c7e6341017005",
+                                "expression": "last(/zt-db-oracle/db.oracle.tablespace.pct_used[{#TABLESPACE_NAME}]) >= 95 * {$TB_USAGE_THRESHOLD}\nand\nlast(/zt-db-oracle/db.oracle.tablespace.contents[{#TABLESPACE_NAME}])=1",
+                                "name": "Tablespace {#TABLESPACE_NAME} almost full => {ITEM.VALUE1}",
+                                "priority": "HIGH",
+                                "dependencies": [
+                                    {
+                                        "name": "Tablespace {#TABLESPACE_NAME} full => {ITEM.VALUE1}",
+                                        "expression": "last(/zt-db-oracle/db.oracle.tablespace.pct_used[{#TABLESPACE_NAME}])=100\nand\nlast(/zt-db-oracle/db.oracle.tablespace.contents[{#TABLESPACE_NAME}])=1"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "6ef939754f0e46d2a38d87adf83b7a3c",
+                                "expression": "last(/zt-db-oracle/db.oracle.tablespace.pct_used[{#TABLESPACE_NAME}])=100\nand\nlast(/zt-db-oracle/db.oracle.tablespace.contents[{#TABLESPACE_NAME}])=1",
+                                "name": "Tablespace {#TABLESPACE_NAME} full => {ITEM.VALUE1}",
+                                "priority": "DISASTER"
+                            },
+                            {
+                                "uuid": "d6f418119748433da90545b3f0c1e027",
+                                "expression": "last(/zt-db-oracle/db.oracle.tablespace.pct_used[{#TABLESPACE_NAME}]) >= 85 * {$TB_USAGE_THRESHOLD}\nand\nlast(/zt-db-oracle/db.oracle.tablespace.contents[{#TABLESPACE_NAME}])=1",
+                                "name": "Tablespace {#TABLESPACE_NAME} space usage is high => {ITEM.VALUE1}",
+                                "priority": "WARNING",
+                                "dependencies": [
+                                    {
+                                        "name": "Tablespace {#TABLESPACE_NAME} space usage is very high => {ITEM.VALUE1}",
+                                        "expression": "last(/zt-db-oracle/db.oracle.tablespace.pct_used[{#TABLESPACE_NAME}]) >= 90 * {$TB_USAGE_THRESHOLD}\nand\nlast(/zt-db-oracle/db.oracle.tablespace.contents[{#TABLESPACE_NAME}])=1"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "0bdade5bb2444a0b8166ca96a3efcb21",
+                                "expression": "last(/zt-db-oracle/db.oracle.tablespace.pct_used[{#TABLESPACE_NAME}]) >= 90 * {$TB_USAGE_THRESHOLD}\nand\nlast(/zt-db-oracle/db.oracle.tablespace.contents[{#TABLESPACE_NAME}])=1",
+                                "name": "Tablespace {#TABLESPACE_NAME} space usage is very high => {ITEM.VALUE1}",
+                                "priority": "AVERAGE",
+                                "dependencies": [
+                                    {
+                                        "name": "Tablespace {#TABLESPACE_NAME} almost full => {ITEM.VALUE1}",
+                                        "expression": "last(/zt-db-oracle/db.oracle.tablespace.pct_used[{#TABLESPACE_NAME}]) >= 95 * {$TB_USAGE_THRESHOLD}\nand\nlast(/zt-db-oracle/db.oracle.tablespace.contents[{#TABLESPACE_NAME}])=1"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0d9ace023ed64f2a999bb4560de6e3c5",
+                        "name": "Top lasting SQLs discovery",
+                        "type": "ODBC",
+                        "key": "db.odbc.discovery[Top lasting SQLs discovery,{$DSN}]",
+                        "delay": "5m",
+                        "params": "select * from (\n    select SQL_ID, CHILD_ADDRESS\n    from v$sql\n    where last_active_time > systimestamp - 1/24\n    order by elapsed_time desc)\nwhere rownum < 11;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "lifetime": "12h",
+                        "enabled_lifetime_type": "DISABLE_NEVER",
+                        "item_prototypes": [
+                            {
+                                "uuid": "db3dac70873448379a8c51e3fb5cde12",
+                                "name": "Top SQL {#SQL_ID}:{#CHILD_ADDRESS} bind variables",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Top SQL {#SQL_ID}:{#CHILD_ADDRESS} bind variables,{$DSN}]",
+                                "delay": "5m",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "params": "with temp as (\n    select\n      NAME,\n      DATATYPE_STRING,\n      POSITION,\n      case datatype\n      when 180\n        then to_char(anydata.accesstimestamp(value_anydata), 'DD-MM-YYYY HH24:MI:SS.FF9')\n      when 181\n        then to_char(anydata.accesstimestamptz(value_anydata), 'DD-MM-YYYY HH24:MI:SS.FF9 TZR')\n      when 183\n        then to_char(anydata.accessintervalYM(value_anydata) || ' ' || anydata.accessintervalDS(value_anydata))\n      when 12\n        then to_char(anydata.accessdate(value_anydata), 'DD-MM-YYYY HH24:MI:SS')\n      else nvl(value_string, 'Null')\n      end data_value\n    FROM V$SQL_BIND_CAPTURE\n    where sql_id = '{#SQL_ID}'\n          and child_address = q'[{#CHILD_ADDRESS}]'\n\n)\nSELECT listagg(NAME || ' := (' || DATATYPE_STRING || ') ' || data_value, chr(10))\nwithin group (\n  order by position asc)\nfrom temp\nSTART WITH POSITION = 1\nCONNECT BY POSITION = PRIOR POSITION + 1;",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "86400"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "SQL {#SQL_ID}:{#CHILD_ADDRESS}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "3327067f0c66405ea010e7211ef48c3f",
+                                "name": "Top SQL {#SQL_ID}:{#CHILD_ADDRESS} CPU time",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Top SQL {#SQL_ID}:{#CHILD_ADDRESS} CPU time,{$DSN}]",
+                                "delay": "2m",
+                                "history": "7d",
+                                "units": "S",
+                                "params": "select CPU_TIME\nfrom v$sql\nwhere sql_id='{#SQL_ID}'\nand child_address=q'[{#CHILD_ADDRESS}]';",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "1.0E-6"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "SQL {#SQL_ID}:{#CHILD_ADDRESS}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "efa3478fe8124dee8d8298ab6426a594",
+                                "name": "Top SQL {#SQL_ID}:{#CHILD_ADDRESS} parsing schema",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Top SQL {#SQL_ID}:{#CHILD_ADDRESS} parsing schema,{$DSN}]",
+                                "delay": "5m",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "params": "select parsing_schema_name\nfrom v$sql\nwhere sql_id='{#SQL_ID}'\nand child_address=q'[{#CHILD_ADDRESS}]';",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "86400"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "SQL {#SQL_ID}:{#CHILD_ADDRESS}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "943a4a3bac2c4c38976be9d4e3e6aee5",
+                                "name": "Top SQL {#SQL_ID}:{#CHILD_ADDRESS} physical read bytes",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Top SQL {#SQL_ID}:{#CHILD_ADDRESS} physical read bytes,{$DSN}]",
+                                "delay": "5m",
+                                "history": "7d",
+                                "units": "B",
+                                "params": "select PHYSICAL_READ_BYTES\nfrom v$sql\nwhere sql_id='{#SQL_ID}'\nand child_address=q'[{#CHILD_ADDRESS}]';",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "SQL {#SQL_ID}:{#CHILD_ADDRESS}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "c9dd4079122443dc8d85b58bd61ac035",
+                                "name": "Top SQL {#SQL_ID}:{#CHILD_ADDRESS} physical write bytes",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Top SQL {#SQL_ID}:{#CHILD_ADDRESS} physical write bytes,{$DSN}]",
+                                "delay": "5m",
+                                "history": "7d",
+                                "units": "B",
+                                "params": "select PHYSICAL_WRITE_BYTES\nfrom v$sql\nwhere sql_id='{#SQL_ID}'\nand child_address=q'[{#CHILD_ADDRESS}]';",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "SQL {#SQL_ID}:{#CHILD_ADDRESS}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "d69c69d332544ddd820a9a23ca4c0edb",
+                                "name": "Top SQL {#SQL_ID}:{#CHILD_ADDRESS} plan",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Top SQL {#SQL_ID}:{#CHILD_ADDRESS} plan,{$DSN}]",
+                                "delay": "5m",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "params": "with temp as (\n    select *\n    FROM V$SQL_PLAN\n    where sql_id = '{#SQL_ID}'\n          and child_address = q'[{#CHILD_ADDRESS}]'\n)\nSELECT listagg(\n    ID || '|' ||\n    lpad(' ', level - 1) || operation || ' ' || options || ' ' ||\n    case\n    when object_name is not null\n      then chr(9) || object_owner || '.' || object_name || '(' || object_type || ')|'\n    else ''\n    end ||\n    case\n    when partition_start is not null\n      then chr(9) || 'PARTITION START: ' || partition_start || '|'\n    else ''\n    end ||\n    case\n    when partition_stop is not null\n      then chr(9) || 'PARTITION STOP: ' || partition_stop || '|'\n    else ''\n    end ||\n    case\n    when optimizer is not null\n      then chr(9) || optimizer || '|'\n    else ''\n    end ||\n    case\n    when cardinality is not null\n      then chr(9) || cardinality || ' DISTINCT ROWS|'\n    else ''\n    end ||\n    case\n    when bytes is not null\n      then chr(9) || bytes || ' BYTES|'\n    else ''\n    end ||\n    case\n    when cpu_cost is not null\n      then chr(9) || 'CPU COST: ' || CPU_COST || '|'\n    else ''\n    end ||\n    case\n    when temp_space is not null\n      then chr(9) || 'TEMP SPACE: ' || TEMP_SPACE || '|'\n    else ''\n    end ||\n    case\n    when ACCESS_PREDICATES is not null\n      then chr(9) || 'ACCESS PREDICATES: ' || ACCESS_PREDICATES || '|'\n    else ''\n    end ||\n    case\n    when FILTER_PREDICATES is not null\n      then chr(9) || 'FILTER PREDICATES: ' || FILTER_PREDICATES || ' |'\n    else ''\n    end, chr(10))\nwithin group (\n  order by id desc)\nfrom temp\nSTART WITH id = 0\nCONNECT BY prior id = parent_id;",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "86400"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "SQL {#SQL_ID}:{#CHILD_ADDRESS}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "8ee1e3761da34826b1b9579f1334f3bb",
+                                "name": "Top SQL {#SQL_ID}:{#CHILD_ADDRESS} text",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Top SQL {#SQL_ID}:{#CHILD_ADDRESS} text,{$DSN}]",
+                                "delay": "5m",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "params": "select  dbms_lob.substr(sql_fulltext,5000,1)\nfrom v$sql\nwhere sql_id='{#SQL_ID}'\nand child_address=q'[{#CHILD_ADDRESS}]';",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "86400"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "SQL {#SQL_ID}:{#CHILD_ADDRESS}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "4c687f4569da4cf8b4946c981bb40a49",
+                                "name": "Top SQL {#SQL_ID} total CPU time",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Top SQL {#SQL_ID} total CPU time,{$DSN}]",
+                                "delay": "30m",
+                                "history": "7d",
+                                "units": "S",
+                                "params": "select CPU_TIME\nfrom v$sqlarea\nwhere sql_id='{#SQL_ID}';",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "1.0E-6"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "SQL {#SQL_ID}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "7112b334f636472f90d34ccc1899c44a",
+                                "name": "Top SQL {#SQL_ID} total physical read bytes",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Top SQL {#SQL_ID} total physical read bytes,{$DSN}]",
+                                "delay": "30m",
+                                "history": "7d",
+                                "units": "B",
+                                "params": "select PHYSICAL_READ_BYTES\nfrom v$sqlarea\nwhere sql_id='{#SQL_ID}';",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "SQL {#SQL_ID}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "28cee629d1c64ed0ae9a42180330b079",
+                                "name": "Top SQL {#SQL_ID} total physical write bytes",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[Top SQL {#SQL_ID} total physical write bytes,{$DSN}]",
+                                "delay": "30m",
+                                "history": "7d",
+                                "units": "B",
+                                "params": "select PHYSICAL_WRITE_BYTES\nfrom v$sqlarea\nwhere sql_id='{#SQL_ID}';",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "SQL {#SQL_ID}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7aac8e2cca2f4fd3b0cfbfd106e5e7ac",
+                        "name": "Waiting session discovery",
+                        "type": "ODBC",
+                        "key": "db.odbc.discovery[waiting session discovery,{$DSN}]",
+                        "delay": "5m",
+                        "params": "select distinct sid\nfrom v$session\nwhere username is not null\nand wait_time = 0\nand wait_class# != 6;",
+                        "username": "{$DB_USERNAME}",
+                        "password": "{$DB_PASSWORD}",
+                        "lifetime_type": "DELETE_IMMEDIATELY",
+                        "lifetime": "0",
+                        "item_prototypes": [
+                            {
+                                "uuid": "ef41ac0d0ed24e618468f0e71eff9ab4",
+                                "name": "Session {#SID} total wait time in seconds",
+                                "type": "ODBC",
+                                "key": "db.odbc.select[session {#SID} wait time,{$DSN}]",
+                                "delay": "5m",
+                                "history": "7d",
+                                "params": "select case \n when wait_time = 0 and WAIT_CLASS# != 6 then seconds_in_wait \n else 0 end\n from v$session\n where sid={#SID};",
+                                "username": "{$DB_USERNAME}",
+                                "password": "{$DB_PASSWORD}",
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "Database"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Sessions"
+                                    },
+                                    {
+                                        "tag": "Application",
+                                        "value": "Session {#SID}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "02a8f578507348b0b47d3f774430ea81",
+                                        "expression": "last(/zt-db-oracle/db.odbc.select[session {#SID} wait time,{$DSN}])>300",
+                                        "name": "Long waiting session: {#SID} => {ITEM.LASTVALUE} seconds",
+                                        "priority": "WARNING",
+                                        "tags": [
+                                            {
+                                                "tag": "Application",
+                                                "value": "Oracle"
+                                            },
+                                            {
+                                                "tag": "Field",
+                                                "value": "Database"
+                                            },
+                                            {
+                                                "tag": "Scope",
+                                                "value": "Infrastructure"
+                                            },
+                                            {
+                                                "tag": "Type",
+                                                "value": "Technical"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "{$BACKUP_DSN}",
+                        "value": "{$DSN}"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$ASM_USAGE_THRESHOLD}",
+                        "value": "1.0"
+                    },
+                    {
+                        "macro": "{$BACKUP_DSN}",
+                        "value": "{$DSN}"
+                    },
+                    {
+                        "macro": "{$BLOCK_THRESHOLD}",
+                        "value": "20"
+                    },
+                    {
+                        "macro": "{$DB_PASSWORD}",
+                        "value": "zabbix"
+                    },
+                    {
+                        "macro": "{$DB_USERNAME}",
+                        "value": "zabbix"
+                    },
+                    {
+                        "macro": "{$DSN}"
+                    },
+                    {
+                        "macro": "{$FRA_USAGE_THRESHOLD}",
+                        "value": "1.0"
+                    },
+                    {
+                        "macro": "{$MIN_READ_BPS}",
+                        "value": "10485760"
+                    },
+                    {
+                        "macro": "{$MIN_WRITE_BPS}",
+                        "value": "1048576"
+                    },
+                    {
+                        "macro": "{$ORACLE_BACKUP_HOUR}",
+                        "value": "0"
+                    },
+                    {
+                        "macro": "{$TB_USAGE_THRESHOLD}",
+                        "value": "1.0"
+                    }
+                ],
+                "valuemaps": [
+                    {
+                        "uuid": "db00c6ceb0264840bcd6c6c3a549351d",
+                        "name": "Oracle ASM disk mount status",
+                        "mappings": [
+                            {
+                                "value": "-1",
+                                "newvalue": "CLOSING"
+                            },
+                            {
+                                "value": "-2",
+                                "newvalue": "CLOSED"
+                            },
+                            {
+                                "value": "-3",
+                                "newvalue": "MISSING"
+                            },
+                            {
+                                "value": "0",
+                                "newvalue": "IGNORED"
+                            },
+                            {
+                                "value": "1",
+                                "newvalue": "OPENED"
+                            },
+                            {
+                                "value": "2",
+                                "newvalue": "CACHED"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "247e677fb7514b38b79b4843a9cd3b97",
+                        "name": "Oracle ASM disk state",
+                        "mappings": [
+                            {
+                                "value": "-1",
+                                "newvalue": "HUNG"
+                            },
+                            {
+                                "value": "-2",
+                                "newvalue": "FORCING"
+                            },
+                            {
+                                "value": "0",
+                                "newvalue": "UNKNOWN"
+                            },
+                            {
+                                "value": "1",
+                                "newvalue": "NORMAL"
+                            },
+                            {
+                                "value": "2",
+                                "newvalue": "ADDING"
+                            },
+                            {
+                                "value": "3",
+                                "newvalue": "DROPPING"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "79073c9f78f641a69a2d05c1da505ba7",
+                        "name": "Oracle backup status",
+                        "mappings": [
+                            {
+                                "value": "-1",
+                                "newvalue": "FAILED"
+                            },
+                            {
+                                "value": "0",
+                                "newvalue": "UNKNOWN"
+                            },
+                            {
+                                "value": "1",
+                                "newvalue": "COMPLETED"
+                            },
+                            {
+                                "value": "2",
+                                "newvalue": "WITH WARNINGS"
+                            },
+                            {
+                                "value": "4",
+                                "newvalue": "WITH ERRORS"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "92dc02a8974d4de7b9c07b5ecd834ce1",
+                        "name": "Oracle tablespace contents",
+                        "mappings": [
+                            {
+                                "value": "PERMANENT",
+                                "newvalue": "1"
+                            },
+                            {
+                                "value": "TEMPORARY",
+                                "newvalue": "2"
+                            },
+                            {
+                                "value": "UNDO",
+                                "newvalue": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "715723df31cc48a09c6347d8d3f2f9b1",
+                        "name": "TruthValue",
+                        "mappings": [
+                            {
+                                "value": "1",
+                                "newvalue": "true"
+                            },
+                            {
+                                "value": "2",
+                                "newvalue": "false"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "triggers": [
+            {
+                "uuid": "6a148d52be2b4dae8d09ffaf3f2f753d",
+                "expression": "last(/zt-db-oracle/db.odbc.select[db session count,{$DSN}])>=last(/zt-db-oracle/db.odbc.select[max number of sessions,{$DSN}])  * 0.95",
+                "name": "Database extreme session count => {ITEM.VALUE1}",
+                "priority": "DISASTER",
+                "manual_close": "YES",
+                "tags": [
+                    {
+                        "tag": "Application",
+                        "value": "Oracle"
+                    },
+                    {
+                        "tag": "Field",
+                        "value": "Database"
+                    },
+                    {
+                        "tag": "Scope",
+                        "value": "Infrastructure"
+                    },
+                    {
+                        "tag": "Type",
+                        "value": "Technical"
+                    }
+                ]
+            },
+            {
+                "uuid": "3ea26a2e4ea0461284475b67cddcc8cd",
+                "expression": "last(/zt-db-oracle/db.odbc.select[db session count,{$DSN}])>=last(/zt-db-oracle/db.odbc.select[max number of sessions,{$DSN}]) * 0.6",
+                "name": "Database high session count",
+                "priority": "WARNING",
+                "manual_close": "YES",
+                "dependencies": [
+                    {
+                        "name": "Database very high session count => {ITEM.VALUE1}",
+                        "expression": "last(/zt-db-oracle/db.odbc.select[db session count,{$DSN}])>=last(/zt-db-oracle/db.odbc.select[max number of sessions,{$DSN}]) * 0.8"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "Application",
+                        "value": "Oracle"
+                    },
+                    {
+                        "tag": "Field",
+                        "value": "Database"
+                    },
+                    {
+                        "tag": "Scope",
+                        "value": "Infrastructure"
+                    },
+                    {
+                        "tag": "Type",
+                        "value": "Technical"
+                    }
+                ]
+            },
+            {
+                "uuid": "dad91f5dceec41908272276d0c27c7ed",
+                "expression": "last(/zt-db-oracle/db.odbc.select[db session count,{$DSN}])>=last(/zt-db-oracle/db.odbc.select[max number of sessions,{$DSN}]) * 0.8",
+                "name": "Database very high session count => {ITEM.VALUE1}",
+                "priority": "HIGH",
+                "manual_close": "YES",
+                "dependencies": [
+                    {
+                        "name": "Database extreme session count => {ITEM.VALUE1}",
+                        "expression": "last(/zt-db-oracle/db.odbc.select[db session count,{$DSN}])>=last(/zt-db-oracle/db.odbc.select[max number of sessions,{$DSN}])  * 0.95"
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "Application",
+                        "value": "Oracle"
+                    },
+                    {
+                        "tag": "Field",
+                        "value": "Database"
+                    },
+                    {
+                        "tag": "Scope",
+                        "value": "Infrastructure"
+                    },
+                    {
+                        "tag": "Type",
+                        "value": "Technical"
+                    }
+                ]
+            }
+        ]
+    }
+}
