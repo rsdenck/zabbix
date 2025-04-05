@@ -1,0 +1,174 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "ac1ac4b77bce4598a4e4a76feb78e1a9",
+                "name": "Templates/Brusque"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "9c8ae094594045baac5a93c4c8ec869e",
+                "template": "zt-app-asterisk-perf",
+                "name": "zt-app-asterisk-perf",
+                "groups": [
+                    {
+                        "name": "Templates/Brusque"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "bc005b76e94943ab8f41d231eb2cca5f",
+                        "name": "Ongoing Calls",
+                        "key": "asterisk.active_calls",
+                        "delay": "30",
+                        "history": "7d",
+                        "trends": "30d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Asterisk"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "e334b72c9e5b4e61bd43fb8182da9c95",
+                        "name": "Service Asterisk",
+                        "key": "asterisk.asterisk_status",
+                        "delay": "60",
+                        "history": "7d",
+                        "trends": "90d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Asterisk"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "4c725804313149d2b15c0aba3d1a9a94",
+                                "expression": "last(/zt-app-asterisk-perf/asterisk.asterisk_status)=0",
+                                "name": "Asterisk down on {HOST.NAME}",
+                                "priority": "HIGH",
+                                "description": "Asterisk service down"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "2e4e911ec2b3481d8c3602fef61a3736",
+                        "name": "Fa2ilban Chains",
+                        "key": "asterisk.fail2ban_chain",
+                        "delay": "60",
+                        "history": "7d",
+                        "trends": "90d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Asterisk"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "bf73e1667d504c4aa0103b264b2f1555",
+                                "expression": "last(/zt-app-asterisk-perf/asterisk.fail2ban_chain)=0",
+                                "name": "Fail2ban inactive on {HOST.NAME}",
+                                "priority": "AVERAGE",
+                                "description": "Fail2ban service inactive"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "69782a667d5f43139cd642567f4b41ee",
+                        "name": "Service Fail2ban",
+                        "key": "asterisk.fail2ban_status",
+                        "delay": "60",
+                        "history": "7d",
+                        "trends": "90d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Asterisk"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "a04c16c9071042e5b9cacef11f2ada09",
+                                "expression": "last(/zt-app-asterisk-perf/asterisk.fail2ban_status)=0",
+                                "name": "Fail2ban down on {HOST.NAME}",
+                                "priority": "AVERAGE",
+                                "description": "Fail2ban service down"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9fd441084bfc46df9bb8297e027fece6",
+                        "name": "Trunks offline",
+                        "key": "asterisk.trunk",
+                        "delay": "60",
+                        "history": "90d",
+                        "value_type": "TEXT",
+                        "trends": "0",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Asterisk"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "fd17ef1abb80418eb2d5319ce029997d",
+                                "expression": "count(/zt-app-asterisk-perf/asterisk.trunk,#2,\"like\",\"All trunks are online\")=0",
+                                "recovery_mode": "RECOVERY_EXPRESSION",
+                                "recovery_expression": "count(/zt-app-asterisk-perf/asterisk.trunk,#2,\"like\",\"All trunks are online\")=2",
+                                "name": "Trunk not registered on {HOST.NAME}",
+                                "priority": "AVERAGE",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d4cbf122627543f0807c6f6e257643f8",
+                        "name": "Asterisk Uptime",
+                        "key": "asterisk.uptime",
+                        "delay": "60",
+                        "history": "7d",
+                        "trends": "90d",
+                        "units": "s",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Asterisk"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "c2bcb127665e4eaeadd5e6f679fc4e56",
+                                "expression": "last(/zt-app-asterisk-perf/asterisk.uptime)<300",
+                                "name": "Asterisk restarted on {HOST.NAME}",
+                                "priority": "INFO",
+                                "description": "Asterisk has been restarted during last 5 minutes"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "graphs": [
+            {
+                "uuid": "d34db8ac49a64f7582a160344cb967b3",
+                "name": "Asterisk Calls",
+                "graph_items": [
+                    {
+                        "drawtype": "FILLED_REGION",
+                        "color": "FF3333",
+                        "item": {
+                            "host": "zt-app-asterisk-perf",
+                            "key": "asterisk.active_calls"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
