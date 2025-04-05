@@ -1,0 +1,3 @@
+os_zimbra_services.conf	- Define os UserParameter para coletar o status dos serviços do Zimbra e o tamanho das filas de e-mail (active, hold, deferred, etc).
+os_zimbra_backup.conf	- Define os UserParameter para coletar informações dos backups full e incrementais do Zimbra Network Edition, sem uso de sudo
+os_zimbra_backup_sudo.conf - Mesmo conteúdo do anterior, mas com chamadas ao script usando sudo – útil quando o backup exige permissões elevadas para leitura dos logs ou diretórios.
