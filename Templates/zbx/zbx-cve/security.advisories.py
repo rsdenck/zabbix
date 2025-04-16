@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-Criador: Sansão - Especialista Infraestrutura
-Data: 07/04/2025
+Autor: Ranlens Denck
+Data: 15/04/2025
 """
 
 import sys
@@ -25,7 +25,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 zbx_server = sys.argv[1]
-fileName = sys.argv[2]
+fileName = "/etc/zabbix/temp/jsonSecAdv"
 timeOut = 20
 
 current_year = int(time.strftime("%Y"))
@@ -35,7 +35,7 @@ servico = Service(ChromeDriverManager().install())
 chrome_options = Options()
 chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument('--headless') 
+chrome_options.add_argument('--headless')
 driver = webdriver.Chrome(service=servico, options=chrome_options)
 
 
