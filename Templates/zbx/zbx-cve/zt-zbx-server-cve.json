@@ -1,0 +1,429 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "4981c0092eff4738b7affa6181091774",
+                "name": "ztg-zabbix"
+            },
+            {
+                "uuid": "46d2ce75e0c04c86927fbd4f43a8e25f",
+                "name": "ztg-zabbix/server"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "534dde4e33b144ef8c82a30d78b3273d",
+                "template": "zt-zbx-server-cve",
+                "name": "zt-zbx-server-cve",
+                "groups": [
+                    {
+                        "name": "ztg-zabbix"
+                    },
+                    {
+                        "name": "ztg-zabbix/server"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "aa70e8a055cf43fea751327c80843b62",
+                        "name": "Get Zabbix Security Advisories",
+                        "key": "system.run[{$ZBX_ADVISORY:\"command\"} {$ZBX_ADVISORY:\"url\"} {$ZBX_ADVISORY:\"file\"},nowait]",
+                        "delay": "0;h/3",
+                        "history": "0",
+                        "value_type": "TEXT",
+                        "trends": "0",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "raw"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7162b69876ad4412a6d41b12dc50acac",
+                        "name": "Retrieve the Zabbix Security Advisories",
+                        "key": "vfs.file.contents[{$ZBX_ADVISORY:\"file\"}]",
+                        "delay": "0;m/10",
+                        "history": "90d",
+                        "value_type": "TEXT",
+                        "trends": "0",
+                        "description": "Retrieves the Zabbix Security Feed JSON file from {$ZBX_ADVISORY:\"file\"}",
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$ZBX_ADVISORY:\"discard.master\"}"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "zabbix_security"
+                            },
+                            {
+                                "tag": "type",
+                                "value": "discovery"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ebae8a3e3cf34817adb8271d08f864b8",
+                        "name": "Last Updated",
+                        "key": "vfs.file.get[{$ZBX_ADVISORY:\"file\"}]",
+                        "delay": "0;m/5",
+                        "history": "60d",
+                        "trends": "90d",
+                        "units": "s",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.timestamp.modify"
+                                ]
+                            },
+                            {
+                                "type": "JAVASCRIPT",
+                                "parameters": [
+                                    "timestampInSecondsAtual = Math.floor(Date.now() / 1000);\nreturn (timestampInSecondsAtual - value)"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$ZBX_ADVISORY:\"discard.file.update\"}"
+                                ]
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "zabbix_security"
+                            },
+                            {
+                                "tag": "type",
+                                "value": "discovery"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "6e47c0760ebe49e48d226cd1c7ab03a3",
+                                "expression": "last(/zt-zbx-server-cve/vfs.file.get[{$ZBX_ADVISORY:\"file\"}])>{$ZBX_ADVISORY:\"alarm.file\"}",
+                                "name": "JSON file is out of date",
+                                "event_name": "JSON file hasn't been updated in the last {$ZBX_ADVISORY:\"file\"} hours",
+                                "priority": "HIGH",
+                                "manual_close": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "823235a1def84a178b96759f367ff423",
+                        "name": "Update date",
+                        "type": "DEPENDENT",
+                        "key": "zbx_sec.last_updated",
+                        "delay": "0",
+                        "history": "90d",
+                        "value_type": "TEXT",
+                        "trends": "0",
+                        "description": "Determines the last-updated value for the JSON file and stores the value as string",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.last_updated.secs"
+                                ]
+                            },
+                            {
+                                "type": "JAVASCRIPT",
+                                "parameters": [
+                                    "//Tratando hora\n// Converter para milissegundos e criar o objeto Date\ndata = new Date(value* 1000);\n\n// Formatar para o formato desejado\nday  = data.getDate().toString()\nday = (day.length == 1) ? '0'+day : day\nmonth  = (data.getMonth()+1).toString()\nmonth  = (month.length == 1) ? '0'+month: month\nyear = data.getFullYear()\nhours = data.getHours().toString();\nhours = (hours.length == 1) ? '0'+hours : hours\nminutes = data.getMinutes().toString();\nminutes = (minutes.length == 1) ? '0'+minutes : minutes\nseconds = data.getSeconds().toString();\nseconds = (seconds.length == 1) ? '0'+seconds : seconds\n\nformattedDate = day + \"/\" + month + \"/\" + year + \" \" + hours + \":\" + minutes + \":\" + seconds;\n\nreturn formattedDate"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "vfs.file.contents[{$ZBX_ADVISORY:\"file\"}]"
+                        },
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "zabbix_security"
+                            },
+                            {
+                                "tag": "type",
+                                "value": "last_updated"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "0dccfebb9b98426792460ff2c65eb8a3",
+                        "name": "Number of CVEs",
+                        "type": "DEPENDENT",
+                        "key": "zbx_sec.num_advisories",
+                        "delay": "0",
+                        "history": "60d",
+                        "trends": "90d",
+                        "description": "Calculates the number of published Security Advisories",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.reports.length()"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$ZBX_ADVISORY:\"discard.num.cve\"}"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "vfs.file.contents[{$ZBX_ADVISORY:\"file\"}]"
+                        },
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "zabbix_security"
+                            },
+                            {
+                                "tag": "type",
+                                "value": "num_advisories"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "6e61dfad8f4c420da5a9e7739d7c4fcf",
+                                "expression": "change(/zt-zbx-server-cve/zbx_sec.num_advisories)>0",
+                                "name": "A new Zabbix Security Advisory has been published",
+                                "priority": "HIGH",
+                                "description": "A new Zabbix Security Advisory has been published, you might want to review it",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "zabbix_security"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "uuid": "020feb39ccaa4c67bfdfdf376fc0bdaf",
+                        "name": "Discover Advisories",
+                        "type": "DEPENDENT",
+                        "key": "zbx_sec.advisories",
+                        "delay": "0",
+                        "lifetime": "30d",
+                        "enabled_lifetime_type": "DISABLE_NEVER",
+                        "description": "Discovers all advisories from the retrieved JSON, and creates the items required for displays",
+                        "item_prototypes": [
+                            {
+                                "uuid": "8785301800594c878dd60b161d9bc182",
+                                "name": "{#CVEREF}: {#ZBXREF}",
+                                "type": "DEPENDENT",
+                                "key": "zbx_sec.advisory[{#CVEREF}]",
+                                "delay": "0",
+                                "value_type": "TEXT",
+                                "trends": "0",
+                                "description": "T\u00edtulo:  {#SYNOPSIS}\nData de publica\u00e7\u00e3o:  {{#PUBLISHDATE}.regsub(\"(\\d{4})-(\\d{2})-(\\d{2})\", \"\\3/\\2/\\1\")}\nPontua\u00e7\u00e3o:  {#SCORE} ({#SEVERITY})\nDescri\u00e7\u00e3o:  {#DESCRIPTION}\nVetores:  {#VECTORS}\nResolu\u00e7\u00e3o:  {#RESOLUTION}\nSolu\u00e7\u00e3o alternativa:  {#WORKAROUND}\nReconhecimento:  {#ACKNOWLEDGEMENT}\nComponentes:  {#COMPONENTS}\nURL:  https://www.zabbix.com/br/security_advisories",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$.reports[?(@.cveref==\"{#CVEREF}\")].affected_version.first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "JAVASCRIPT",
+                                        "parameters": [
+                                            "return JSON.stringify(JSON.parse(value), null, 2)"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$ZBX_ADVISORY:\"discard.item.lld\"}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "vfs.file.contents[{$ZBX_ADVISORY:\"file\"}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "advisory",
+                                        "value": "{#ZBXREF}"
+                                    },
+                                    {
+                                        "tag": "component",
+                                        "value": "zabbix_security"
+                                    },
+                                    {
+                                        "tag": "cve",
+                                        "value": "{#CVEREF}"
+                                    },
+                                    {
+                                        "tag": "date",
+                                        "value": "{{#PUBLISHDATE}.regsub(\"(\\d{4})-(\\d{2})-(\\d{2})\", \"\\3/\\2/\\1\")}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "2f2f7fd1704b482a9cdddbeabbd58c91",
+                                        "expression": "nodata(/zt-zbx-server-cve/zbx_sec.advisory[{#CVEREF}],{$ZBX_ADVISORY:\"nodata.time\"})=0 and date()={{#PUBLISHDATE}.regsub(\"(\\d{4})-(\\d{2})-(\\d{2})\", \"\\1\\2\\3\")}",
+                                        "name": "Advisory {#CVEREF} ({#SCOREFULL}): {#ZBXREF}",
+                                        "description": "T\u00edtulo:  {#SYNOPSIS}\nData de publica\u00e7\u00e3o:  {{#PUBLISHDATE}.regsub(\"(\\d{4})-(\\d{2})-(\\d{2})\", \"\\3/\\2/\\1\")}\nPontua\u00e7\u00e3o:  {#SCORE} ({#SEVERITY})\nDescri\u00e7\u00e3o:  {#DESCRIPTION}\nVetores:  {#VECTORS}\nResolu\u00e7\u00e3o:  {#RESOLUTION}\nSolu\u00e7\u00e3o alternativa:  {#WORKAROUND}\nReconhecimento:  {#ACKNOWLEDGEMENT}\nComponentes:  {#COMPONENTS}\nURL:  https://www.zabbix.com/br/security_advisories",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "component",
+                                                "value": "zabbix_security"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "vfs.file.contents[{$ZBX_ADVISORY:\"file\"}]"
+                        },
+                        "lld_macro_paths": [
+                            {
+                                "lld_macro": "{#ACKNOWLEDGEMENT}",
+                                "path": "$.acknowledgement"
+                            },
+                            {
+                                "lld_macro": "{#COMPONENTS}",
+                                "path": "$.components"
+                            },
+                            {
+                                "lld_macro": "{#CVEREF}",
+                                "path": "$.cveref"
+                            },
+                            {
+                                "lld_macro": "{#DESCRIPTION}",
+                                "path": "$.description"
+                            },
+                            {
+                                "lld_macro": "{#PUBLISHDATE}",
+                                "path": "$.publish_date"
+                            },
+                            {
+                                "lld_macro": "{#RESOLUTION}",
+                                "path": "$.resolution"
+                            },
+                            {
+                                "lld_macro": "{#SCOREFULL}",
+                                "path": "$.score_full"
+                            },
+                            {
+                                "lld_macro": "{#SCORE}",
+                                "path": "$.score"
+                            },
+                            {
+                                "lld_macro": "{#SEVERITY}",
+                                "path": "$.severity"
+                            },
+                            {
+                                "lld_macro": "{#SYNOPSIS}",
+                                "path": "$.synopsis"
+                            },
+                            {
+                                "lld_macro": "{#VECTORS}",
+                                "path": "$.vectors"
+                            },
+                            {
+                                "lld_macro": "{#WORKAROUND}",
+                                "path": "$.workaround"
+                            },
+                            {
+                                "lld_macro": "{#ZBXREF}",
+                                "path": "$.zbxref"
+                            }
+                        ],
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$.reports[*]"
+                                ]
+                            }
+                        ],
+                        "overrides": [
+                            {
+                                "name": "Alterar a severidade",
+                                "step": "1",
+                                "filter": {
+                                    "conditions": [
+                                        {
+                                            "macro": "{#SEVERITY}",
+                                            "value": "^(low|medium|high|critical)$",
+                                            "formulaid": "A"
+                                        }
+                                    ]
+                                },
+                                "operations": [
+                                    {
+                                        "operationobject": "TRIGGER_PROTOTYPE",
+                                        "operator": "LIKE",
+                                        "value": "critical):",
+                                        "severity": "DISASTER"
+                                    },
+                                    {
+                                        "operationobject": "TRIGGER_PROTOTYPE",
+                                        "operator": "LIKE",
+                                        "value": "high):",
+                                        "severity": "HIGH"
+                                    },
+                                    {
+                                        "operationobject": "TRIGGER_PROTOTYPE",
+                                        "operator": "LIKE",
+                                        "value": "low):",
+                                        "severity": "WARNING"
+                                    },
+                                    {
+                                        "operationobject": "TRIGGER_PROTOTYPE",
+                                        "operator": "LIKE",
+                                        "value": "medium):",
+                                        "severity": "AVERAGE"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$ZBX_ADVISORY}",
+                        "value": "12h"
+                    },
+                    {
+                        "macro": "{$ZBX_ADVISORY:\"alarm.file\"}",
+                        "value": "4h",
+                        "description": "Determines the maximum amount of time the JSON may be left un-updated. This macro is used in the trigger {$ZBX_ADVISORY:\"alarm.file\"}"
+                    },
+                    {
+                        "macro": "{$ZBX_ADVISORY:\"command\"}",
+                        "value": "cd /usr/lib/zabbix/externalscripts ; ./security.advisories"
+                    },
+                    {
+                        "macro": "{$ZBX_ADVISORY:\"discard.master\"}",
+                        "value": "1h"
+                    },
+                    {
+                        "macro": "{$ZBX_ADVISORY:\"file\"}",
+                        "value": "/etc/zabbix/temp/jsonSecAdv",
+                        "description": "reposit\u00f3rio do json"
+                    },
+                    {
+                        "macro": "{$ZBX_ADVISORY:\"url\"}",
+                        "value": "http://192.168.56.105/"
+                    }
+                ]
+            }
+        ]
+    }
+}
