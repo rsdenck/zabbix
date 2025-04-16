@@ -1,0 +1,4992 @@
+1FORMAT: 1A
+HOST: https://api.tiflux.com/
+
+
+
+# Tiflux Official API
+
+## ⚠️ Atenção
+> Informamos que a API v1 foi **DESCONTINUADA**.
+Para proporcionar uma melhor experiência ao usuário, lançamos a API v2, que traz melhorias tecnológicas, otimizações e novas rotas.
+Para mais detalhes e acesso à documentação oficial da API v2, [clique aqui](https://api.tiflux.com/api/v2/).
+___
+
+Esta é a documentação oficial da API Tiflux, utilizando esta API você pode fazer requisições a fim de criar, visulizar, editar e excluir as informações da sua base Tiflux. Para fazer as suas requisições siga o passo a passo descrito abaixo.
+
+
+## Autenticação
+
+Nós configuramos uma autenticação Basic para você usar esta API.
+
+Em cada solicitação, você deve adicionar um cabeçalho `Authorization` que contém a palavra `Basic` junto com sua string codificada em base64 `email:password`. Para codificá-lo, você pode usar um site como [Base64 Encode] (https://www.base64encode.org/)
+
+O usuário que será codificado é um “Usuário API” (é um usuário específico para acesso a API, seu usuário comum não conseguirá este acesso), que você pode criar acessando o Tiflux, em Configurações -> Integrações -> Dados, você pode digitar um email e ele irá gerar automaticamente uma senha.
+
+Por exemplo, se seu e-mail de usuário da API for `user@example.com` e senha `aVeryDifficultPwd`, você codificará a string `user@example.com:aVeryDifficultPwd`, que resultará na string` dXNlckBleGFtcGxlLmNvbTphVmVyeURpZmZpY3VsZA3ZA3VsD = ZpY3Vs`.
+
+Você então usará esta última string em seu cabeçalho de autorização desta forma `Autorização:Basic dXNlckBleGFtcGxlLmNvbTphVmVyeURpZmZpY3VsdFB3ZA ==`. Adicione este cabeçalho a cada solicitação e você estará autorizado a usar esta API.
+
+Um exemplo de requisição via cURL:
+
+`curl --request GET \
+  --url 'https://api.Tiflux.com/api/v1/clients?offset=1&limit=20' \
+  --header 'authorization: Basic camVuYXRvQHawfasfasfawefq3541fRpZmx1eC5jb206YmNjMmQxYTM2OTk4NTcyngdfYmMwYWYxYWY2OTJhYTcwNGE='`
+
+Se sua API KEY for inválida, um código de resposta 401 será retornado. Você pode ler mais sobre isso na seção "Códigos de resposta".
+
+## Códigos de resposta
+
+Todas as respostas da API Tiflux vêm com um código de status HTTP. Cada código de status HTTP tem um significado, que é descrito abaixo.
+
+`200 OK` - Solicitação realizada com sucesso.
+
+`201 Created` - A solicitação foi realizada e seu objeto foi criado com sucesso.
+
+`400 Bad Request` - Os parâmetros exigidos não foram enviados ou são inválidos. Neste caso, o corpo da resposta indicará qual é o problema.
+
+`401 Unauthorized` - Sua API KEY não foi enviada ou é inválida.
+
+`403 Forbidden` - Requisição não autorizada. Ou uso de parâmetros não permitidos podem gerar este código.
+
+`404 Not Found` - Endpoint ou objeto solicitado não existe
+
+`422 Unprocessable Entity` - Ocorreu um erro ao tentar criar ou atualizar um objeto. O corpo da resposta indicará qual é o problema.
+
+`500 Internal Server Error` - Algo deu errado na API Tiflux. Entre em contato com o suporte.
+
+Todas as solicitações e respostas na API Tiflux estão no formato JSON.
+
+## Limitações
+
+A API Tiflux permite que você faça até 120 requisições por minuto, então caso precise fazer muitas requisiçoes seguidas recomendamos colocar um intervalo entre as requisições.
+
+## Agenda [/api/v1/ScheduleCompromises]
+
+### Listar compromissos [GET /api/v1/ScheduleCompromises?{offset}=1&{limit}=20&{user_id}=1&{start_date}=2022-02-13&{end_date}=2022-02-13]
+
+Este método retorna uma lista de agendamentos de um determinado usuário filtrando por uma data inicial e final. 
+
++ Parameters
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de compromissos retornados na página. O máximo é 200.
+        + Default: `20`
+    + user_id (number, optional) - Retorna os compromissos de um único usuário (O parâmetro deve ser o ID do usuário).
+        + Default: null
+    + start_date (string, optional) - Retorna os compromissos a partir de uma data específica (Formato: 2022-02-13).
+        + Default: null
+    + end_date (string, optional) - Retorna os compromissos até uma data específica (Formato: 2022-02-13).
+        + Default: null
+
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ScheduleCompromises)
+
+
+    + Headers
+    
+            X-Total-schedules: 1
+
+    + Body
+
+            [
+              {
+                    "ticket_number": 120821,
+                    "user_id": 1,
+                    "client_id": 32,
+                    "description": "Ligar as 10h",
+                    "start_date": "2022-02-13 10:00",
+                    "end_date": "2022-02-13 12:00"
+                    "compromisse_status": "overdue"
+              }
+            ]
+
+### Listar ausências [GET /api/v1/ScheduleAbsences?{offset}=1&{limit}=20&{user_id}=1&{start_date}=2022-02-20&{end_date}=2022-02-20]
+
+Este método retorna uma lista de ausências de um determinado usuário filtrando por uma data inicial e final. 
+
++ Parameters
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de ausências retornados na página. O máximo é 200.
+        + Default: `20`
+    + user_id (number, optional) - Retorna as ausências de um único usuário (O parâmetro deve ser o ID do usuário).
+        + Default: null
+    + start_date (string, optional) - Retorna as ausências a partir de uma data específica (Formato: 2022-02-20).
+        + Default: null
+    + end_date (string, optional) - Retorna as ausências até uma data específica (Formato: 2022-02-20).
+        + Default: null
+
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ScheduleAbsences)
+
+
+    + Headers
+    
+            X-Total-schedules: 1
+
+    + Body
+
+            [
+              {
+                    "id": 169,
+                    "title": "Reunião",
+                    "user_id": 1,
+                    "start_date": "2022-02-20 10:00",
+                    "end_date": "2022-02-20 11:00"
+              }
+            ]
+
+## Apontamentos de tickets [/api/v1/tickets/{ticket_number}/appointments]
+
+### Listar Apontamentos [GET /api/v1/tickets/{ticket_number}/appointments{?offset,limit}]
+
+Este método retorna uma lista de apontamentos de um determinado ticket.
+
++ Parameters
+    
+    + ticket_number (number, required) - Numero do ticket no formato Inteiro.
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro
+        + Default: `1`
+    + limit (number, optional) - Numero de apontamentos retornados na página. O máximo é 200.
+        + Default: `20`
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
++ Attributes (BaseAppointments)
+    + Headers
+    
+            X-Total-Appointments: 3
+
+    + Body (BaseAppointments)
+
+### Listar Apontamentos por data e usuário [GET /api/v1/appointments?{offset}=1&{limit}=20&{created_beginning}=2018-01-01&{created_ending}=2022-01-14&{user_id}=1126] 
+
+Este método retorna uma lista de apontamentos de todos os tickets filtrados por data de criação e por usuários.
+
++ Parameters
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro
+        + Default: `1`
+    + limit (number, optional) - Numero de apontamentos retornados na página. O máximo é 200.
+        + Default: `20`
+    + created_beginning - Filtrar tickets por data do inicio do apontamento.
+    Example: 2018-01-06.
+    + created_ending - Filtrar tickets por data final do apontamento.
+    Example: 2021-12-31.
+    + user_id - Filtra pelo número de cadastro do usuário que realizou o apontamento.
+    Example: user_id=1126
+    
+
++ Response 200 (application/json)
+
+ + Body
+
+            [
+                {
+                    "id": 123456,
+                    "attendance": 2,
+                    "attendance_kind": 2,
+                    "beginning": "2018-12-28T19:15:00.000Z",
+                    "ending": "2018-12-28T20:00:00.000Z",
+                    "description": "-teste de funcionamento.",
+                    "ticket_number": 123456,
+                    "updated_at": "2018-12-28 20:06:57",
+                    "created_at": "2018-12-28 20:06:57",
+                    "value": 0,
+                    "client": {
+                        "id": 1,
+                        "client_name": "Cliente teste."
+                    },
+                    "user": {
+                        "id": 2,
+                        "name": "Usuário teste"
+                    },
+                    "charge": {
+                        "is_guarantee": false,
+                        "contract_id": 3,
+                        "contract_name": "Contrato 1",
+                        "loose_service_id": null,
+                        "loose_service_name": null
+                    }
+                },
+            ]
+
++ Attributes (ListAppointments)
+
+## Autorização de e-mail [/api/v1/email_tickets_permission]
+
+### Criar autorização de e-mail [POST /api/v1/email_tickets_permission/{client_id}]
+
+Este método permite criar a autorização para um e-mail ou domínio abrirem tickets sem cair na caixa de pré tickets.
+
++ parameters
+    + client_id (number, required) - Informa para qual cliente será aberto os tickets deste e-mail/domínio
+    
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
+    + Body
+
+            {
+                "address": "email@domain.com"
+            }
+
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": 5791,
+                "address": "email@domain.com",
+                "permission_type": "email",
+                "client_id": 46637,
+                "active": true,
+                "created_at": "2021-05-05T18:57:41.000Z"
+            }
+
+## Avaliação de chats [/api/v1/chats/]
+
+### Relatório de feedbacks  [GET /api/v1/chats/feedbacks/summary?{start_date}=2022-02-13&{end_date}=2022-02-13&{department_id}=143&{client_id}=44]
+
+Este método retorna o resumo do relatório de Avaliação de chats
+
++ Parameters
+
+    + start_date (string, optional) - Retorna o relatório apenas de chats fechados/avaliados após a data passada como parâmetro. (Caso o parâmetro não seja informado, será considerado os ultimos 30 dias).
+
+    + end_date (string, optional) - Retorna o relatório apenas de chats fechados/avaliados anteriormente a data passada como parâmetro. (Caso o parâmetro não seja informado será considerada a data atual).
+
+    + department_id (string, optional) - Retorna o relatório filtrando por um departamento específico.
+
+    + client_id (number, optional) - Retorna o relatório filtrando por um cliente específico.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+    + Attributes (FeedbackSummaryChats)
+    
+    + Body
+
+            {
+                        "chats_finished": 31,
+                        "chats_evaluated": 10,
+                        "answers_percentage": 32.26,
+                        "clients_evaluated": 3,
+                        "rating_average": 4
+            }
+
+### Listar avaliações [GET /api/v1/chats/list/assessment?{start_date}=2022-02-13&{end_date}=2022-02-13&{responsible_id}=28&{technical_group}=234&{department_id}=23]
+
+Este método retorna as avaliações de chats em um período de tempo.
+
++ Parameters
+    + start_date (string, optional) - Retorna o relatório apenas de chats fechados/avaliados após a data passada como parâmetro. (Caso o parâmetro não seja informado, será considerado os ultimos 30 dias).
+    + end_date (string, optional) - Retorna o relatório apenas de chats fechados/avaliados anteriormente a data passada como parâmetro. (Caso o parâmetro não seja informado será considerada a data atual).
+    + responsible_id (string, optional) - Retorna apenas os chats do responsável determinado
+    + technical_group (string, optional) - Retorna apenas os chats do grupo de atendentes determinado
+    + department_id (string, optional) - Retorna apenas os chats do departamento determinado
+    
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+    + Attributes (ChatFeedbackAssessment)
+    
+    + Body
+
+            [
+                {
+                    "chat_id": 128496,
+                    "rating": {
+                        "date": "2022-10-11T15:20:13.358622",
+                        "rating": 4
+                    },
+                    "client": {
+                        "client_id": 83,
+                        "client_name": "Acel"
+                    },
+                    "chat_client_name": "Lucas Leite",
+                    "attendant": {
+                        "id": 1,
+                        "name": "admin"
+                    },
+                    "origin": "gupshup",
+                    "ticket": {
+                        "ticket_number": null,
+                        "ticket_title": null
+                    }
+                }
+            ]
+
+## Avaliação de tickets [/api/v1/feedbacks]
+
+### Relatório de feedbacks [GET /api/v1/feedbacks/summary?{client_id}=1&{desk_id}=1&{start_date}=2023-01-01&{end_date}=2023-01-30]
+
+Este método retorna o resumo do relatório de Avaliação de tickets.
+
++ Parameters
+    + client_id (number, optional) - Retorna o relatório filtrando por um cliente específico.
+    + desk_id (number, optional) - Retorna o relatório filtrando por uma mesa em específico.
+    + start_date (string, optional) - Retorna o relatório apenas de tickets fechados/revisados após a data passada como parâmetro. (Caso o parâmetro não seja informado, será considerado os ultimos 30 dias).
+    + end_date (string, optional) - Retorna o relatório apenas de tickets fechados/revisados anteriormente a data passada como parâmetro. (Caso o parâmetro não seja informado será considerada a data atual).
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+    + Attributes (FeedbackSummary)
+    
+    + Body
+
+            {
+
+              "tickets_count": 12,
+              "feedback_tickets": 3,
+              "answers_percentage": 25,
+              "customers_evaluated": 2,
+              "rating_average": 3
+            }
+
+### Avaliação de ticket [GET /api/v1/feedbacks/list/assessment?{offset}=1&{limit}=20&{start_date}=2014-01-01&{end_date}=2018-01-01]
+
+Este método retorna as avaliações de tickets em um período de tempo.
+
++ Parameters
+    + offset (number, optional) - Numero da avaliações a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de avaliações retornados na página. O máximo é 200.
+        + Default: `20`
+    + start_date (string, optional) - Retorna o relatório apenas de tickets fechados/revisados após a data passada como parâmetro. (Caso o parâmetro não seja informado, será considerado os ultimos 30 dias).
+    + end_date (string, optional) - Retorna o relatório apenas de tickets fechados/revisados anteriormente a data passada como parâmetro. (Caso o parâmetro não seja informado será considerada a data atual).
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+    + Attributes (FeedbackAssessment)
+    
+    + Body
+
+            [
+                {
+                    "ticket_number": 120795,
+                    "ticket_title": "Acesso a rede.",
+                    "client": {
+                        "client_id": 174,
+                        "client_name": "Brucaville"
+                    },
+                    "desk": {
+                        "desk_id": 29,
+                        "desk_name": "Solicitações",
+                        "services_catalog": {
+                            "catalog_name": "Serviços Infraestrutura",
+                            "catalog_area_name": "Internet",
+                            "catalog_item_name": "Problemas de navegação"
+                        }
+                    },
+                    "revised_in_time": "2022-08-08T13:11:32.545Z",
+                    "requestor": {
+                        "requestor_name": "Rosa",
+                        "requestor_email": "rosamaria@rosamaria.com;"
+                    },
+                    "feedback": {
+                        "rating": 5,
+                        "comments": "5 stars awesome"
+                    },
+                    "responsible_name": "Lucas Souza"
+                }
+            ]
+## Campos personalizados [/api/v1/entities]
+
+### Listar campos personalizados [GET /api/v1/entities{?active,search,applied_in,desk_id}]
+
+Este método retorna uma lista de campos personalizados com informações básicas. Para obter informações detalhadas do campo personalizado, execute a ação “Exibir campos personalizados”.
+
++ Parameters
+    + active (boolean, optional) - Campos personalizados ativos / inativos.
+        + Default: true
+    + search (string, optional) - Nome do campo personalizado
+        + Default: null
+    + applied_in (enum, optional) - Tipo do campos personalizado
+            + solicitant - Solicitante
+            + ticket - Ticket
+            + equipment - Recurso
+            + client - Cliente
+    + desk_id (number, optional) - Retorna os campos personalizados de acordo ao ID da mesa
+        + Default: null
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ListEntities)
+        
+    + Body
+
+            
+                [
+                  {
+                    "id": 1,
+                    "name": "Entidade de recurso",
+                    "description": "descrição da entidade",
+                    "menu_item": false,
+                    "active": true,
+                    "qtd_fields": 2
+                  },
+                  {
+                    "id": 2,
+                    "name": "Entidade de cliente",
+                    "description": "descrição da entidade",
+                    "menu_item": true,
+                    "active": true,
+                    "qtd_fields": 20
+                  }
+                ]
+
+### Exibir campos personalizados [GET /api/v1/entities/{id}]
+
+Este método retorna um único campo personalizado com informações detalhadas sobre os campos. 
+
++ Parameters
+    + id (number) - Id do campo personalizado, em formato de número inteiro
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ShowEntity)
+    + Body
+
+            
+                
+                  {
+                    "id": 1,
+                    "name": "Entidade de recurso",
+                    "description": "descrição da entidade",
+                    "menu_item": false,
+                    "active": true,
+                    "qtd_fields": 2,
+                    "fields": [
+                        {
+                            "field_id": 4,
+                            "field_name": "Opção única",
+                            "field_type": "single_select",
+                            "is_required": false,
+                            "field_options": [
+                                {
+                                    "option_id": 2,
+                                    "option_name": "campo",
+                                    "value": "campo"
+                                }
+                            ]
+                        }
+                    ]
+                  }
+                
+
+            
+## Chats [/api/v1/chats]
+
+### Listar Chats [GET /api/v1/chats{?offset,limit,user_id,department_id,start_date,end_date}]
+
+Este método retorna uma lista de chats com informações básicas. Para obter informações detalhadas do chat, execute a ação “Exibir chat”.
+
++ Parameters
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de chats retornados na página. O máximo é 200.
+        + Default: `20`
+    + user_id: `1` (number, optional) - Retorna chats de um único responsável (O parâmetro deve ser o ID do responsável).
+    + department_id: `1` (number, optional) - Retorna os chats de um único departamento (O parâmetro deve ser o ID do departamento).
+    + start_date: `2023-01-31` (string, optional) - Retorna os chats a partir de uma data específica.
+    + end_date: `2023-03-31` (string, optional) - Retorna os chats até uma data específica.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ListChats)
+
+    + Headers
+    
+            X-Total-Chats: 2
+        
+    + Body
+
+            {"rows": 
+                [
+                  {
+                    "chat_id": 128225,
+                    "origin": "whatsapp",
+                    "responsible": {
+                      "user_id": 3,
+                      "user_name": Jorge,
+                      "group_attendants_id": 214,
+                      "group_attendants": Tecnico
+                    },
+                    "client": {
+                      "client_id": 32,
+                      "client_name": Panificadora XYZ,
+                      "requester_name": "EDSON MACHADO"
+                    },
+                    "services_catalog": {
+                      "services_catalog_id": 2,
+                      "knowledge_area_id": 8,
+                      "item_id": 22,
+                      "services_catalog": Help Desk,
+                      "knowledge_area": Antivirus,
+                      "item": Configurar Antivirus
+                    },
+                    "department": {
+                      "department_id": 2,
+                      "department_name": Suporte
+                    },
+                    "ticket": {
+                      "ticket_number": 12,
+                      "ticket_title": Antivirus não está funcionando
+                    },
+                    "chat_duration": null,
+                    "online": false,
+                    "archived": true,
+                    "canceled": true,
+                    "email": null,
+                    "created_at": "2020-10-08 13:03:04",
+                    "assumed_at": null,
+                    "finished_at": null
+                  },
+                  {
+                    "chat_id": 128224,
+                    "origin": "whatsapp",
+                    "responsible": {
+                      "user_id": 3,
+                      "user_name": Ruan,
+                      "group_attendants_id": 4,
+                      "group_attendants": Comercial
+                    },
+                    "client": {
+                      "client_id": 98,
+                      "client_name": Cliente XYZ,
+                      "requester_name": "Gabriel Mello"
+                    },
+                    "services_catalog": {
+                      "services_catalog_id": null,
+                      "knowledge_area_id": null,
+                      "item_id": null,
+                      "services_catalog": null,
+                      "knowledge_area": null,
+                      "item": null
+                    },
+                    "department": {
+                      "department_id": 3,
+                      "department_name": Comercial
+                    },
+                    "ticket": {
+                      "ticket_number": 9212,
+                      "ticket_title": Duvida comercial
+                    },
+                    "chat_duration": {
+                      "months": -3,
+                      "days": -29,
+                      "hours": -17,
+                      "minutes": -39,
+                      "seconds": -12,
+                      "milliseconds": -422.977
+                    },
+                    "online": false,
+                    "archived": true,
+                    "canceled": false,
+                    "email": null,
+                    "created_at": "2020-10-01 12:24:20",
+                    "assumed_at": "2020-06-01T18:43:28.330Z",
+                    "finished_at": "2020-06-01T18:45:07.577Z"
+                  },
+                ]
+            }
+
+### Exibir Chat [GET /api/v1/chats/{id}]
+
+Este método retorna um único chat com informações detalhadas sobre o contato. 
+
++ Parameters
+    + id (number) - Id do chat, em formato de número inteiro
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ShowChat)
+
+    + Headers
+    
+            X-Total-Chats: 1
+        
+    + Body
+
+            {
+              "id": 128220,
+              "origin": "whatsapp",
+              "number": "554799700013",
+              "responsible": {
+                "user_id": 1,
+                "user_name": "admin",
+                "group_attendants_id": 3,
+                "group_attendants": "Administrativo"
+              },
+              "client": {
+                "client_id": 1,
+                "client_name": "Tech",
+                "requester_name": "Juliano"
+              },
+              "services_catalog": {
+                "services_catalog_id": 3,
+                "knowledge_area_id": 4,
+                "item_id": 8,
+                "services_catalog": "Software XYZ",
+                "knowledge_area": "Software",
+                "item": "Licenciamento"
+              },
+              "department": {
+                "department_id": 253,
+                "department_name": "Técnico"
+              },
+              "ticket": {
+                "ticket_number": 1084,
+                "ticket_title": "Siscex com problemas"
+              },
+              "chat_duration": {
+                "days": 1,
+                "minutes": 3
+              },
+              "online": false,
+              "archived": true,
+              "canceled": false,
+              "email": null,
+              "created_at": "2020-06-01 12:13:07",
+              "assumed_at": null,
+              "finished_at": "2020-06-02T12:16:07.366Z"
+            }
+
+### Relatório Chat [GET /api/v1/chats/summary?{user_id}=32&{department_id}&{start_date}=2022-08-11&{end_date}=2022-08-11]
+
+Este método retorna um relatório personalizado do chat.
+
++ Parameters
+    + start_date (string, optional) - Retorna os chats a partir de uma data específica (Formato: 2020-08-11).
+        + Default: null
+    + end_date (string, optional) - Retorna os chats até uma data específica (Formato: 2020-08-11).
+        + Default: null
+    + user_id (number, optional) - Retorna chats de um único responsável (O parâmetro deve ser o ID do responsável).
+        + Default: null
+    + department_id (number, optional) - Retorna os chats de um único departamento (O parâmetro deve ser o ID do departamento).
+        + Default: null
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ChatSummary)
+
+    + Body
+
+            {
+              "answered": "7",
+              "resolved_on_first_contact": 7,
+              "average_time_chat": {
+                "minutes": 47,
+                "seconds": 34,
+                "milliseconds": 443.337
+              },
+              "users_served": "5",
+              "average_waiting_time": {
+                "hours": 2,
+                "minutes": 33,
+                "seconds": 22,
+                "milliseconds": 775.887
+              },
+              "total_chat_time": {
+                "hours": 2,
+                "minutes": 22,
+                "seconds": 43,
+                "milliseconds": 330.012
+              },
+              "canceled_chats": "44"
+            }
+
+### Enviar mensagens via WhatsApp [POST /api/v1/chats/send_message]
+Este método envia mensagens via Integrações WhatsApp
+
++ Request Enviar modelo de mensagem (application/json)
+    
+    + Attributes (Message)
+    
+    + Headers 
+        Authorization: Basic YOUR_API_KEY
+            
+    + Body
+
+        {
+            "number": 5547999999999,
+            "integration_id": 1,
+            "template_id": 1
+        }
+
++ Request Enviar mensagem HSM com parâmetros personalizados (application/json)
+   + Headers 
+        Authorization: Basic YOUR_API_KEY
+   
+   + Body
+
+        {
+            "number": 5547999999999,
+            "integration_id": 1,
+            "template_id": 2,
+            "params": ["valor1", "valor2"]
+        }
+        
++ Request Enviar mensagem (application/json)
+
+   + Headers 
+        Authorization: Basic YOUR_API_KEY
+
+   + Body
+        
+        {
+            "number": 5547999999999,
+            "integration_id": 1,
+            "body": "Olá, tudo bem?"
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+        {
+           "enqueued": true
+        }
+        
+
+## Clientes [/api/v1/clients]
+
+### Listar Clientes [GET /api/v1/clients{?offset,limit,phone,social_revenue,client_name,status}]
+
+Este método retorna uma lista de clientes com informações básicas. Para obter informações detalhadas do cliente, execute a ação “Exibir cliente”.
+
++ Parameters
+
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+
+    + limit (number, optional) - Numero de clientes retornados na página. O máximo é 200.
+        + Default: `20`
+
+    + phone (number, optional) - Filtrar os clientes por telefone (não utilizar simbolos ou espaços para o telefone)
+        + Exemplo: `47999888777`
+
+    + social_revenue (number, optional) - Filtrar os clientes por CPF/CNPJ (com ou sem os caracteres)
+        + Exemplo: `00011122255` / `00.111.222/3333-44`
+
+    + client_name (string, optional) - Filtrar os clientes por nome (com ou sem acentuação)
+        + Exemplo: `Tiflux Sistema de gestao`
+    
+    + status (boolean, optional) - Filtra clientes ativos / inativos.
+        + Default: true
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ListClient)
+
+    + Headers
+    
+            X-Total-Clients: 17
+        
+    + Body
+
+            [
+                {
+                    "id": "1",
+                    "name": "Roberto e Pedro Joalheria",
+                    "equipment_counter": 29,
+                    "group_counter": 4,
+                    "social": "Roberto e Pedro Joalheria Ltda",
+                    "social_revenue": "04.615.832/0001-73",
+                    "status": true,
+                    "user_counter": 5,
+                    "addresses": [
+                        {
+                            "id": 542,
+                            "cep": 893266412,
+                            "city": "Cidade XYZ",
+                            "state": SC,
+                            "number": 13,
+                            "street": "Rua X",
+                            "complement": null,
+                            "neighborhood": "Centro"
+                        }
+                    ]
+                    "contacts": [
+                        {
+                            "id": "1",
+                            "number": "(47) 3444-4444",
+                            "owner": "João",
+                            "email": "email@dominio.com",
+                            "use": 2,
+                        }
+                    ],
+                    "entities": [
+                        {
+                            "id": 1,
+                            "fields": [
+                        {
+                            "name": "Field Text",
+                            "value": "-",
+                            "options": [],
+                            "required": true,
+                            "field_type": "text",
+                            "entity_field_id": 1
+                        }
+                            ],
+                            "menu_item": true,
+                            "entity_name": "client custom fields",
+                            "entity_description": "Descrição"
+                        }
+                    ]
+                },
+                {
+                    "id": "2",
+                    "name": "Sophie e Marlene Fotografias",
+                    "equipment_counter": 5,
+                    "group_counter": 2,
+                    "phones": []
+                    "social": "Sophie e Marlene Fotografias Ltda",
+                    "social_revenue": "90.086.791/0001-07",
+                    "status": false,
+                    "user_counter": 2,
+                }
+            ]
+
+
+### Exibir Cliente [GET /api/v1/clients/{id}]
+
+Este método retorna informações detalhadas sobre um cliente específico. É necessário inserir o `id` do cliente para encontrá-lo.
+
++ Parameters
+    + id (number, required) - Identificador do cliente, no formato Inteiro.
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ViewClient)
+
+### Criar Cliente [POST /api/v1/clients{?link_desks,link_technical_groups}]
+
+Este método possibilita a criação de um novo cliente com suas informações básicas. A adição de outros dados do cliente, como endereços e contato, estará disponível em uma versão futura da API.
+
++ Parameters
+    + link_desks (boolean, optional) - Vincula o cliente cadastrado em todas as mesas ativas da organização.
+        + Default: false
+    + link_technical_groups (boolean, optional) - Vincula o cliente cadastrado em todos os grupos de atendentes da organização.
+        + Default: false
+
++ Attributes (CreateClient)
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
+    + Body
+
+            {
+                "name": "Roberto e Pedro",
+                "anotations": "Any Client annotations here",
+                "desk_ids": [43,44],
+                "technical_group_ids": [3,3],
+                "work_folder": "Documents",
+                "estadual_registration": "960.016.791.776",
+                "municipal_registration": "74553",
+                "quarterly_billing": true,
+                "quarterly_bill_client_id": 2,
+                "social": "Roberto e Pedro",
+                "social_revenue": "12.123.123/0001-73",
+                "entities": [
+                   {
+                        "id": 10,
+                        "field_id": 27,
+                        "value": "2222222222"
+                    },
+                    {
+                        "id": 10,
+                        "field_id": 27,
+                        "option": 9,
+                        "value": ""
+                    }
+                ]
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (CreateClientResponse)
+
+    + Body
+
+            {
+               "name": "Roberto e Pedro",
+                "social": "Roberto e Pedro",
+                "social_revenue": "12.123.123/0001-73",
+                "municipal_registration": "74553",
+                "estadual_registration": "960.016.791.776",
+                "quarterly_billing": true,
+                "quarterly_bill_client_id": 2,
+                "anotations": "Any Client annotations here",
+                "work_folder": "Documents",
+                "organization_id": 1,
+                "created_at": "2023-02-09 12:39:01",
+                "updated_at": "2023-02-09 12:39:01",
+                "id": 61258,
+                "new_entities_values": [
+                    "2222222222",
+                    "true"
+                ],
+                "desk_ids": [
+                    43,
+                    44
+                ],
+                "technical_group_ids": [
+                    3,
+                    3
+                ]
+            }
+
+### Atualizar Cliente [PUT /api/v1/clients/{id}]
+
+Este método permite atualizar as informações básicas do cliente. A atualização de outros dados do cliente, como endereços e contato, estará disponível em uma versão futura da API.
+
++ Parameters
+    + id (number, required) - Identificador do cliente.
+
++ Attributes (UpdateClient)
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
+    + Body
+
+            {
+                "name": "Sophia e Nelson Publicidade e Propaganda",
+                "anotations": "Any Client annotations here",
+                "work_folder": "Documents",
+                "desk_ids": [43],
+                "technical_group_ids": [3,3],
+                "estadual_registration": "729.408.306.238",
+                "municipal_registration": null,
+                "quarterly_billing": false,
+                "quarterly_bill_client_id": null,
+                "social": "Sophia e Nelson Publicidade e Propaganda ME",
+                "social_revenue": "48.416.126/0001-78",
+                "active": true,
+                "entity":  {
+                    "id": 10,
+                    "field_id": 15,
+                    "value": "2001/01/24"
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Attributes (UpdateClientResponse)
+
+    + Body
+
+            {
+                "id": 15,
+                "name": "Sophia e Nelson Publicidade e Propaganda",
+                "anotations": "Any Client annotations here",
+                "work_folder": "Documents",
+                "estadual_registration": "729.408.306.238",
+                "municipal_registration": null,
+                "quarterly_billing": false,
+                "quarterly_bill_client_id": null,
+                "social": "Sophia e Nelson Publicidade e Propaganda ME",
+                "social_revenue": "48.416.126/0001-78"
+                "active": true,
+                "new_entity_value": "01/01/2001"
+            }
+
+## Cofre de Senhas [/api/v1/vaults]
+
+### Listar todos os cofres [GET /api/v1/vaults?{offset}=1&{limit}=15]
+
+Este método retorna uma lista com o nome e o ID de todos os cofres de senhas da organização. 
+
++ Parameters
+
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de cofres retornados na página. O máximo é 15.
+        + Default: `15`
+
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (Vault)
+
+
+    + Body
+
+            [
+              {
+                "vault_name": "Recursos",
+                "vault_id": 18451
+              }
+            ]
+
+### Listar todas as senhas de um cofre [GET /api/v1/vaults/{vault_id}?{offset}=1&{limit}=15&{client_id}=1]
+                                    
+Este método retorna uma lista com todas as senhas de um determinado cofre, sendo obrigatório informar o ID do cofre na requisição. 
+
++ Parameters
+     + vault_id (number) - Identificador do cofre de senhas.
+
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de cofres retornados na página. O máximo é 15.
+        + Default: `15`
+    + client_id (number, optional) - Retorna as senhas de um único cliente (O parâmetro deve ser o ID do cliente).
+        + Default: null
+
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (PasswordVaults)
+
+
+    + Body
+
+            [
+              {
+                    "name": "Câmeras",
+                    "description": "Câmera 1",
+                    "user": "João",
+                    "password": "123abc",
+                    "folder_id": 12345,
+                    "client_id": 4563
+              }
+            ]
+
+### Listar todas as pastas de um cofre [GET /api/v1/vaults/{vault_id}/folders?{offset}=1&{limit}=15]
+
+Este método retorna uma lista com todas as pastas de um determinado cofre, sendo obrigatório informar o ID do cofre na requisição. 
+
++ Parameters
+    + vault_id (number) - Identificador do cofre de senhas.
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de pastas retornadas na página. O máximo é 15.
+        + Default: `15`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (FoldersVaults)
+
+
+    + Body
+
+            [
+               {
+                    "id": 125,
+                    "folder_name": "Câmeras",
+                    "parent_folder_id": null
+                }
+            ]
+
+### Listar todas as senhas dentro de uma pasta pertencente a um cofre [GET /api/v1/vaults/{vault_id}/folders/{folder_id}?{offset}=1&{limit}=15]
+
+Este método retorna uma lista com todas as senhas dentro de uma unica pastas de um determinado cofre, sendo obrigatório informar o ID do cofre e da pasta na requisição. 
+
++ Parameters
+    + vault_id (number) - Identificador do cofre de senhas.
+    + folder_id (number) - Identificador da pasta dentro do cofre de senhas.
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de senhas retornadas na página. O máximo é 15.
+        + Default: `15`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (PasswordVaults)
+
+
+    + Body
+
+            [
+               {
+                    "name": "Câmeras",
+                    "description": "Câmera 1",
+                    "user": "João",
+                    "password": "123abc",
+                    "folder_id": 12345,
+                    "client_id": 4563
+                }
+            ]
+
+## Comunicação Interna nos tickets [/api/v1/tickets/{ticket_number}/internal_communications]
+
+### Listar Comunicações Internas [GET /api/v1/tickets/{ticket_number}/internal_communications{?offset,limit}]
+
+Este método retorna uma lista de comunicações internas em um determinado ticket.
+
++ Parameters
+    + ticket_number (number, required) - Numero do ticket no formato Inteiro.
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro
+        + Default: `1`
+    + limit (number, optional) - Numero de comunicações internas retornadas na página. O máximo é 200.
+        + Default: `20`
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (BaseInternalCommunication)
+
+    + Headers
+    
+            X-Total-Internal-Communications: 4
+        
+    + Body
+
+            [
+                {
+                     "id": 1,
+                     "created_at": "2020-04-13T16:55:51.817-03:00",
+                     "text": "<p>Some internal communication text here</p>",
+                     "ticket_number": "253",
+                     "user": {
+                         "id": 1,
+                         "name": "João",
+                     },
+                      "files": "0"
+                },
+                {
+                    "id": 2,
+                    "created_at": "2020-04-13T16:55:56.817-03:00",
+                    "text": "<p>Some other internal communication text here</p>",
+                    "ticket_number": "253",
+                    "user": {
+                        "id": 2,
+                        "name": "Maria",
+                    },
+                    "files": "0"
+                }
+            ]
+
+### Exibir Comunicação Interna [GET /api/v1/tickets/{ticket_number}/internal_communications/{id}]
+
+Este método retorna uma comunicação interna específica de um determinado ticket. É necessário inserir o `id` da comunicação interna para encontrá-la.
+
++ Parameters
+    + id (number, required) - Identificador da comunicação interna no formato de um número inteiro
+    + ticket_number (number, required) - Numero do ticket no formato Inteiro.
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (BaseInternalCommunication)
+
+    + Body
+
+            {
+                "id": 1,
+                "created_at": "2020-04-13T16:55:51.817-03:00",
+                "text": "<p>Some internal communication text here</p>",
+                "ticket_number": "253",
+                "user": {
+                    "id": 1,
+                    "name": "João",
+                },
+                 "files": [{
+                    "id": 3333,
+                    "url": "https://file-url",
+                    "name": "file-name.png",
+                    "size": 23444
+                }]
+            }
+
+### Criar Comunicação Interna [POST /api/v1/tickets/{ticket_number}/internal_communications]
+
+Este método te permite criar uma comunicação interna em um determinado ticket.
+
++ Parameters
+    + ticket_number (number, required) - Numero do ticket no formato Inteiro.
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
+    + Attributes
+
+        + text (string, required) - O texto da comunicação interna
+
+    + Body
+
+            {
+                "text": "Some internal communication text here"
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (BaseInternalCommunication)
+
+    + Body
+
+            {
+                "id": "1",
+                "created_at": "2020-04-13T16:55:51.817-03:00",
+                "text": "<p>Some internal communication text here</p>",
+                "ticket_number": "253",
+                "user": {
+                    "id": 1,
+                    "name": "João",
+                }
+            }
+
+### Adicionar arquivo em resposta interna de ticket [POST /api/v1/tickets/{ticket_number}/internal_communications/{id}/file_upload]
+
+Este método permite adicionar um arquivo de tamanho até 25mb em uma resposta interna de ticket já existente, passando o id da resposta interna no ticket que deseja adicionar o arquivo.
+
++ Parameters
+    + ticket_number (number, required) - Número do ticket no formato Inteiro.
+    + id (number, required) - Id da resposta interna de ticket
+
++ Request
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+            Content-Type: form-data, KEY = file
+
++ Attributes (object)
+
+    + file (required) - O arquivo que deseja fazer upload
+
+    
++ Response 200 (application/json)
+
+    + Attributes 
+        + name (string) - Nome do arquivo adicionado ao ticket
+        + path (string) - Nome do local que o arquivo fica armazenado na nuvem
+        + size (string) - Tamanho em bytes do arquivo adicionado
+        + url (string) - Link do arquivo na nuvem
+    
+    
+    + Body 
+
+            {
+                "name": "1665191034833-0.672-677-1665165887049_0.400_120825_debian_binary",
+                "path": "production/service_desk/ticket_files/archives/230905/original/1665191034833-0.672-677-1665165887049_0.400_120825_debian_binary",
+                "size": 4,
+                "url": "https://s3.sa-east-1.amazonaws.com/uploads-tiflux/production/service_desk/ticket_files/archives/230905/original/1665191034833-0.672-677-1665165887049_0.400_120825_debian_binary"
+            }
+            
+### Deletar arquivo de uma resposta interna de ticket [DELETE /api/v1/tickets/{ticket_number}/internal_communications/{answer_id}/file_upload/{file_id}]
+
+Este método te permite excluir um arquivo de uma determinada resposta interna de ticket.
+
++ Parameters
+    + ticket_number (number, required) - Número do ticket no formato Inteiro.
+    + answer_id (number, required) - Identificador da resposta interna de ticket
+    + file_id (number, required) - Identificador do arquivo no formato Inteiro.
+    
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "message": "File deleted successfully"
+            }
+
+        
+## Contatos [/api/v1/clients/{id}/contacts]
+
+
+### Criar Contato [POST /api/v1/clients/{id}/contacts]
+
+Este método te permite adicionar um contato em um determinado cliente.
+
++ Parameters
+    + id (number, required) - Número do cliente no formato Inteiro.
+
++ Attributes
+    + owner (string, required) - Nome do contato
+    + email (string, required) - E-mail do contato
+    + number (string, required) - Telefone do contato
+    + use (number, required) - Tipo de contato - 0 Pessoal / 1 Comercial
+    
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+    
+    + Body
+
+            {
+                "owner": "Edward",
+                "email": "edward@email.com",
+                "number": "(47) 34000000",
+                "use": 0
+            }
+
++ Response 201 (application/json)
+    
+    + Body
+
+            {
+              "owner": "Edward",
+              "email": "edward@email.com",
+              "number": "(47) 34000000",
+              "client_id": "132256",
+              "organization_id": 5420,
+              "created_at": "2021-03-15 16:50:52",
+              "updated_at": "2021-03-15 16:50:52",
+              "id": 82229
+            }
+            
+### Excluir Contato [DELETE /api/v1/clients/{id}/contacts/{contact_id}]
+
+Este método te permite excluir um endereço de um determinado cliente.
+
++ Parameters
+    + id (number, required) - Número do cliente no formato Inteiro.
+    + contact_id (number, required) - Número do contato no formato Inteiro.
+    
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "message": "Address deleted successfully"
+            }
+   
+   
+## Contratos [/api/v1/contracts]
+
+
+No tiflux podemos cadastrar diferentes tipos de contratos, cada um deles com as suas particularidades. Portando, o método de **Exibir Contrato** possui um comportamento diferente (e retorna valores diferentes), dependendo do tipo de contrato que você deseja visualizar. 
+
+A seguir, está documentado como você pode exibir todos os diferentes tipos de contratos do sistema.
+
+> OBS: A requisição de **Listar Contratos** lista todos os tipos de contratos.
+
+*Para mais informações sobre os diferentes tipos de contrato, você pode acessar o nosso* [Guia de uso](https://guia-de-uso.tiflux.com/sistema/contratos/visualizando-contratos)
+
+### Listar Contratos [GET /api/v1/contracts{?offset,limit,actives,inactives,pending_readjustment}]
+
+Este metódo retorna uma lista de contratos.
+
++ Parameters
+     + offset (number, optional) - Número da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+     + limit (number, optional) - Número de contratos retornados na página. O máximo é 200.
+        + Default: `100`
+     + actives (boolean, optional) - Filtra contratos ativos / inativos.
+        + Default: true     
+     + inactives (boolean, optional) - Filtra contratos ativos / inativos.
+        + Default: true   
+     + pending_readjustment (boolean, optional) - Filtra contratos pendentes de reajuste.
+        + Default: true       
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+    
++ Response 200 (application/json)  
+
+    + Attributes (Contract)
+
+    + Body
+
+            [
+                {
+                    "id": 17560,
+                    "name": "Contrato de Teste",
+                    "type_name": "Crédito Compartilhado",
+                    "client": {
+                            "client_id": 123,
+                            "client_name": "Cliente Teste"
+                    },
+                    "readjustment_date": "2023-02-09",
+                    "expiration_month_date": 12,
+                    "last_rider_value": "$123.00"
+                },
+                {
+                    "id": 45,
+                    "name": "Contrato da XYZ",
+                    "type_name":  "Estações Livre",
+                    "client": {
+                            "client_id": 1350,
+                            "client_name": "XYZ"
+                    },
+                    "readjustment_date": "2023-04-12",
+                    "expiration_month_date": 11,
+                    "last_rider_value": "$2250.00"
+                }
+            ]
+
+### Exibir Contrato - Livre [GET /api/v1/contracts/{id}]
+Documentação sobre como visualizar informações detalhadas de um contrato do tipo livre.
+
++ Parameters
+    + id (number, required) - Identificador do contrato.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+    + Attributes (ShowContractFree)
+
+
+### Exibir Contrato - Horas [GET /api/v1/contracts/{id}]
+Documentação sobre como visualizar informações detalhadas de um contrato de Horas.
+
++ Parameters
+    + id (number, required) - Identificador do contrato.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+    + Attributes (ShowContractHours)
+
+
+### Exibir Contrato - Limite de atendimento [GET /api/v1/contracts/{id}]
+Documentação sobre como visualizar informações detalhadas de um contrato com limite de atendimento.
+
++ Parameters
+    + id (number, required) - Identificador do contrato.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+    + Attributes (ShowContractPerTicket)
+
+### Exibir Contrato - SaaS/Produto [GET /api/v1/contracts/{id}]
+Documentação sobre como visualizar informações detalhadas de um contrato do tipo SaaS/Produto.
+
++ Parameters
+    + id (number, required) - Identificador do contrato.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+    + Attributes (ShowContractSaaS)
+
+
+### Exibir Contrato - Crédito Compartilhado [GET /api/v1/contract_groups/{id}]
+Documentação sobre como visualizar informações detalhadas de um contrato de Crédito Compartilhado.
+
++ Parameters
+    + id (number, required) - Identificador do contrato.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+    + Attributes (ShowContractShared)
+
+### Exibir Contrato - Crédito [GET /api/v1/contracts/{id}]
+Documentação sobre como visualizar informações detalhadas de um contrato de Crédito.
+
++ Parameters
+    + id (number, required) - Identificador do contrato.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+    + Attributes (ShowContractCredit)
+
+
+## Endereços [/api/v1/clients/{id}/addresses]
+
+### Criar Endereço [POST /api/v1/clients/{id}/addresses]
+
+Este método te permite adicionar um endereço em um determinado cliente.
+
++ Parameters
+    + id (number, required) - Número do cliente no formato Inteiro.
+    
++ Attributes (CreateAddress)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+    
+    + Body
+
+            {
+                "cep": "89201-700",
+                "city": "Joinville",
+                "complement": "Casa",
+                "neighborhood": "América",
+                "number": 48,
+                "state": "SC",
+                "street": "R. Otto Boehm"
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (BaseAddress)
+
+    + Body
+
+            {
+                "neighborhood": "América",
+                "state": "SC",
+                "city": "Joinville",
+                "cep": "89201-700",
+                "street": "R. Otto Boehm",
+                "number": 48,
+                "complement": "Casa",
+                "client_id": 1,
+                "organization_id": 1,
+                "created_at": "2020-11-26 11:17:03",
+                "updated_at": "2020-11-26 11:17:03",
+                "id": 27691
+            }
+            
+### Excluir Endereço [DELETE /api/v1/clients/{id}/addresses/{address_id}]
+
+Este método te permite excluir um endereço de um determinado cliente.
+
++ Parameters
+    + id (number, required) - Número do cliente no formato Inteiro.
+    + address_id (number, required) - Número do endereço no formato Inteiro.
+    
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "message": "Address deleted successfully"
+            }
+
+## Grupos de atendentes [/api/v1/technical_groups]
+
+### Listar grupos de atendentes [GET /api/v1/technical_groups]
+
+Este método retorna todos os grupos de atendentes da sua base Tiflux.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes
+        + id (string) - Identificador de grupo de atendente.
+        + name (string) - Nome do grupo de atendente.
+
+    + Body
+
+            [
+                {
+                    "id": 2,
+                    "name": "Técnicos N2"
+                },
+                {
+                    "id": 1,
+                    "name": "Técnicos N1"
+                }
+            ]
+
+## Mesas [/api/v1/desks]
+
+### Listar Mesas [GET /api/v1/desks{?offset,limit}]
+
+Este método retorna uma lista de mesas com informações básicas. Para obter informações detalhadas da mesa, execute a ação “Exibir mesa”.
+
++ Parameters
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de mesas retornadas na página. O máximo é 200.
+        + Default: `20`
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+     + Headers
+     
+            X-Total-Desks: 17
+
+     + Attributes (ListDesk)
+
+     + Body
+
+            [
+                {
+                    "id": 1,
+                    "name": "Teste Mesa",
+                    "display_name": "Teste Mesa",
+                    "active": true,
+                    "icon": "support",
+                    "qtd_clients": 7,
+                    "qtd_technical_groups": 5,
+                } ,
+                {
+                    "id": 2,
+                    "name": "Teste Mesa 2",
+                    "display_name": "Teste Mesa 2",
+                    "active": true,
+                    "icon": "support",
+                    "qtd_clients":10,
+                    "qtd_technical_groups": 2,
+                } 
+            ]
+
+### Exibir Mesa [GET /api/v1/desks/{desk_id}]
+
+Este método retorna informações detalhadas sobre uma mesa específica.
+
++ Parameters
+    + desk_id (number, required) - Identificador da mesa no formato inteiro
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ViewDesk)
+       
+    + Body
+
+            {
+                "id": "1",
+                "name": "Teste",
+                "display_name": "Teste bla",
+                "active": true,
+                "icon": "support",
+                "desk_with_sla": true,
+                "add_ticket_feedback": true,
+                "appointment_type": 1,
+                "attendance_type": 1,
+                "behavior_billed_tickets": "answer_to_client_with_default_message",
+                "behavior_not_billed_tickets": "answer_to_client_with_default_message",
+                "cancelable_tickets": true,
+                "can_stop_sla": true,
+                "created_at": "2020-04-13T16:55:51.817-03:00",
+                "default_revised": 5,
+                "description": "teste teste",
+                "desk_exchange": true,
+                "order": 1,
+                "receiving_new_tickets": true,
+                "reminder": false,
+                "required_fields": {
+                    "attachment_file": true,
+                    "equipment_id": true,
+                    "requestor_name": true,
+                    "requestor_telephone": true
+                    "requestor_ramal": true
+                },
+                "require_service_catalog_open_ticket": false,
+                "review_type": "review_submitter_manager",
+                "services_catalog_item": false,
+                "sla_goal": null,
+                "summary": true,
+                "ticket_review": true,
+                "ticket_with_sla_time": false,
+                "user_without_access_create_ticket": false,
+                "updated_at": "2020-04-13T16:55:51.817-03:00"
+            }
+
+
+### Criar Mesa [POST /api/v1/desks]
+
+Este método possibilita a criação de uma nova mesa com suas informações básicas. A adição de outros dados da mesa, como estágios e status, estará disponível em uma versão futura da API.
+
++ Attributes (CreateDesk)
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
+    + Body
+
+            {
+                "name": "Mesa de testes",
+                "description": "Essa mesa é apenas um teste",
+                "desk_exchange": true,
+                "ticket_review": true,
+                "review_type": "review_manager",
+                "default_revised": "5",
+                "reminder": false,
+                "summary": true,
+                "cancelable_tickets": true,
+                "can_stop_sla": true,
+                "display_name": "Testes",
+                "icon": "bomb",
+                "add_ticket_feedback": true,
+                "ticket_with_sla_time": true,
+                "require_service_catalog_open_ticket": false,
+                "attendance_type": 0,
+                "user_without_access_create_ticket": false,
+                "desk_with_sla": true,
+                "appointment_type": 1
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (CreateDesk)
+        + id (number) - Identificador da mesa.
+
+    + Body
+
+            {
+                "name": "Mesa de testes",
+                "description": "Essa mesa é apenas um teste",
+                "desk_exchange": true,
+                "ticket_review": true,
+                "review_type": "review_manager",
+                "default_revised": "5",
+                "reminder": false,
+                "summary": true,
+                "cancelable_tickets": true,
+                "can_stop_sla": true,
+                "display_name": "Testes",
+                "icon": "bomb",
+                "add_ticket_feedback": true,
+                "ticket_with_sla_time": true,
+                "require_service_catalog_open_ticket": false,
+                "attendance_type": 0,
+                "user_without_access_create_ticket": false,
+                "desk_with_sla": true,
+                "appointment_type": 1
+            }
+
+
+### Listar Prioridades [GET /api/v1/desks/{desk_id}/priorities?{is_deleted}=false]
+
+Este método retorna todas as prioridades de uma mesa específica. É necessário inserir o `id` da mesa para retornar as prioridades.
+
+Se o atributo `require_service_catalog_open_ticket` da mesa for falso, é necessário usar o ID da prioridade ao criar um ticket.
+
++ Parameters
+    + offset (number, optional) - Número da página a ser retornada.
+        + Default: `1`
+    + limit (number, optional) - Número de prioridades retornadas na página. O máximo é 200.
+        + Default: `20`
+    + desk_id (number, required) - Identificador da mesa para filtrar as prioridades.
+    + is_deleted (boolean, optional) - Filtrar as prioridades que já foram deletadas.
+        + Default: `false`
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Headers
+
+            X-Total-Priorities: 2
+
+    + Attributes (Priority)
+
+    + Body
+
+            [
+                {
+                "id": 5,
+                "desk_id": 25,
+                "name": "high_priority_name",
+                "start_time": 4,
+                "end_time": 24,
+                "order": 1
+                },
+                {
+                "id": 6,
+                "desk_id": 25,
+                "name": "low_priority_name",
+                "start_time": 10,
+                "end_time": 48,
+                "order": 2
+                }
+            ]
+            
+### Listar Estágios [GET /api/v1/desks/{desk_id}/stage]
+
+
+Este método retorna todos os estágios de uma mesa específica. É necessário inserir o `id` da mesa para retornar os estágios.
+
+
++ Parameters
+    + desk_id (number) - Identificador da mesa para filtrar as prioridades.
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Headers
+
+            X-Total-Priorities: 2
+
+    + Attributes (Stage)
+
+    + Body
+
+            [
+                {
+                    "id": 123456,
+                    "name": "Administrativo",
+                    "desk_id": 2211
+                },
+                {
+                    "id": 654321,
+                    "name": "Financeiro",
+                    "desk_id": 2211
+                }
+            ]
+    
+### Listar Itens do Catálogo de Serviços [GET /api/v1/desks/{desk_id}/service_catalog_items?{offset}=1&{limit}=20&{is_active}=true]
+
+Este método retorna todos os itens do catálogo de serviços vinculados a uma mesa específica. É necessário inserir o `id` da mesa para retornar os itens do catálogo.
+
+Se o atributo `require_service_catalog_open_ticket` da mesa for verdadeiro, é necessário usar o ID do item do catálogo ao criar um ticket.
+
++ Parameters
+    + desk_id (number, required) - Identificador da mesa para filtrar os itens do catálogo de serviços.
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de items retornados na página. O máximo é 200.
+        + Default: `20`
+    + is_active (boolean, optional) - Filtra itens de catálogo ativos / inativos
+        + Default: true
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+    
++ Response 200 (application/json)
+
+    + Headers
+     
+            X-Total-Items: 2
+
+    + Attributes (ServiceCatalogItem)
+
+    + Body
+
+            [
+                {
+                "id": 5,
+                "item_name": "",
+                "area_name": "",
+                "catalog_name": ""
+                },
+                {
+                "id": 6,
+                "item_name": "",
+                "area_name": "",
+                "catalog_name": ""
+                }
+            ]
+
+## Recursos [/api/v1/equipments]
+
+### Listar Recursos [GET /api/v1/equipments?{offset}=1&{limit}=20&{include_inventory}=false&{include_software}=false&{include_system}=false&{include_entity}=false]
+
+Este método retorna os recursos da sua base Tiflux.
+
++ Parameters
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: 1
+    + limit (number, optional) - Numero de recursos retornados na página. O máximo é 20.
+        + Default: 20
+    + include_inventory (boolean, optional) - Inclui algumas informações do inventário no retorno.
+        + Default: false
+    + include_software (boolean, optional) - Inclui os softwares instalados nas máquinas no retorno.
+        + Default: false
+    + include_system (boolean, optional) - Inclui as informações do sistema operacional no retorno.
+        + Default: false
+    + include_entity (boolean, optional) - Inclui os campos personalizados aplicados nos recursos no retorno.
+        + Default: false
+
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (Equipment)
+
+    + Body
+
+            [{
+                "equipment_id": 123456,
+                "equipment_name": "LAPTOP-57",
+                "equipment_type": "Estação",
+                "equipment_online": true,
+                "acquisition_date": "2024-01-18",
+                "warranty_date": "2024-01-19",
+                "client_name": "Tiflux",
+                "requestor": {
+                  "requestor_name": "Usuario",
+                  "requestor_email": "usuario@Tiflux.com"
+                },
+                "current_user": "UsuarioX",
+                "network_name": "LAPTOP-57",
+                "ipv4": "111.111.1.1, aa10::a7:a112:11af:109e1",
+                "manufacturer_name": "LENOVO",
+                "model": "81S9",
+                "tag": "0513P6",
+                "equipment_group": {
+                  "equipment_group_id": 942,
+                  "equipment_group_name": "Tiflux"
+                },
+                "system": {
+                "name": "Sistema Operacional X",
+                "version": "6.5.1101",
+                "kernel": "64-bit",
+                "service_pack": "Service Pack 1",
+                "timezone": "-03:00:00"
+                },
+                "entities": [
+                {
+                    "id": 127,
+                    "entity_name": "nome entidade",
+                    "entity_description": "descrição da entidade",
+                    "menu_item": false,
+                    "fields": [
+                        {
+                            "entity_field_id": 45,
+                            "field_type": "single_select",
+                            "name": "selecao unica",
+                            "required": false,
+                            "value": "valor do campo",
+                            "options": [
+                                {
+                                    "entity_field_option_id": 46,
+                                    "title": "2",
+                                    "selected": false,
+                                    "value": "true"
+                                },
+                                {
+                                    "entity_field_option_id": 45,
+                                    "title": "1",
+                                    "selected": true,
+                                    "value": "true"
+                                }
+                            ]
+                        }
+              }]
+
+### Exibir Recurso [GET /api/v1/equipments/{equipment_id}]
+
+Este método retorna um recurso da sua base Tiflux.
+
++ Parameters
+    + equipment_id (number, required) - Equipamento que deseja retornar
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (Equipment)
+
+    + Body
+
+            {
+                "equipment_id": 67834,
+                "equipment_name": "LAPTOP-57",
+                "acquisition_date": "2024-01-18",
+                "warranty_date": "2024-01-19",
+                "equipment_type": "Estação",
+                "client_name": "Tiflux",
+                "requestor": {
+                  "requestor_name": "Usuario",
+                  "requestor_email": "usuario@Tiflux.com"
+                },
+                "current_user": "UsuarioX",
+                "network_name": "LAPTOP-57",
+                "ipv4": "192.168.1.5, fe80::1a:8c22:456f:29e1",
+                "manufacturer_name": "LENOVO",
+                "model": "81S9",
+                "tag": "0513P6",
+                "equipment_group": {
+                  "equipment_group_id": 942,
+                  "equipment_group_name": "Tiflux"
+                },
+                "system": {
+                "name": "Sistema Operacional X",
+                "version": "6.5.1101",
+                "kernel": "64-bit",
+                "service_pack": "Service Pack 1",
+                "timezone": "-03:00:00"
+                },
+                "entities": [
+                {
+                    "id": 127,
+                    "entity_name": "nome entidade",
+                    "entity_description": "descrição da entidade",
+                    "menu_item": false,
+                    "fields": [
+                        {
+                            "entity_field_id": 45,
+                            "field_type": "single_select",
+                            "name": "selecao unica",
+                            "required": false,
+                            "value": "valor do campo",
+                            "options": [
+                                {
+                                    "entity_field_option_id": 46,
+                                    "title": "2",
+                                    "selected": false,
+                                    "value": "true"
+                                },
+                                {
+                                    "entity_field_option_id": 45,
+                                    "title": "1",
+                                    "selected": true,
+                                    "value": "true"
+                                }
+                            ]
+                        }
+            }
+
+### Exibir Softwares [GET /api/v1/equipments/softwares/{equipment_id}]
+
+Este método retorna um recurso da sua base Tiflux.
+
++ Parameters
+    + equipment_id (number, required) - Equipamento que deseja retornar junto aos softwares.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (Software)
+
+    + Body
+
+            {
+                "equipment_id": 67834,
+                "equipment_name": "LAPTOP-57",
+                "softwares": [
+                {
+                    "name": "Software example 1",
+                    "version": "3.0.6",
+                    "vendor": "Software"
+                },
+                {
+                    "name": "Software example 2",
+                    "version": "66.0.3",
+                    "vendor": "Software"
+                },
+                "entities": [
+                {
+                    "id": 127,
+                    "entity_name": "nome entidade",
+                    "entity_description": "descrição da entidade",
+                    "menu_item": false,
+                    "fields": [
+                        {
+                            "entity_field_id": 45,
+                            "field_type": "single_select",
+                            "name": "selecao unica",
+                            "required": false,
+                            "value": "valor do campo",
+                            "options": [
+                                {
+                                    "entity_field_option_id": 46,
+                                    "title": "2",
+                                    "selected": false,
+                                    "value": "true"
+                                },
+                                {
+                                    "entity_field_option_id": 45,
+                                    "title": "1",
+                                    "selected": true,
+                                    "value": "true"
+                                }
+                            ]
+                        }
+            }
+
+### Exibir Sistema Operacional [GET /api/v1/equipments/systems/{equipment_id}]
+
+Este método retorna informações operacionais sobre um determinado equipamento.
+
++ Parameters
+    + equipment_id (number, required) - Equipamento que deseja retornar junto ao sistema operacional.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (System)
+
+    + Body
+
+            [
+               {
+                  "equipment_id":1234,
+                  "antivirus":[
+                     {
+                        "name":"Antivírus X",
+                        "update":"266256",
+                        "timestamp":""
+                     }
+                  ],
+                  "updates":{
+                     "patch":"0",
+                     "security":"0"
+                  },
+                  "operating_system":{
+                     "name":"Sistema Operacional X",
+                     "version":"10.0.18362",
+                     "kernel":"64 bits",
+                     "service_pack":null
+                  }
+               }
+            ]
+
+    
+### Listar Sistema Operacional [GET /api/v1/equipments/systems]
+
+Este método retorna uma lista com informações operacionais sobre uma lista de determinados equipamentos.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (System)
+
+    + Body
+
+            [
+               {
+                  "equipment_id":5678,
+                  "antivirus":[
+                     {
+                        "name":"Antivírus Y",
+                        "update":"266240",
+                        "timestamp":""
+                     }
+                  ],
+                  "updates":{
+                     "patch":"0",
+                     "security":"0"
+                  },
+                  "operating_system":{
+                     "name":"Sistema Operacional Y",
+                     "version":"10.0.17134",
+                     "kernel":"64 bits",
+                     "service_pack":null
+                  }
+               }
+            ]
+
+## Respostas dos tickets [/api/v1/tickets/{ticket_number}/answer]
+
+### Listar Respostas [GET /api/v1/tickets/{ticket_number}/answers{?offset,limit}]
+
+Este método retorna uma lista de respostas existentes em um determinado ticket.
+
++ Parameters
+    + ticket_number (number, required) - Numero do ticket no formato Inteiro.
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro
+        + Default: `1`
+    + limit (number, optional) - Numero de respostas retornadas na página. O máximo é 200.
+        + Default: `20`
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (BaseListAnswer)
+
+    + Headers
+    
+            X-Total-Answers: 17
+        
+    + Body
+
+            [
+                {
+                    "id": "1",
+                    "author": null,
+                    "created_at": "2020-04-13T16:55:51.817-03:00",
+                    "name": "<p>Some answer text here</p>",
+                    "ticket_number": 253,
+                    "files": "0",
+                    "user": {
+                        "id": "1",
+                        "name": "Teste",
+                    }
+                },
+                {
+                    "id": "2",
+                    "author": "José",
+                    "created_at": "2020-04-13T16:57:51.817-03:00",
+                    "name": "<p>Some other answer text here</p>",
+                    "ticket_number": "253",
+                    "files": "0",
+                    "user": null
+                }
+            ]
+
+### Exibir Resposta [GET /api/v1/tickets/{ticket_number}/answers/{id}]
+
+Este método retorna uma resposta específica de um determinado ticket. É necessário inserir o `ticket_number` e o `id` da resposta para encontrá-la.
+
++ Parameters
+    + id (number, required) - Identificador da resposta no formato Inteiro.
+    + ticket_number (number, required) - Numero do ticket no formato Inteiro.
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ShowAnswer)
+
+    + Body
+
+            {
+                "id": "1",
+                "author": null,
+                "created_at": "2020-04-13T16:55:51.817-03:00",
+                "name": "<p>Some answer text here</p>",
+                "ticket_number": "253",
+                "user": {
+                    "id": "1",
+                    "name": "Teste",
+                },
+                "files": [{
+                    "id": 3333,
+                    "url": "https://file-url",
+                    "name": "file-name.png",
+                    "size": 23444
+                }]
+            }
+
+### Criar Resposta [POST /api/v1/tickets/{ticket_number}/answers]
+
+Este método permite criar uma resposta em um ticket específico.
+
+As notificações de respostas são enviadas ao usuário se estiverem configuradas no perfil dele em "Minha Conta". 
+
+Para evitar que o usuário receba notificações de suas próprias respostas, é preciso incluir o `user_id` dele na requisição. 
+
+Caso a organização possua uma licença de whitelabel de e-mail, a assinatura do usuário pode ser enviada utilizando o parâmetro `with_signature`.
+
++ Parameters
+    + ticket_number (number, required) - Numero do ticket no formato Inteiro.
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
+    + Attributes (object)
+        + name (string, required) - Texto da resposta
+        + answer_name (string) - Nome do autor da resposta
+        + user_type (enum) - Tipo do usuário que está respondendo
+            + client (string) - Cliente. Default: true.
+            + attendant - Atendente
+        + user_id (number) - Identificador do usuário.
+        + with_signature (boolean) - Dita se será enviada a assinatura do usuário na comunicação. 
+        É obrigatório informar um `user_id` para usar esse atributo.
+        Default: `False`
+
+    + Body
+
+            {
+                "name": "Resposta via API",
+                "answer_name": "Usuário da API",
+                "user_type": "attendant",
+                "user_id": 1,
+                "with_signature": True
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (BaseAnswer)
+
+    + Body
+
+            {
+                "id": 1,
+                "created_at": "2024-01-25 18:16:16",
+                "updated_at": "2024-01-25 18:16:16",
+                "answer_time": "2024-01-25T18:16:16.279Z",
+                "name": "<p>Some answer text here</p>",
+                "ticket_number": 253,
+                "user_id": 1,
+                "organization_id": 1,
+                "author": "[API] Nome do responsável",
+                "answer_origin": 1,
+                "active": "true",
+                "signature": "Answer sent with signature"
+            }
+            
+
+### Adicionar arquivo em resposta de ticket [POST /api/v1/tickets/{ticket_number}/answers/{id}/file_upload]
+
+Este método permite adicionar um arquivo de tamanho até 25mb em uma resposta de ticket já existente, passando o id da resposta do ticket que deseja adicionar o arquivo.
+
++ Parameters
+    + ticket_number (number, required) - Número do ticket no formato Inteiro.
+    + id (number, required) - Id da resposta de ticket
+
++ Request
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+            Content-Type: form-data, KEY = file
+
++ Attributes (object)
+
+    + file (required) - O arquivo que deseja fazer upload
+
+    
++ Response 200 (application/json)
+
+    + Attributes 
+        + name (string) - Nome do arquivo adicionado ao ticket
+        + path (string) - Nome do local que o arquivo fica armazenado na nuvem
+        + size (string) - Tamanho em bytes do arquivo adicionado
+        + url (string) - Link do arquivo na nuvem
+    
+    
+    + Body 
+
+            {
+                "name": "1665191034833-0.672-677-1665165887049_0.400_120825_debian_binary",
+                "path": "production/service_desk/ticket_files/archives/230905/original/1665191034833-0.672-677-1665165887049_0.400_120825_debian_binary",
+                "size": 4,
+                "url": "https://s3.sa-east-1.amazonaws.com/uploads-tiflux/production/service_desk/ticket_files/archives/230905/original/1665191034833-0.672-677-1665165887049_0.400_120825_debian_binary"
+            }
+
+### Deletar arquivo de uma resposta de ticket [DELETE /api/v1/tickets/{ticket_number}/answers/{answer_id}/file_upload/{file_id}]
+
+Este método te permite excluir um arquivo de uma determinada resposta de ticket.
+
++ Parameters
+    + ticket_number (number, required) - Número do ticket no formato Inteiro.
+    + answer_id (number, required) - Identificador da resposta de ticket
+    + file_id (number, required) - Identificador do arquivo no formato Inteiro.
+    
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "message": "File deleted successfully"
+            }
+
+## Solicitantes geral [/api/v1/requestors]
+
+### Listar solicitantes [GET /api/v1/requestors]
+
+Este método lista os solicitantes todos os clientes.
+
++ Parameters
+    + client_id (number, optional) - Informa em qual cliente solicitante pertence.
+    + offset (number, optional) - Numero da solicitantes a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de solicitantes retornados na página. O máximo é 200.
+        + Default: `20`
+    + telephone (number, optional) - Filtrar os solicitantes por telefone (não utilizar simbolos ou espaços para o telefone)
+        + Exemplo: `47999888777`
+    + include_entity (boolean, optional) - Inclui os campos personalizados.
+        + Default: false
+    
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+        
++ Response 201 (application/json)
+    + Attributes (BaseRequestor)
+    
+    + Body
+
+            [
+              {
+                "id": 235720,
+                "client_id": 2131,
+                "client_name": "teste",
+                "name": "Solicitante teste",
+                "email": "requestor@email.com",
+                "telephone": "45999999999",
+                "extension": null,
+                "entities": [
+                        {
+                            "id": 1,
+                            "fields": [
+                        {
+                            "name": "Field Text",
+                            "value": "-",
+                            "options": [],
+                            "required": true,
+                            "field_type": "text",
+                            "entity_field_id": 1
+                        }
+                            ],
+                            "menu_item": true,
+                            "entity_name": "requestor custom fields",
+                            "entity_description": "description"
+                        }
+                    ]
+              },
+              {
+                "id": 229850,
+                "client_id": 2135,
+                "client_name": "teste",
+                "name": "Solicitante XYZ",
+                "email": "xyz@email.com.br",
+                "telephone": null,
+                "extension": null,
+                "entities": [
+                        {
+                            "id": 1,
+                            "fields": [
+                        {
+                            "name": "Field Text",
+                            "value": "-",
+                            "options": [],
+                            "required": true,
+                            "field_type": "text",
+                            "entity_field_id": 1
+                        }
+                            ],
+                            "menu_item": true,
+                            "entity_name": "requestor custom fields",
+                            "entity_description": "description"
+                        }
+                    ]
+              }
+            ]
+            
+
+
+## Solicitantes [/api/v1/clients/{id}/requestors]
+
+### Criar solicitante [POST /api/v1/clients/{client_id}/requestors]
+
+Este método cria solicitantes em um determinado cliente, é possível cadastrar até 50 solicitantes com uma requisição.
+
++ Parameters
+    + client_id (number, required) - Informa em qual cliente será criado o solicitante.
+    
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+    
+    + Body
+
+            [
+                {
+                    "name": "João",
+                    "email": "joao@email.com",
+                    "telephone": 47999999999,
+                    "can_open_ticket": true
+                },
+                {
+                    "name": "John Doe",
+                    "email": "john@doe.com",
+                    "telephone": 47999999999,
+                    "can_open_ticket": false 
+                }
+            ]
+        
++ Response 201 (application/json)
+    + Attributes (CreateRequestor)
+    
+    + Body
+
+            [
+                {
+                  "name": "João",
+                  "email": "joao@email.com",
+                  "telephone": "47999999999",
+                  "can_open_ticket": true
+                  "organization_id": 1,
+                  "client_id": 132256,
+                  "created_at": "2021-03-15 16:47:44",
+                  "updated_at": "2021-03-15 16:47:44",
+                  "id": 235720
+                },
+                {
+                  "name": "John Doe",
+                  "email": "john@doe.com",
+                  "telephone": "47999999999",
+                  "can_open_ticket": false,
+                  "organization_id": 1,
+                  "client_id": 132256,
+                  "created_at": "2021-03-15 16:47:44",
+                  "updated_at": "2021-03-15 16:47:44",
+                  "id": 235720
+                }
+            ]
+
+### Listar solicitantes [GET /api/v1/clients/{client_id}/requestors{?include_entity}{?offset}{?limit}{?telephone}]
+
+Este método lista os solicitantes de um determinado cliente.
+
++ Parameters
+    + client_id (number, required) - Informa em qual cliente solicitante pertence.
+    + offset (number, optional) - Numero da solicitantes a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de solicitantes retornados na página. O máximo é 200.
+        + Default: `20`
+    + telephone (number, optional) - Filtrar os solicitantes por telefone (não utilizar simbolos ou espaços para o telefone)
+        + Exemplo: `47999888777`
+    + include_entity (boolean, optional) - Inclui os campos personalizados.
+        + Default: false
+    
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+        
++ Response 201 (application/json)
+    + Attributes (BaseRequestor)
+    
+    + Body
+
+            [
+              {
+                "id": 235720,
+                "client_id": 2131,
+                "name": "Solicitante teste",
+                "email": "requestor@email.com",
+                "telephone": "45999999999",
+                "extension": null,
+                "entities": [
+                        {
+                            "id": 1,
+                            "fields": [
+                        {
+                            "name": "Field Text",
+                            "value": "-",
+                            "options": [],
+                            "required": true,
+                            "field_type": "text",
+                            "entity_field_id": 1
+                        }
+                            ],
+                            "menu_item": true,
+                            "entity_name": "requestor custom fields",
+                            "entity_description": "description"
+                        }
+                    ]
+              },
+              {
+                "id": 229850,
+                "client_id": 2135,
+                "name": "Solicitante XYZ",
+                "email": "xyz@email.com.br",
+                "telephone": null,
+                "extension": null,
+                "entities": [
+                        {
+                            "id": 1,
+                            "fields": [
+                        {
+                            "name": "Field Text",
+                            "value": "-",
+                            "options": [],
+                            "required": true,
+                            "field_type": "text",
+                            "entity_field_id": 1
+                        }
+                            ],
+                            "menu_item": true,
+                            "entity_name": "requestor custom fields",
+                            "entity_description": "description"
+                        }
+                    ]
+              }
+            ]
+
+### Editar solicitantes [PUT /api/v1/clients/{client_id}/requestors/{requestor_id}]
+
+Este método possibilita a edição de solicitantes
+
++ Parameters
+    + client_id (number, required) - Informa o cliente em qual o solicitante será editado.
+    + requestor_id (number, required) - Informa qual solicitante será editado.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+    
+    + Body
+
+            {
+                "email": "riara@wenato.com"
+            }
+        
++ Response 200 (application/json)
+    + Attributes (BaseRequestor)
+    
+    + Body
+
+            {
+                "id": 117615,
+                "name": "Nome do solicitante",
+                "email": "riara@wenato.com",
+                "telephone": "47999999999",
+                "extension": "979797",
+                "client_id": 13725,
+                "organization_id": 111,
+                "created_at": "2021-03-04 19:46:24",
+                "updated_at": "2021-04-28 14:40:27"
+            }
+
+### Deletar solicitantes [DELETE /api/v1/clients/{client_id}/requestors/{requestor_id}]
+
+Este método possibilita deletar os solicitantes
+
++ Parameters
+    + client_id (number, required) - Informa o cliente em qual o solicitante será deletado.
+    + requestor_id (number, required) - Informa qual solicitante será deletado.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+    
++ Response 200 (application/json)
+    + Body
+
+            {
+                "message": "Requestor deleted successfully"
+            }
+
+## Usuários [/api/v1/users]
+
+### Listar Usuários [GET /api/v1/users{?is_active}{?offset}{?limit}]
+
+Este método retorna a lista de usuários da sua organização
+
++ Parameters
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de usuários retornados na página. O máximo é 200.
+        + Default: `20`
+    + is_active (boolean, optional) - Filtra usuários ativos / inativos
+        + Default: true
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (array[UserBase]) 
+
+### Exibir usuário [GET /api/v1/users/{user_id}]
+
+Este método retorna um único usuário
+
++ Parameters
+    + user_id (number, required) - Identificador do usuário.
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (UserBase) 
+
+### Criar usuário [POST /api/v1/users]
+
+Este método permite a criação de um novo usuário sendo cliente ou técnico, enviando um convite por e-mail.
+ 
+ 
+ + Attributes (CreateUsers)
+ 
+ 
++ Request (application/json)
+
+    + Body
+
+            {
+                "name": "Xyz",
+                "email": "xyz@email.com",
+                "client_id": 10,
+                "is_client": true,
+                "technical_group_id": null,
+                "role_group_id": null
+            }
+           
+    
++ Response 201 (application/json)
+
+### Editar usuário [PUT /api/v1/users/{user_id}]
+
+Este método permite a edição de um usuário, é necessário apenas a chave que você deseja atualizar e o seu novo valor.
+
+No exemplo todas as chaves estão sendo atualizadas, mas não é necessário enviar todas as chaves.
+
++ Parameters
+    + user_id (number, required) - Identificador do usuário.
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "name": "New name",
+                "email": "newemail@email.com",
+                "password": "NewStrongPassword23",
+                "technical_group_id": 24,
+                "active": true
+            }
+            
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": 124,
+                "name": "New name",
+                "email": "newemail@email.com",
+                "technical_group_id": 24,
+                "active": true,
+                "updated_at": "2021-05-12 13:53:42"
+            }
+
+## Tickets [/api/v1/tickets]
+
+### Listar Tickets [GET /api/v1/tickets?{offset}=1&{limit}=20&{client_id}=1&{desk_id}=1&{stage_id}=3&{status_id}=23&{responsible_id}=1&{start_date}=2022-01-01&{end_date}=2022-08-31&{is_closed}=false&{requestor_id}=1&{include_entity}=true&{include_ticket_reference}=true&{rated}=false&{update_start_datetime}=2019-01-31 00:00:00&{update_end_datetime}=2019-01-31 00:00:00&{created_by_way_of}=7]
+
+Este método retorna uma lista de tickets com informações básicas. Para obter informações detalhadas sobre um ticket, execute a ação “Exibir ticket”.
+
+A seguir, está detalhado o comportamento dos filtros de Data (se utilizado os parâmetros: `start_date`, `end_date`, `update_start_datetime` ou `update_end_datetime`) na requisição de Listar Tickets
+
+###### Sem Filtros Específicos de Data:
+Se nenhum filtro de data for especificado pelo usuário, o sistema aplicará automaticamente os seguintes critérios:
+* **Para Tickets Abertos:** Serão filtrados para exibir os registros dos últimos 12 meses.
+* **Para Tickets Fechados:** Serão filtrados para exibir os registros dos últimos 30 dias.
+
+###### Filtros de Data Específicos:
+Se o usuário optar por fornecer filtros de data, mas a data especificada exceder o período de 1 ano (para tickets abertos) ou 30 dias (para tickets fechados), o sistema ajustará automaticamente os intervalos de data da seguinte maneira:
+* **Para Tickets Abertos:** A data final será definida como um ano após a data inicial fornecida.
+* **Para Tickets Fechados:** A data inicial será definida como 30 dias antes da data final fornecida.
+
+> Se você deseja obter um histórico de tickets da sua organização, tenha em mente esses filtros de data aplicados nessa requisição
+
++ Parameters
+    + is_closed (boolean, optional) - Filtrar tickets abertos / fechados.
+        + Default: `false`
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de tickets retornados na página. O máximo é 200.
+        + Default: `20`
+    + client_id (number, optional) - Filtrar tickets por um cliente específico.
+    + desk_id (number, optional) - Filtrar tickets por mesa.
+    + stage_id (number, optional) - Filtrar tickets por estágio de uma mesa.
+    + status_id (number, optional) - Filtrar tickets por status de uma mesa.
+    + responsible_id (number, optional) - Filtrar tickets pelo responsável.
+    + start_date: `2019-01-31` (string, optional) - Filtrar tickets criados/fechados após uma data.
+    + end_date: `2019-01-31` (string,optional) - Filtrar tickets criados/fechados antes de uma data.
+    + date_type: - Filtrar tickets por data de abertura ou fechamento
+        + Default: `created_at`
+    + date_type (enum) - Filtrar tickets por data de abertura ou fechamento.
+        + created_at (string) - Abertura
+        + closed_between (string) - Fechamento
+        + Default: `created_at`
+    + created_by_way_of: 7 (enum[number], optional) - Filtrar tickets pelo canal de abertura.
+        + Members
+            + `0 (Tiflux Web)`
+            + `1 (Tiflux Agent)`
+            + `2 (Chat Widget)`
+            + `3 (WhatsApp)`
+            + `4 (E-mail)`
+            + `5 (External Form)`
+            + `6 (Tiflux Mobile)`
+            + `7 (Tiflux API)`
+            + `8 (Chat)`
+            + `9 (Recurrent Activity)`
+    + update_start_datetime: `2019-01-31 00:00:00 ` (string, optional) - Filtrar tickets alterados após uma data e hora com offset. 
+    + update_end_datetime: `2019-01-31 00:00:00 ` (string, optional) - Filtrar tickets alterados antes uma data e hora com offset. 
+    + requestor_id (number, optional) - Filtrar tickets por solicitante.
+    + include_entity (boolean, optional) - Exibe os campos personalizados aplicados em tickets.
+    + include_filled_entity (boolean, optional) - Exibe apenas os campos personalizados que não estão vazios aplicados em tickets.
+    + rated (boolean, optional) - Filtrar tickets avaliados / não avaliados (apenas tickets fechados podem ser avaliados, então é necessário usar is_closed=true junto a este filtro).
+    + stage_name: `Pendente` (string, optional) - Filtrar tickets pelo nome do estágio
+    + include_ticket_reference (boolean, optional) - Filtrar informações de referências dos tickets (pai e filhos) 
+        + Default: `false`
+    
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+
+    + Headers
+    
+            X-Total-Tickets: 1
+
+    + Attributes (array[TicketList]) 
+
+### Exibir Ticket [GET /api/v1/tickets/{ticket_number}?{include_filled_entity}=true]
+
+Este método retorna informações detalhadas sobre um ticket específico. É necessário inserir `ticket_number` para encontrá-lo.
+
++ Parameters
+    + ticket_number (number, required) - Numero do ticket.
+    + include_filled_entity (boolean, optional) - Exibe apenas os campos personalizados que não estão vazios aplicados em tickets.
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (TicketView)
+
+### Criar novo Ticket [POST]
+
+Este método possibilita a criação de um novo ticket com suas informações básicas.
+
+Os campos `priority_id` e` services_catalogs_item_id` dependem diretamente da configuração da mesa, se o campo `require_service_catalog_open_ticket` (na mesa) for
+`True`, o campo `services_catalogs_item_id` deve ser preenchido com a id de um item do catálogo de serviço vinculado a esta mesa.
+Caso seja `False`, o campo `priority_id` deve ser preenchido com o id de uma prioridade que esteja cadastrada na mesa.
+
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
+    + Attributes (CreateTicket)
+
++ Response 201 (application/json)
+
+    + Attributes
+        + ticket_number: 123 (required) - Número do ticket
+
+### Criar novo Ticket com Apontamento [POST /api/v1/tickets]
+
+Este método possibilita a criação de um novo ticket com apontamento. O apontamento só será criado para mesas que permitam apontamento sem valorização, caso a mesa seja com valorização, será criado um pré apontamento.
+
+Os campos `priority_id` e` services_catalogs_item_id` dependem diretamente da configuração da mesa, se o campo `require_service_catalog_open_ticket` (na mesa) for
+`True`, o campo `services_catalogs_item_id` deve ser preenchido com a id de um item do catálogo de serviço vinculado a esta mesa.
+Caso seja `False`, o campo `priority_id` deve ser preenchido com o id de uma prioridade que esteja cadastrada na mesa.
+
+
+
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
+    + Attributes (CreateTicketWithAppointment)
+    
+    + Body
+
+            {
+                {
+                  "client_id": 1,
+                  "desk_id": 1,
+                  "stage_id": 1,
+                  "priority_id": 8,
+                  "title": "Nice Ticket",
+                  "followers": "follower1@client.com,follower2@client.com", 
+                  "description": "<p>Nice ticket, have we</p>",
+                  "requestor": {
+                    "name": "Jane Doe",
+                    "email": "jane.doe@client.com"
+                },
+                  "appointment": {
+                    "date": "2022-05-04",
+                    "init_time": "10:00",
+                    "end_time": "11:40",
+                    "user_id": 1,
+                    "description": "Exemplo de descrição do apontamento"
+                },
+                    "telephone": {
+                      "number": "+554733333333",
+                      "extension": "333"
+                    },
+                  "services_catalogs_item_id": 0,
+                  "ticket_reference_number": null
+                }
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (CreateTicketWithAppointment)
+    
+    + Body
+
+            {
+                "ticket_number": 108,
+                "appointment": {
+                    "date": "2022-05-04",
+                    "init_time": "10:00",
+                    "end_time": "11:40",
+                    "user_id": 1,
+                    "description": "Exemplo de descrição do apontamento",
+                }
+            }
+
+### Criar novo Ticket com Pré Apontamento [POST /api/v1/tickets]
+
+Este método possibilita a criação de um novo ticket com pré apontamento.
+
+Os campos `priority_id` e` services_catalogs_item_id` dependem diretamente da configuração da mesa, se o campo `require_service_catalog_open_ticket` (na mesa) for
+`True`, o campo `services_catalogs_item_id` deve ser preenchido com a id de um item do catálogo de serviço vinculado a esta mesa.
+Caso seja `False`, o campo `priority_id` deve ser preenchido com o id de uma prioridade que esteja cadastrada na mesa.
+
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
+    + Attributes (CreateTicketWithPreAppointment)
+    
+    + Body
+
+            {
+              "client_id": 14,
+              "desk_id": 1,
+              "stage_id": 1,
+              "priority_id": 5,
+              "title": "Ticket with pré-appointment",
+              "description": "<p>Nice ticket, have we</p>",
+              "requestor": {
+                "name": "Jane Doe",
+                "email": "teste@teste.com"
+            },
+              "followers": "follower1@client.com,follower2@client.com",
+              "appointment": {
+                "date": "2022-07-20",
+                "init_time": "10:51",
+                "user_id": 31
+            },
+                "telephone": {
+                  "number": "+4733333333",
+                  "extension": "333"
+                },
+              "services_catalogs_item_id": 0,
+              "ticket_reference_number": null
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (CreateTicketWithPreAppointment)
+    
+    + Body
+
+            {
+                "ticket_number": 109,
+                "appointment": {
+                    "date": "2022-05-04",
+                    "init_time": "10:00",
+                    "user_id": 1,
+                }
+            }
+
+### Editar Ticket [PUT /api/v1/tickets/{ticket_number}]
+
+Este método possibilita a edição de um ticket com suas informações básicas.
+
+No momento está sendo possível editar os seguintes campos: 
+responsável, campos personalizados, status, prioridade, catálogo de serviço, estágio e pausar/despausar o SLA do ticket.
+
+OBS: O parâmetro `stopped` é um valor condicional que segue a seguinte regra de negócio do sistema:
+Se o valor for `false`, não é permitido o envio de outros parâmetros. Se o valor for `True`, apenas `stopped` e `stopped_message` serão permitidos.
+
++ Parameters
+    + ticket_number (number, required) - Numero do ticket.
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
+    + Attributes (UpdateTicket)
+    
+    + Body
+
+            {
+                "stage": 1,
+                "entity": {
+                    "id": 4,
+                    "field_id": 7,
+                    "option": 8,
+                    "value": "current value"
+                }
+                "stopped": true,
+                "stop_message": "Teste",
+                "responsible_id": 1,
+                "priority_id": 148,
+                "priority_change_reason": "Teste",
+                "status_id": 121,
+                "services_catalogs_item_id" : 29
+            }
+
++ Response 200 (application/json)
+
+    + Attributes (TicketUpdated)
+
+### Fechar Ticket [PUT /api/v1/tickets/{ticket_number}/close?{catalog_item_id}=1]
+
+Este método permite fechar um ticket informando o item do catalogo de serviços.
+
++ Parameters
+    + ticket_number (number, required) - Numero do ticket.
+    + catalog_item_id (number, optional) - Identificador do item do catalogo de serviços.
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (CloseTicket)
+
+### Reabrir Ticket [PUT /api/v1/tickets/{ticket_number}/reopen]
+
+Este método permite reabrir um ticket fechado.
+
+Só é possível reabrir um ticket que não esteja faturado.
+
+Se você deseja reabrir um ticket pendente de revisão, o ticket será reaberto por Reprovação, sendo assim, é necessário informar o motivo da reprovação no atributo `disapproval_reason`.
+
++ Parameters
+    + ticket_number (required) - Número do ticket.
+
++ Request (application/json)
+
+    + Headers
+            Authorization: Basic YOUR_API_KEY
+    
+    + Attributes
+        + disapproval_reason: (string) - Motivo da reprovação. 
+    
+    + Body 
+        { "disapproval_reason": "Reaberto pela API" }
+
++ Response 200 (application/json)
+
+    + Attributes (ReopenedTicket)
+    
+    + Body 
+        { "message": "Ticket reopened successfully" }
+
+### Adicionar arquivo em ticket [POST /api/v1/tickets/{ticket_number}/file_upload]
+
+Este método permite adicionar um arquivo de tamanho até 25mb em um ticket já existente, passando o número do ticket que deseja adicionar o arquivo pelo `ticket_number` 
+
++ Parameters
+    + ticket_number (number, required) - Numero do ticket.
+
++ Request
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+            Content-Type: form-data, KEY = banner
+
++ Response 200 (application/json)
+
+    + Attributes 
+        + name (string) - Nome do arquivo adicionado ao ticket
+        + path (string) - Nome do local que o arquivo fica armazenado na nuvem
+        + size (string) - Tamanho em bytes do arquivo adicionado
+        + url (string) - Link do arquivo na nuvem
+    
+    
+    + Body 
+
+            {
+                "name": "1665191034833-0.672-677-1665165887049_0.400_120825_debian_binary",
+                "path": "production/service_desk/ticket_files/archives/230905/original/1665191034833-0.672-677-1665165887049_0.400_120825_debian_binary",
+                "size": 4,
+                "url": "https://s3.sa-east-1.amazonaws.com/uploads-tiflux/production/service_desk/ticket_files/archives/230905/original/1665191034833-0.672-677-1665165887049_0.400_120825_debian_binary"
+            }
+
+### Deletar arquivo [DELETE /api/v1/tickets/{ticket_number}/file_upload/{file_id}]
+
+Este método te permite excluir um arquivo de um determinado ticket.
+
++ Parameters
+    + ticket_number (number, required) - Número do ticket no formato Inteiro.
+    + file_id (number, required) - Identificador do arquivo no formato Inteiro.
+    
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "message": "File deleted successfully"
+            }
+
+# Group Relatórios
+
+## Histórico de faturamento [/relatório]
+
+### Listar histórico de faturamentos [GET /api/v1/billings_history{?offset,limit,billing_start_date,billing_end_date,due_start_date,due_end_date,client_id,nfe_number,ticket_number}]
+
+Este método lista os faturamentos
+
++ Parameters
+    + offset (number, optional) - Numero da página a ser retornada, no formato Inteiro.
+        + Default: `1`
+    + limit (number, optional) - Numero de faturamentos retornados na página. O máximo é 200.
+        + Default: `100`
+    + billing_start_date (string, optional) - Retorna os faturamentos a partir de uma data específica de pagamento (Formato: 2022-02-13).
+    + billing_end_date (string, optional) - Retorna os faturamentos até uma data específica de pagamento (Formato: 2022-02-13).
+    + due_start_date (string, optional) - Retorna os faturamentos entre uma data específica de vencimento
+    + due_end_date (string, optional) - (Usado em conjunto ao due_start_date)
+    + client_id (number, optional) - Retorna os faturamentos de determinado cliente.
+    + nfe_number (number, optional) - Retorna o faturamento com nota fiscal definica.
+    + ticket_number (number, optional) - Retorna os faturamentos relacionados ao ticket determinado.
+
++ Request (application/json)
+    
+    + Headers 
+        
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (BaseBilling)
+        
+
+    + Body
+
+            [
+                {
+                    "billing_id": 180015,
+                    "client_id": 157244,
+                    "client_name": "Cliente teste",
+                    "billing_date": "2023-02-07",
+                    "due_date": "2023-02-07",
+                    "real_value": 838.67,
+                    "invoice_number": null,
+                    "reversed": false,
+                    "paid": false
+                },
+                {
+                    "billing_id": 176839,
+                    "client_id": 157244,
+                    "client_name": "Cliente teste",
+                    "billing_date": "2023-01-23",
+                    "due_date": "2023-02-12",
+                    "real_value": 3900.00,
+                    "invoice_number": null,
+                    "reversed": false,
+                    "paid": false
+                }
+            ]
+
+### Exibir faturamento [GET /api/v1/billings_history/{billing_id}]
+
+Este método retorna informações detalhadas sobre um faturamento.
+
++ Parameters
+    + billing_id (number, required) - Identificador do faturamento.
+
++ Request (application/json)
+    
+    + Headers 
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + Attributes (ShowBilling)
+
+    + body
+
+            {
+                "billing_id": 40698,
+                "client_id": 83,
+                "client_name": "Acel",
+                "billing_date": "2023-03-23",
+                "due_date": "2023-04-01",
+                "invoice_number": null,
+                "responsible": "admin",
+                "calculated_value": "2093.88",
+                "discount_value": "213.88",
+                "interest_value": "0.00",
+                "real_value": "1880.00",
+                "reversed": false,
+                "contracts": [
+                    {
+                        "id": 17533,
+                        "name": "Contrato Livree",
+                        "value": "2000.00",
+                        "period": 2,
+                        "billing": "Antecipated",
+                        "due_day": 1,
+                        "modality": 0,
+                        "type_name": "Estações Livre",
+                        "billing_date": "2022-12-01",
+                        "closing_cicle": false,
+                        "discount_value": "0.00",
+                        "fix_month_value": "0.00",
+                        "reference": "October,November"
+                    }
+                ],
+                "extra_values": [
+                    {
+                        "name": "aaaaa",
+                        "reference": "March",
+                        "description": "5 valor aaa",
+                        "extra_value": "5.55",
+                        "ticket_number": 120961
+                    }
+                ],
+                "loose_services": [
+                    {
+                        "name": "Desenvolvimento de Sites",
+                        "reference": "March",
+                        "ticket_number": 120961,
+                        "appointment_id": 922493,
+                        "loose_service_value": "80.33"
+                    }
+                ],
+                "shifts": [
+                    {
+                        "name": "Avulso Joinville",
+                        "value": "35.00",
+                        "reference": "May",
+                        "ticket_number": 120282
+                    }
+                ],
+                "integrations": [
+                    {
+                        "name": "Informa techh",
+                        "status": "PENDING",
+                        "api_key": "$aact_YTU5YTE0...==",
+                        "type_name": "asaas"
+                    },
+                    {
+                        "name": "ContaAzul - 4",
+                        "status": "PENDING",
+                        "type_name": "contaazul"
+                    }
+                ]
+            }
+
+# Group Integrações
+### Listar integrações [GET /api/v1/integrations]
+Este método lista todas as integrações configuradas
+
++ Request (application/json)
+    
+    + Headers 
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+    + Attributes (Integration)
+    
+    + body
+
+            [
+                {
+                    "integration_id": 1,
+                    "integration_type": "contaazul",
+                    "integration_fields": {
+                        "refresh_token": "W7bqtaZCbXYip9pLhZj4bOchnnLcgsbL",
+                        "token_type": "bearer",
+                        "access_token": "xlxJqLjdgaWneV8fV1GVMa1JmJiqOPXB",
+                        "expires_in": "2019-08-20T18:10:02.384-03:00"
+                    },
+                    "integration_active": false,
+                    "integration_token": "442efba2-d767-48be-8f45-c4acc09facec"
+                },
+                {
+                    "integration_id": 2,
+                    "integration_type": "gupshup",
+                    "integration_fields": {
+                        "app_name": "appNameGupShup",
+                        "phonenumber": "917834811114",
+                        "apikey": "0jfkfviio1eqy3sva9mbalas0q84u8mp",
+                        "app_id": "08c1c808-6627-4e12-8195-8d95be170144",
+                        "partner_app_token": "sk_9ced75745413312dgs225j8d64dbecf0"
+                    },
+                    "integration_active": true,
+                    "integration_token": "253b7f8a-d034-4649-80ce-674b2e280e02"
+                }
+            ]
+
+### Listar Templates Gupshup [GET /api/v1/integrations/list_templates_gupshup]
+Este método lista os templates gupshup
+
++ Request (application/json)
+    
+    + Headers 
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + body
+
+            [
+                {
+                    "template_id": 1,
+                    "name": "teste_exemplo",
+                    "category": "MARKETING",
+                    "content": "Teste de mensagem pela conta teste gupshup",
+                    "description": "Mensagem de teste",
+                    "status": "APPROVED"
+                },
+                {
+                    "template_id": 2,
+                    "name": "auth_code",
+                    "category": "AUTHENTICATION",
+                    "content": "Seu código de autenticação é {{1}}",
+                    "description": "Enviar código de autenticação 2FA",
+                    "status": "APPROVED"
+                }
+            ]
+
+### Listar Templates Whatsapp Cloud [GET /api/v1/integrations/list_templates_whatsapp_cloud]
+Este método lista os templates whatsapp cloud
+
++ Request (application/json)
+    
+    + Headers 
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + body
+
+            [
+                {
+                    "template_id": 3,
+                    "name": "marketing_message_",
+                    "category": "MARKETING",
+                    "header": "Cabeçalho da mensagem",
+                    "content": "Teste de mensagem pela conta whatsapp cloud",
+                    "footer": "Rodapé da mensagem",
+                    "keys": ['teste'],
+                    "description": "Mensagem de teste",
+                    "status": "APPROVED"
+                }
+            ]
+
+## Telefonia [/call_histories]
+
+### Listar chamadas [GET /api/v1/call_histories]
+Esse método lista as chamadas
++ Request (application/json)
+    
+    + Headers 
+
+            Authorization: Basic YOUR_API_KEY
+
++ Response 200 (application/json)
+
+    + body
+
+            [
+                {
+                    "call_id": "23",
+                    "requestor_name": "José",
+                    "requestor_telephone": "479999999",
+                    "extension": "44",
+                    "status": "call_ended",
+                    "duration": 230,
+                    "created_at": "2023-10-25 16:36:59",
+                    "updated_at": "2023-10-25 16:36:59"
+                }
+            ]
+
+
+### Atualizar chamada [PUT /api/v1/call_histories/{call_id}]
+
+Este método permite atualizar as informações da chamada.
+
++ Parameters
+    + call_id (number, required) - Identificador da chamada.
+
++ Attributes (UpdateCallHistory)
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
+    + Body
+
+             {
+                    "extension": "44",
+                    "status": "call_ended",
+                    "duration": 230
+                }
+
++ Response 200 (application/json)
+
+    + Attributes (CallHistory)
+
+    + Body
+
+             {
+                    "call_id": "23",
+                    "requestor_name": "José",
+                    "requestor_telephone": "479999999",
+                    "extension": "44",
+                    "status": "call_ended",
+                    "duration": 230,
+                    "created_at": "2023-10-25 16:36:59",
+                    "updated_at": "2023-10-25 16:36:59"
+                }
+
+### Criar chamada [POST /api/v1/call_histories]
+
+Este método permite criar uma chamada
+
++ Parameters
+    + call_id (string, required) - Identificador da chamada.
+    + extension(string, required) - Ramal do solicitante.
+    + requestor_telephone (string, required) - Telefone do solicitante.
+
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Basic YOUR_API_KEY
+
+    + Body
+
+                {
+                    "call_id": "23",
+                    "extension": "44",
+                    "requestor_telephone": "479999999"
+                }
+
+  
++ Response 200 (application/json)
+
+    + Body
+
+             {
+                    "call_id": "23",
+                    "requestor_name": "José",
+                    "requestor_telephone": "479999999",
+                    "extension": "44",
+                    "status": "call_ended",
+                    "duration": 230,
+                    "created_at": "2023-10-25 16:36:59",
+                    "updated_at": "2023-10-25 16:36:59"
+                }
+
+
+# Data Structures
+
+## Integration
++ integration_id (number)  - Id da integração
++ integration_type (string) - Tipo de integração (ContaAzul, Asaas, GitHub, Gupshup, WhatsApp Cloud)
++ integration_fields (object) - Informações extras da integração
+    + refresh_token (string) - Token de renovação
+    + token_type (string) - Tipo de token
+    + access_token (string) - Token de acesso
+    + expires_in (string) - Data de expiração do token de acesso
++ integration_active (boolean) - Integração está ativa
++ integration_token (string) - Token de autenticação da integração
+
+## CallHistory
++ call_id (string)  - Indentificador da chamada
++ requestor_name (string) - Nome do solicitante
++ requestor_telephone (string) - Telefone do solicitante
++ extension (string) - Ramal do solicitante
++ status (string) - Status da chamada
++ duration (number) - Duração da chamada em segundos
+
+## UpdateCallHistory
++ extension (string) - Ramal do solicitante
++ status (string) - Status da chamada
++ duration (number) - Duração da chamada
+
+  
+## CreateRequestor
++ name (string) - Nome do solicitante.
++ email (string) - E-mail do solicitante.
++ telephone (string) - Telefone do solicitante.
++ can_open_ticket (boolean) - Permite o solicitante a abrir tickets caso esteja como true, caso esteja como false esse solicitante abrirá pré tickets.
++ organization_id (number) - Organização em que o solicitante foi criado.
++ client_id (number) - Identificador do cliente no qual o solicitante foi criado.
++ created_at (string) - Momento em que o solicitante foi criado.
++ updated_at (string) - O ultimo momento em que o solicitante foi atualizado.
++ id (number) - Identificador do solicitante.
+
+
+## FeedbackSummary
++ tickets_count (number) - Quantidade de tickets finalizados/revisados.
++ feedback_tickets (number) - Quantidade de tickets avaliados.
++ answers_percentage (number) - Porcentagem de tickets que foram avaliados em relação aos fechados/revisados.
++ customers_evaluated (number) - Quantidade de clientes que avaliaram tickets no período.
++ rating_average (number) - Média de avaliação.
+
+## FeedbackSummaryChats
++ chats_finished (number) - Quantidade de chats finalizados.
++ chats_evaluated (number) - Quantidade de chats avaliados.
++ answers_percentage (number) - Porcentagem de chats avaliados em relação a quantidade de chats fechados
++ clients_evaluated (number) - Quantidade de clientes que avaliaram.
++ rating_average (number) - Nota média das avaliações.
+
+## BaseUser
++ id (number) - Identificador do Usuário
++ name (string) - Nome do Usuário
+
+## BaseBilling
++ billing_id (number) - Identificador do faturamento.
++ client_id (number) - Identificador do cliente.
++ client_name (string) - Nome do cliente.
++ billing_date (number) - Data do faturamento.
++ due_date (number) - Data de vencimento.
++ real_value (number) - Valor real.
++ invoice_number (number) - Número NFe.
++ reversed (boolean) - Estornado.
++ paid (boolean) - Pago.
+
+## ShowBilling
++ billing_id (number) - Identificador do faturamento.
++ client_id (number) - Identificador do cliente.
++ client_name (string) - Nome do cliente.
++ billing_date (number) - Data do faturamento.
++ due_date (number) - Data de vencimento.
++ invoice_number (number) - Número NFe.
++ responsible (string) - Responsável do faturamento. Se foi faturado automaticamente, esse campo irá exibir "Automatically executed by tiflux".
++ calculated_value (number) - Valor calculado.
++ discount_value (number) - Valor do desconto.
++ interest_value (number) - Valor de juros.
++ real_value (number) - Valor real.
++ reversed (boolean) - Estornado.
++ contracts (object) - Contratos.
+    + id (number) - Identificador do contrato.
+    + name (string) - Nome do contrato.
+    + value (number) - Valor do contrato.
+    + period (number) - Quantidade de periodos do contrato sendo faturados.
+    + billing (string) - Faturamento antecipado ou posterior.
+    + due_day (number) - Dia do vencimento.
+    + modality (number) - Identificador da modalidade do contrato.
+    + type_name (string) - Nome do tipo do contrato.
+    + billing_date (number) - Data para faturamento do contrato.
+    + closing_cicle (boolean) - Fechamento de ciclo.
+    + discount_value (number) - Valor do desconto.
+    + fix_month_value (number) - Valor fixo mensal.
+    + reference (string) - Meses referentes do contrato.
++ extra_values (object) - Valores extras.
+    + name (string) - Nome.
+    + reference (string) - Mês referência da valorização.
+    + description (string) - Descrição da valorização.
+    + extra_value (number) - Valor.
+    + ticket_number (number) - Número do ticket referente.
++ loose_services (object) - Serviços avulsos.
+    + name (string) - Nome.
+    + reference (string) - Mês referência do serviço.
+    + ticket_number (number) - Número do ticket referente.
+    + appointment_id (number) - Identificar do apontamento.
+    + loose_service_value (number) - Valor.
++ shifts (object) - Deslocamentos.
+    + name (string) - Nome.
+    + value (number) - Valor.
+    + reference (string) - Mês referência do deslocamento.
+    + ticket_number (number) - Número do ticket referente.
++ integrations (object) - Integrações
+    + name (string) - Nome da integração.
+    + status (string) - Status do faturamento na integração.
+    + api_key (string) - `Api key da integração (Asaas).`
+    + type_name (string) - Nome do tipo da integração.
+
+## FeedbackAssessment
++ ticket_number (number) - Número do ticket que a avaliação está atrelada.
++ ticket_title (string) - Titulo do ticket.
++ client (object)
+    + client_id (number) - Identificador do cliente que fez a avaliação.
+    + client_name (string) - Nome do cliente que fez a avaliação
++ desk (object)
+    + desk_id (number) - Identificador da mesa que a avaliação está atrelada.
+    + desk_name (string) - Nome da mesa que a avaliação está atrelada.
+    + services_catalog (object) 
+        + catalog_name (string) - Nome do catálogo de serviços
+        + catalog_area_name (string) - Nome da area do catálogo de serviços
+        + catalog_item_name (string) - Nome do item selecionado da área do catálogo de serviços
++ revised_in_time (number) - Data em que o ticket foi avaliado para parametro de tempo.
++ requestor (object) 
+    + requestor_name (string) - Nome do solicitante
+    + requestor_email (string) - E-mail do solicitante
++ feedback (object)    
+    + rating (number) - Nota da avaliação.
+    + comments (string) - Comentário da avaliação
++ responsible_name (string) - Nome do responsável do ticket
+
+## ChatFeedbackAssessment
++ chat_id (number) - Identificador do chat
++ rating (object)
+    + date (string) - Data da avaliação do chat
+    + rating (number) - Avaliação
++ client (BaseClient)
++ chat_client_name (string) - Nome do cliente do chat
++ attendant (object)
+    + id (number) - Identificador do responsável do chat
+    + name (string) - Nome do responsável do chat
++ origin (string) - Meio de origem do chat
++ ticket (object)
+    + ticket_number (number, required) - Numero do ticket
+    + ticket_title (string) - Titulo do ticket
+
+## Vault
++ vault_name: Recursos (string) - Nome do cofre de senhas.
++ vault_id: 18451 (number) - Ientificador do cofre de senhas.
+
+## PasswordVaults
++ name: Câmeras (string) - Nome que foi destinado a senha.
++ description: Câmera 1 (string) - Descrição opcional que foi destinado ao campo de senha.
++ user: João (string) - Nome do usuário que registrou a senha.
++ password: 123abc (string) - Senha que foi registrada.
++ folder_id: 12345 (number) - Identificador da pasta que a senha foi salva.
++ client_id: 4563 (number) - Identificador do cliente se este estiver vinculado a senha.
+
+## FoldersVaults
++ id: 125 (number) - Identificador da pasta que está cadastrada dentro do cofre.
++ folder_name: Câmeras (string) - Nome da pasta que está cadastrada dentro do cofre.
++ parent_folder_id: 12 (string) - Identificador da pasta pai. (Está opção será preenchida caso a pasta estiver dentro de outra pasta)
+
+## ScheduleCompromises
++ id: 39291 (number) - Identificador do compromisso.
++ ticket_number: 120821 (number) - Número do Ticket
++ user_id: 1 (number) - Identificador do usuário que está vinculado ao agendamento.
++ client_id: 32 (number) - Identificador do cliente a qual o compromisso está atrelado.
++ description: Ligar as 10h (string) - Descrição do compromisso.
++ start_date (string) - Data e hora do inicio do compromisso.
++ end_date (string) - Data e hora do fim do compromisso.
++ compromise_status: overdue (string) - Status atual do compromisso.
+
+## ScheduleAbsences
++ id: 169 (number) - Identificador do compromisso.
++ title: Reunião (string) - Titulo da ausência.
++ user_id: 1 (number) - Identificador do usuário do usuário que está vinculado a ausência.
++ start_date (string) - Data e hora do inicio da ausência.
++ end_date  (string) - Data e hora do fim da ausência.
+
+## System
++ equipment_id (number) - Identificador do equipamento.
++ antivirus (string) - Nome do antivírus.
++ updates (string) - Informações sobre atualizações do sistema.
++ operating_system (string) - Informações sobre o sistema operacional como nome, versão, kernel, e caso tenha, pacote de serviços.
+
+## Software
++ name (string) - Nome do software.
++ version (string) - Versão do software.
++ vendor (string) - Nome da empresa responsável pelo software.
+
+## Equipment
++ equipment_id (number) - Identificador do Recurso.
++ equipment_name (string) - Nome do recurso.
++ acquisition_date (string) - Data de aquisição do recurso. No formato YYYY-MM-DD,
++ warranty_date (string) - Data de garantia do recurso. No formato YYYY-MM-DD,
++ equipment_type (string) - Tipo do recurso.
++ equipment_online (boolean)  - Recurso online ou offline
++ client_name (string) - Nome do cliente no qual o recurso pertence.
++ requestor (object)
+    + requestor_name (string) - Nome do solicitante
+    + requestor_email (string) - E-mail do solicitante
++ current_user (string) - Usuário que está utilizando o recurso no sistema operacional.
++ network_name (string) - Nome de rede do recurso.
++ ipv4 (string) - IPV4 do recurso.
++ manufacter_name (string) - Nome do fabricante.
++ model (string) - Modelo do recurso.
++ tag (string) - Tag do recurso
++ equipment_group (object) - Identificador e nome do grupo de recursos no qual o recurso pertence.
+    + equipment_group_id (number)
+    + equipment_group_name (string)
++ system (System) - Informações do sistema operacional
++ entities (EquipmentEntities) - Campos personalizados possíveis no ticket
+
+## EquipmentEntities
++ id (number) - Identificador da entidade
++ entity_name (string) - Nome da entidade
++ entity_description (string) - Descrição da entidade
++ menu_item (boolean) - Se a entidade atual é um item de menu
++ fields (EquipmentEntityFields) - Campos da entidade
+
+## EquipmentEntityFields
++ entity_field_id (number) - Identificador do campo de entidade
++ field_type (string) - Tipo da entidade
++ name (string) - Nome do campo
++ required (boolean) - Se o campo é obrigatório
++ value (string) - Valor atribuido a opção
++ options (EquipmentEntityFieldOptions) - Opções do campo da entidade
+
+## EquipmentEntityFieldOptions
++ entity_field_option_id (number) - Identificador da opção
++ title (string) - Nome da opção
++ selected (boolean) - Se a opção está selecionada.
+
+## Contact
++ id: 120 (number) - Identificador do Telefone.
++ use: 1  (number) - Identificador pessoal / comercial
++ number: `(47) 3012-3456` (string) - Numero do contato.
++ email: `email@dominio.com` (string) - E-mail do contato.
++ owner: null (string) - Nome do contato.
+
+## Contract
++ id: 120 (number) - Identificador do contrato.
++ name (string) - Nome do contrato.
++ type_name (string) - Nome do tipo do contrato.
++ client_id (number) - Identificador do cliente.
++ client_name (string) - Nome do cliente.
++ readjustment_date (string) - Data de reajuste.
++ expiration_month_date (number) - Mês da expiração.
++ last_rider_value (string) - Último valor do adendo.
+
+## ShowContractFree
++ id: 17562 (number) - Identificador do contrato.
++ cancelled: false (boolean) - Se o contrato está cancelado ou não.
++ active: true (boolean) - Se o contrato está ativo ou não.
++ name: Contrato teste (string) - Nome do contrato.
++ modality: Free (string) - Modalidade do contrato.
++ client (object)
+    + id: 61258 (number) - Identificador do cliente.
+    + name: Cliente 1 (string) - Nome do cliente.
+    + social_revenue: 82.991.308/0001-00 (number) - CPF/CNPJ do cliente.
++ type_name: Estações Livre (string) - Nome do tipo do contrato.
++ attendant: Mauro (string) - Atendente.
++ financial (object)
+    + finance: Antecipated (string) - Se o pagamento é antecipado ou posterior.
+    + billing_period: Monthly (string) - Ciclo de faturamento.
+    + closing_period: Monthly (string) - Ciclo de fechamento.
+    + start_date: 2023-01-01 (string) - Data de início.
+    + updated_at: 2023-05-29 (string) - Última atualização.
+    + readjustment_date: `2023-03-31 (Readjustment 3 Months(s))` (string) - Data de reajuste.
+    + expiration_date: Indeterminate (string) - Data de expiração.
+    + monthly_value: 1000 (number) - Valor mensal.
+    + due_day: 5 (number) - Dia de vencimento.
+    + automatic_renewal: false (boolean) - Renovação automática.
++ contract_details (object)
+    + max_resources: 1 (number) - Máximo de recursos.
+    + additional_resource_value: 1 (number) - Valor adicional de recurso.
+    + allow_appointment_when_pending_readjustment: false (boolean) - Permitir apontamentos quando pendente de reajuste.
+    + billing_in_batch: true (boolean) - Faturamento em lote.
+    + automatic_billing: false (boolean) - Faturamento automático.
+    + discount_value: 0.00 (string) - Desconto.
+    + billing: `7 day(s) before due date` (string) - Faturamento.
+    + rider_description: null (string) - Descrição do adendo.
+    + technical_observations: null (string) - Observações técnicas.
+
+## ShowContractHours
++ id: 17562 (number) - Identificador do contrato.
++ cancelled: false (boolean) - Se o contrato está cancelado ou não.
++ active: true (boolean) - Se o contrato está ativo ou não.
++ name: Contrato teste (string) - Nome do contrato.
++ modality: Hours (string) - Modalidade/tipo do contrato.
++ client (object)
+    + id: 61258 (number) - Identificador do cliente.
+    + name: Cliente 1 (string) - Nome do cliente.
+    + social_revenue: 82.991.308/0001-00 (number) - CPF/CNPJ do cliente.
++ type_name: Horas (string) - Nome do tipo do contrato.
++ attendant: Mauro (string) - Atendente.
++ financial (object)
+    + finance (enum) - Indica se o pagamento é antecipado ou posterior.
+        + Members
+            + Antecipated (string)
+            + Postdate (string)
+    + billing_period: Monthly (string) - Ciclo de faturamento.
+    + closing_period: Monthly (string) - Ciclo de fechamento.
+    + start_date: `2023-01-01` (string) - Data de início.
+    + updated_at: `2023-05-29` (string) - Data da última atualização.
+    + readjustment_date: `2023-03-31 (Readjustment 3 Months(s))` (string) - Data de reajuste.
+    + expiration_date: Indeterminate (string) - Data de expiração. Exibe "Indeterminate" caso não houver expiração configurada no contrato.
+    + monthly_value: 1000 (number) - Valor mensal.
+    + due_day: 5 (number) - Dia de vencimento.
+    + automatic_renewal: false (boolean) - Renovação automática.
++ contract_details (object)
+    + quantity_hours_per_cicle: `10 hour(s) per month` (string) - Quantidade de horas por ciclo.
+    + surplus_hour_value: 110 (number) - Valor da hora excedente.
+    + billing_in_batch: true (boolean) - Faturamento em lote.
+    + automatic_billing: false (boolean) - Faturamento automático.
+    + discount_value: 0.00 (string) - Desconto.
+    + billing: `7 day(s) before due date` (string) - Faturamento.
+    + rider_description: null (string) - Descrição do adendo.
+    + technical_observations: null (string) - Observações técnicas.
+
+## ShowContractCumulativeHours
++ id: 58636 (number) - Identificador do contrato.
++ cancelled: false (boolean) - Se o contrato está cancelado ou não.
++ active: true (boolean) - Se o contrato está ativo ou não.
++ name: `Horas Cumulativas 10 Horas` (string) - Nome do contrato.
++ modality: Cumulative hours (string) - Modalidade/tipo do contrato.
++ client (object)
+    + id: 61258 (number) - Identificador do cliente.
+    + name: Cliente 1 (string) - Nome do cliente.
+    + social_revenue: 82.991.308/0001-00 (number) - CPF/CNPJ do cliente.
++ type_name: `Contrato de Horas Cumulativas` (string) - Nome do tipo do contrato.
++ attendant: Mauro (string) - Atendente.
++ financial (object)
+    + finance (enum) - Indica se o pagamento é antecipado ou posterior.
+        + Members
+            + Antecipated (string)
+            + Postdate (string)
+    + billing_period: Monthly (string) - Ciclo de faturamento.
+    + closing_period: Monthly (string) - Ciclo de fechamento.
+    + start_date: `2023-01-01` (string) - Data de início.
+    + updated_at: `2023-05-29` (string) - Data da última atualização.
+    + readjustment_date: `2023-03-31 (Readjustment 3 Months(s))` (string) - Data de reajuste.
+    + expiration_date: Indeterminate (string) - Data de expiração. Exibe "Indeterminate" caso não houver expiração configurada no contrato.
+    + monthly_value: 1000 (number) - Valor mensal.
+    + due_day: 10 (number) - Dia de vencimento.
+    + automatic_renewal: false (boolean) - Renovação automática.
++ contract_details (object)
+    + billing_in_batch: `10 hour(s) per month` (string) - Quantidade de horas por ciclo.
+    + surplus_hour_value: 110 (number) - Valor da hora excedente.
+    + billing_in_batch: true (boolean) - Faturamento em lote.
+    + automatic_billing: false (boolean) - Faturamento automático.
+    + discount_value: 0.00 (string) - Desconto.
+    + billing: `7 day(s) before due date` (string) - Faturamento.
+    + rider_description: null (string) - Descrição do adendo.
+    + technical_observations: null (string) - Observações técnicas.
+
+## ShowContractPerTicket
++ id: 17562 (number) - Identificador do contrato.
++ cancelled: false (boolean) - Se o contrato está cancelado ou não.
++ active: true (boolean) - Se o contrato está ativo ou não.
++ name: Contrato teste (string) - Nome do contrato.
++ modality: `Per ticket` (string) - Modalidade/tipo do contrato.
++ client (object)
+    + id: 61258 (number) - Identificador do cliente.
+    + name: Cliente 1 (string) - Nome do cliente.
+    + social_revenue: 82.991.308/0001-00 (number) - CPF/CNPJ do cliente.
++ type_name: `Contrato com limite de atendimento` (string) - Nome do tipo do contrato.
++ attendant: Mauro (string) - Atendente.
++ financial (object)
+    + finance (enum) - Indica se o pagamento é antecipado ou posterior.
+        + Members
+            + Antecipated (string)
+            + Postdate (string)
+    + billing_period: Monthly (string) - Ciclo de faturamento.
+    + closing_period: Monthly (string) - Ciclo de fechamento.
+    + start_date: `2023-01-01` (string) - Data de início.
+    + updated_at: `2023-05-29` (string) - Data da última atualização.
+    + readjustment_date: `2023-03-31 (Readjustment 3 Months(s))` (string) - Data de reajuste.
+    + expiration_date: Indeterminate (string) - Data de expiração. Exibe "Indeterminate" caso não houver expiração configurada no contrato.
+    + monthly_value: 1000 (number) - Valor mensal.
+    + due_day: 1 (number) - Dia de vencimento.
+    + automatic_renewal: false (boolean) - Renovação automática.
++ contract_details (object)
+    + tickets_quantity: `10 tickets(s) per month` (string) - Quantidade de tickets.
+    + surplus_ticket_value: 110 (number) - Valor ticket excedente.
+    + billing_in_batch: true (boolean) - Faturamento em lote.
+    + automatic_billing: false (boolean) - Faturamento automático.
+    + discount_value: 0.00 (string) - Desconto.
+    + billing: `7 day(s) before due date` (string) - Faturamento.
+    + rider_description: null (string) - Descrição do adendo.
+    + technical_observations: null (string) - Observações técnicas.
+
+## SaaSItems
++ name: Tiflux (string) - Nome
++ quantity: 2 (number) - Quantidade.
++ monthly_item_value: 20.5 (number) - Valor mensal do item.
++ monthly_total_value: 20.5 (number) - Valor total anual do item.
+
+## ShowContractSaaS
++ id: 17562 (number) - Identificador do contrato.
++ cancelled: false (boolean) - Se o contrato está cancelado ou não.
++ active: true (boolean) - Se o contrato está ativo ou não.
++ name: Contrato teste (string) - Nome do contrato.
++ modality: `SaaS` (string) - Modalidade/tipo do contrato.
++ client (object)
+    + id: 61258 (number) - Identificador do cliente.
+    + name: Cliente 1 (string) - Nome do cliente.
+    + social_revenue: 82.991.308/0001-00 (number) - CPF/CNPJ do cliente.
++ type_name: `Contrato do Tipo SaaS/Produto` (string) - Nome do tipo do contrato.
++ attendant: Mauro (string) - Atendente.
++ financial (object)
+    + finance (enum) - Indica se o pagamento é antecipado ou posterior.
+        + Members
+            + Antecipated (string)
+            + Postdate (string)
+    + billing_period: Monthly (string) - Ciclo de faturamento.
+    + closing_period: Monthly (string) - Ciclo de fechamento.
+    + start_date: `2023-01-01` (string) - Data de início.
+    + updated_at: `2023-05-29` (string) - Data da última atualização.
+    + readjustment_date: `2023-03-31 (Readjustment 3 Months(s))` (string) - Data de reajuste.
+    + expiration_date: Indeterminate (string) - Data de expiração. Exibe "Indeterminate" caso não houver expiração configurada no contrato.
+    + monthly_value: 1000 (number) - Valor mensal.
+    + due_day: 1 (number) - Dia de vencimento.
+    + automatic_renewal: false (boolean) - Renovação automática.
++ contract_details (object)
+    + allow_appointment_when_pending_readjustment: false (boolean) - Permitir apontamentos quando pendente de reajuste.
+    + billing_in_batch: true (boolean) - Faturamento em lote.
+    + automatic_billing: false (boolean) - Faturamento automático.
+    + discount_value: 0.00 (string) - Desconto.
+    + billing: `7 day(s) before due date` (string) - Faturamento.
+    + rider_description: null (string) - Descrição do adendo.
+    + technical_observations: null (string) - Observações técnicas.
++ items (array[SaaSItems])
+
+## contractsShared
++ name: Tiflux (string) - Nome
++ external_value: 30 (number) - Valor hora externo.
++ internal_value: 10 (number) - Valor hora interno.
++ remote_value: 5 (number) - Valor hora remoto.
+
+## ShowContractShared
++ id: 17562 (number) - Identificador do contrato.
++ cancelled: false (boolean) - Se o contrato está cancelado ou não.
++ active: true (boolean) - Se o contrato está ativo ou não.
++ name: Contrato teste (string) - Nome do contrato.
++ modality: `Shared` (string) - Modalidade/tipo do contrato.
++ client (object)
+    + id: 61258 (number) - Identificador do cliente.
+    + name: Cliente 1 (string) - Nome do cliente.
+    + social_revenue: 82.991.308/0001-00 (number) - CPF/CNPJ do cliente.
++ type_name: `Crédito compartilhado` (string) - Nome do tipo do contrato.
++ attendant: Mauro (string) - Atendente.
++ financial (object)
+    + finance (enum) - Indica se o pagamento é antecipado ou posterior.
+        + Members
+            + Antecipated (string)
+            + Postdate (string)
+    + billing_period: Monthly (string) - Ciclo de faturamento.
+    + closing_period: Monthly (string) - Ciclo de fechamento.
+    + monthly_credit: 1000 (number) - Valor mensal.
+    + start_date: `2023-01-01` (string) - Data de início.
+    + updated_at: `2023-05-29` (string) - Data da última atualização.
+    + readjustment_date: `2023-03-31 (Readjustment 3 Months(s))` (string) - Data de reajuste.
+    + expiration_date: Indeterminate (string) - Data de expiração. Exibe "Indeterminate" caso não houver expiração configurada no contrato.
+    + due_day: 1 (number) - Dia de vencimento.
+    + automatic_renewal: false (boolean) - Renovação automática.
++ contract_details (object)
+    + fix_month_value: false (boolean) - Permitir apontamentos quando pendente de reajuste.
+    + billing_in_batch: true (boolean) - Faturamento em lote.
+    + automatic_billing: false (boolean) - Faturamento automático.
+    + discount_value: 0.00 (string) - Desconto.
+    + billing: `7 day(s) before due date` (string) - Faturamento.
+    + rider_description: null (string) - Descrição do adendo.
+    + technical_observations: null (string) - Observações técnicas.
++ contracts (array[contractsShared])
+
+## ShowContractCredit
++ id: 17562 (number) - Identificador do contrato.
++ cancelled: false (boolean) - Se o contrato está cancelado ou não.
++ active: true (boolean) - Se o contrato está ativo ou não.
++ name: Contrato teste (string) - Nome do contrato.
++ modality: `Credit` (string) - Modalidade/tipo do contrato.
++ client (object)
+    + id: 61258 (number) - Identificador do cliente.
+    + name: Cliente 1 (string) - Nome do cliente.
+    + social_revenue: 82.991.308/0001-00 (number) - CPF/CNPJ do cliente.
++ type_name: `Contrato de Crédito` (string) - Nome do tipo do contrato.
++ attendant: Mauro (string) - Atendente.
++ financial (object)
+    + finance (enum) - Indica se o pagamento é antecipado ou posterior.
+        + Members
+            + Antecipated (string)
+            + Postdate (string)
+    + billing_period: Monthly (string) - Ciclo de faturamento.
+    + closing_period: Monthly (string) - Ciclo de fechamento.
+    + start_date: `2023-01-01` (string) - Data de início.
+    + updated_at: `2023-05-29` (string) - Data da última atualização.
+    + readjustment_date: `2023-03-31 (Readjustment 3 Months(s))` (string) - Data de reajuste.
+    + expiration_date: Indeterminate (string) - Data de expiração. Exibe "Indeterminate" caso não houver expiração configurada no contrato.
+    + monthly_credit: 1000 (number) - Crédito mensal.
+    + due_day: 1 (number) - Dia de vencimento.
+    + automatic_renewal: false (boolean) - Renovação automática.
++ contract_details (object)
+    + fix_month_value: 1000 (number) - Valor fixo mensal.
+    + internal_hour_value: 100 (number) - Valor hora interno.
+    + remote_hour_value: 110 (number) - Valor hora remoto.
+    + external_hour_value: 150 (number) - Valor hora externo.
+    + billing_in_batch: true (boolean) - Faturamento em lote.
+    + automatic_billing: false (boolean) - Faturamento automático.
+    + discount_value: 0.00 (string) - Desconto.
+    + billing: `7 day(s) before due date` (string) - Faturamento.
+    + rider_description: null (string) - Descrição do adendo.
+    + technical_observations: null (string) - Observações técnicas.
+
+## BasePhone
++ id (number) - Identificador do Telefone.
++ number (string, required) - Número do telefone.
++ owner (string) - Nome do proprietário do telefone.
++ use  (enum, required)
+    + Members
+        + 0 (number) - Número do telefone pessoal.
+        + 1 (number) - Número do telefone comercial.
++ organization_id (number) - Identificador da Organização.
++ client_id (number) - Identificador do Cliente.
+
+## CreatePhone
++ number (string, required) - Número do telefone.
++ owner (string) - Nome do proprietário do telefone.
++ use  (enum, required)
+    + Members
+        + 0 (number) - Número do telefone pessoal.
+        + 1 (number) - Número do telefone comercial.
+
+## Address
++ id: 36 (number) - Identificador do Endereço
++ cep: 89123-456 (string) - Código postal.
++ city: Joinville (string) - Nome da cidade
++ state: SC (string) - Estado da cidade
++ number: 23 (number) - Número do endereço
++ street: Rua Maranhão (string) - Rua do endereço
++ complement: rua (string) - Complemento
++ neighborhood: Saguaçu (string) - Bairro
+
+## BaseAddress
++ id: 36 (number) - Identificador do Endereço
++ cep (string, required) - Código postal.
++ city (string, required) - Nome da cidade.
++ complement (string) - Complemento.
++ neighborhood (string, required) - Bairro.
++ number (string, required) - Número.
++ state (string, required) - Sigla do estado. Apenas 2 letras.
++ street (string, required) - Nome da rua.
++ organization_id (number) - Identificador da Organização.
++ client_id (number) - Identificador do Cliente.
+
+## CreateAddress
++ cep (string, required) - Código postal.
++ city (string, required) - Nome da cidade.
++ complement (string) - Complemento.
++ neighborhood (string, required) - Bairro.
++ number (string, required) - Número.
++ state (string, required) - Sigla do estado. Apenas 2 letras.
++ street (string, required) - Nome da rua.
+
+## BaseClient
++ id (number) - Identificador do cliente
++ name (string) - Nome fantasia do cliente.
+
+## ListClient (BaseClient)
++ equipment_counter (number) - Quantidade de equipamentos do cliente.
++ group_counter (number) - Numero de grupos de recurso do cliente.
++ addresses (array[Address])
++ contacts (array[Contact])
++ social (string) - Nome da organização.
++ social_revenue (string) - Razão social (CPF/CNPJ).
++ status (boolean) - Retorna true se o cliente estiver ativo. Caso contrário será retornado false.
++ user_counter (number) - Quantidade de usuários cadastrados no cliente.
++ entities (object) 
+    + id (number) - Identificador do campo personalizado.
+    + fields (object)
+        + name (string) - Nome do campo personalizado.
+        + value (number) - Valor do campo.
+        + options
+        + required (boolean) - Campo obrigatório.
+        + field_type (string) - Tipo do campo.
+        + entity_field_id (string) - Identificador do valor do campo personalizado.
+    + menu_item (boolean) - Item de menu.
+    + entity_name (string) - Nome do campo personalizado.
+    + entity_description (string) - Descrição do campo personalizado.
+
+## ClientDesk
++ id: 11 (number) - Identificador da mesa
++ name: Empresa teste (string) - Nome da mesa
++ description: Fazendo o teste de descrição (string) - Descrição da mesa
+
+## Mail
++ id: 12 (number) - Identificador do email
++ email: emaildoJose@teste.com (string) - Email
++ owner: jose (string) - Dono do email
+
+## ViewClient
++ id: 61203 (number) - Identificador do cliente
++ name: Informatica Lucas (string) - Nome fantasia do cliente.
++ anotations: Qualquer anotação (string) - Qualquer texto de anotação do cliente.
++ equipment_counter (number) - Quantidade de equipamentos do cliente.
++ estadual_registration: 123456789 (string) - Inscrição Estadual
++ group_counter: 1 (number) - Numero de grupos de recurso do cliente.
++ municipal_registration: null (string) - Inscrição Municipal.
++ quarterly_billing (boolean) - Faturamento quarteirizado ativo.
++ quarterly_bill_client_id (number) - Só será preenchido com o id de outro cliente, se 'faturamento quarteirizado' for `true`. Caso contrário, será `null`.
++ social: Informatica Lucas (string) - Nome da organização.
++ social_revenue: 82.184.821/0001-90 (string) - Razão social (CPF/CNPJ).
++ status (boolean) - Retorna true se o cliente estiver ativo. Caso contrário será retornado false.
++ user_counter (number) - Quantidade de usuários cadastrados no cliente.
++ organization_id (number) - Identificador da organização
++ updated_at: `2023-04-13 13:37:38` (string) - Data e hora da ultima alteração
++ desks (array[ClientDesk]
++ contacts (array[Contact])
++ entities (array[EntitiesClient]) 
+
+## EntitiesClient
+ + id: 1 (number) - Identificador do campo personalizado.
+ + fields (object)
+    + name: Campo de texto (string) - Nome do campo personalizado.
+    + value (number) - Valor do campo.
+    + options
+    + required: false (boolean) - Campo obrigatório.
+    + field_type: text (string) - Tipo do campo.
+    + entity_field_id: 1 (string) - Identificador do valor do campo personalizado.
++ menu_item: true (boolean) - Item de menu.
++ entity_name: Nome do campo personalizado (string) - Nome do campo personalizado.
++ entity_description: Descrição do campo (string) - Descrição do campo personalizado.
+
+## EntititesCreateClient
+ + id: 1 (number) - Identificador do campo personalizado.
+ + field_id: 1 (number) - Identificador do valor do campo personalizado.
+ + options: 3 (number) - Opção do campo da entidade.
+ + value: 123123123 (string) - Valor do campo.
+
+## CreateClientResponse
++ id (number) - Identificador do cliente.
++ anotations (string) - Qualquer texto de anotação do cliente. [Limitado a 255 caracteres]
++ desk_ids (number) - Identificador de cada mesa que será vinculada ao cliente.
++ technical_group_ids (number) - Identificador de cada grupo técnico que será vinculado ao cliente.
++ work_folder (string) - Qualquer texto de anotação do cliente. [Limitado a 255 caracteres]
++ estadual_registration (string) - Inscrição Estadual.
++ municipal_registration (string) - Inscrição Municipal.
++ name (string) - Nome fantasia do cliente.
++ quarterly_billing (boolean) - Faturamento quarteirizado ativo.
++ quarterly_bill_client_id (number) - Só será preenchido com o id de outro cliente, se 'faturamento quarteirizado' for `true`. Caso contrário, será `null`.
++ social (string) - Nome da organização. [Limitado a 255 caracteres]
++ social_revenue (string) - Razão social (CPF/CNPJ).
++ new_entities_values (string) - Valores dos campos personalizados.
+
+
+## CreateDesk
++ name (string) - Nome da mesa.
++ description (string) - Descrição da mesa.
++ desk_exchange (boolean) - Permitir que esta mesa de serviço interaja com outras mesas.
++ ticket_review (boolean) - Ativar fluxo de revisão de ticket.
++ review_type (enum)
+    + Members
+        + review_manager (string) - Revisão pelo gerente técnico.
+        + review_submitter (string) - Revisão pelo solicitante do ticket.
+        + review_submitter_manager (string) - Revisão pelo solicitante e gerente técnico.
++ default_revised (string) - Tempo máximo para a revisão do ticket.
++ reminder (boolean) - Enviar o lembrete de revisão.
++ summary (boolean) - Enviar o resumo de revisão.
++ cancelable_tickets (boolean) - Permitir que tickets sejam cancelados.
++ can_stop_sla (boolean) - Permite que o SLA dos tickets sejam parados e retomados
++ display_name (string) - Nome de exibição da mesa.
++ icon (string) - Icone da mesa (os nomes podem ser consultados dentro da sessão de ícones no Tiflux).
++ add_ticket_feedback (boolean) - Adicionar avaliação ao ticket.
++ ticket_with_sla_time (boolean) - Permite adicionar horas ao SLA.
++ require_service_catalog_open_ticket (boolean) - Selecionar item do catálogo de serviço antes de abrir o ticket.
++ attendance_type (enum)
+    + Members
+        + 1 (number) - Somente os atendentes listados nos grupos de atendentes da mesa poderão manipular tickets.
+        + 2 (number) - Todos os atendentes da organização poderão manipular os tickets.
++ user_without_access_create_ticket (boolean) - Define se técnicos sem acesso a mesa podem criar ticket.
++ desk_with_sla (boolean) - Ativar o controle de SLA na mesa.
++ appointment_type (enum)
+    + Members
+        + 1 (number) - Ativar apontamentos com valorização.
+        + 2 (number) - Ativar apontamentos sem valorização
+        + 3 (number) - Desativar apontamentos.
+
+## CreateClient
++ anotations (string) - Qualquer texto de anotação do cliente. [Limitado a 255 caracteres]
++ desk_ids (number) - Identificador de cada mesa que será vinculada ao cliente.
++ technical_group_ids (number) - Identificador de cada grupo técnico que será vinculado ao cliente.
++ work_folder (string) - Qualquer texto de anotação do cliente. [Limitado a 255 caracteres]
++ estadual_registration (string) - Inscrição Estadual.
++ municipal_registration (string) - Inscrição Municipal.
++ name (string) - Nome fantasia do cliente.
++ quarterly_billing (boolean) - Faturamento quarteirizado ativo.
++ quarterly_bill_client_id (number) - Só será preenchido com o id de outro cliente, se 'faturamento quarteirizado' for `true`. Caso contrário, será `null`.
++ social (string) - Nome da organização. [Limitado a 255 caracteres]
++ social_revenue (string) - Razão social (CPF/CNPJ).
++ entity (EntititesCreateClient) - Adicionar um campo personalizado por vez.
++ entities (array[EntititesCreateClient]) - Adicionar mais de um campo personalizado por vez.
+
+## UpdateClient
++ anotations (string) - Qualquer texto de anotação do cliente.
++ estadual_registration (string) - Inscrição Estadual.
++ municipal_registration (string) - Inscrição Municipal.
++ desk_ids (number) - Identificador de cada mesa que será vinculada ao cliente.
++ technical_group_ids (number) - Identificador de cada grupo técnico que será vinculado ao cliente.
++ name (string) - Nome fantasia do cliente.
++ quarterly_billing (boolean) - Faturamento quarteirizado ativo.
++ quarterly_bill_client_id (number) - Só será preenchido com o id de outro cliente, se 'faturamento quarteirizado' for `true`. Caso contrário, será `null`.
++ social (string) - Nome da organização.
++ social_revenue (string) - Razão social (CPF/CNPJ).
++ active (boolean) - Define se o cliente está ativo ou inativo.
++ entity (EntititesCreateClient) - Altera um campo personalizado por vez.
++ entities (array[EntititesCreateClient]) - Altera mais de um campo personalizado por vez.
+
+## UpdateClientResponse
++ id (number) - Identificador do cliente.
++ anotations (string) - Qualquer texto de anotação do cliente.
++ estadual_registration (string) - Inscrição Estadual.
++ municipal_registration (string) - Inscrição Municipal.
++ desk_ids (number) - Identificador de cada mesa que será vinculada ao cliente.
++ technical_group_ids (number) - Identificador de cada grupo técnico que será vinculado ao cliente.
++ name (string) - Nome fantasia do cliente.
++ quarterly_billing (boolean) - Faturamento quarteirizado ativo.
++ quarterly_bill_client_id (number) - Só será preenchido com o id de outro cliente, se 'faturamento quarteirizado' for `true`. Caso contrário, será `null`.
++ social (string) - Nome da organização.
++ social_revenue (string) - Razão social (CPF/CNPJ).
++ active (boolean) - Define se o cliente está ativo ou inativo.
++ new_entity_value (string) - Valor do campo personalizado.
+
+
+## BaseDesk
++ id (number) - Identificador da mesa.
++ name (string) - Nome da mesa.
++ display_name (string) - Nome de exibição da mesa.
++ active (boolean) - Se a mesa está ativa.
++ icon (string) - Nome do ícone da mesa.
++ desk_with_sla (boolean) - Se a mesa está com SLA ativo.
+
+
+## ListDesk (BaseDesk)
++ qtd_clients (number) - Numero de clientes vinculados a mesa.
++ qtd_technical_groups (number) - Numero de grupo de atendentes vinculados a mesa.
+
+## ViewDesk (BaseDesk)
++ add_ticket_feedback (boolean) - Se a avaliação dos tickets está ativa.
++ appointment_type (enum) 
+    + Members
+        + 1 (number) - Apontamentos com valorização.
+        + 2 (number) - Apontamentos sem valorização.
+        + 3 (number) - Apontamentos desativados.
++ attendance_type (enum)
+    + Members
+        + 1 (number) - Apenas os atendentes listados abaixo serão capazes de manipular os tickets.
+        + 2 (number) - Todos os participantes da organização serão capazes de manipular os tickets.
++ behavior_billed_tickets (enum) 
+    + Members
+        + open_new_ticket - Abrir um novo ticket.
+        + answer_to_client_with_default_message - Responder ao cliente com mensagem padrão.
++ behavior_not_billed_tickets (enum) 
+    + Members
+        + open_new_ticket - Abrir um novo ticket.
+        + reopen_ticket_closed - Reabrir o ticket fechado.
+        + answer_to_client_with_default_message - Responder ao cliente com mensagem padrão.
++ cancelable_tickets (boolean) - Permitir que os tickets sejam cancelados.
++ can_stop_sla (boolean) - Permite que o SLA de tickets sejam parados e retomados.
++ created_at (string) - Data e horário em que a mesa foi criada.
++ default_revised (number) - Tempo limite de revisão.
++ description (string) - Descrição da mesa.
++ desk_exchange (boolean) - Permitir que esta mesa de serviço interaja mesa com outras mesas.
++ order (number) - Desk order in the desk list
++ receiving_new_tickets (boolean) - Receber novos tickets.
++ reminder (boolean) - Enviar lembrete de revisão por e-mail.
++ required_fields (RequiredFields) - Campos obrigatórios ao abrir ticket nessa mesa.
++ require_service_catalog_open_ticket (boolean) - Selecionar item do catalogo de serviços na abertura do ticket.
++ review_type (enum) 
+    + Members
+        + review_submitter - Revisão pelo solicitante
+        + review_manager - Revisão pelo gerente técnico
+        + review_submitter_manager - Revisão pelo solicitante e gerente técnico
++ services_catalog_item (boolean) - Finalização de ticket atrelada ao item do catálogo
++ sla_goal (number) - Meta de cumprimento do SLA
++ summary (boolean) - Enviar resumo dos tickets e revisão
++ ticket_review (boolean) - Revisão do ticket ativa
++ ticket_with_sla_time (boolean) - Permitir adicionar horas ao SLA
++ user_without_access_create_ticket (boolean) - Técnicos sem acesso à mesa podem criar tickets
++ updated_at (string) - Data e horário em que a mesa foi alterada
+
+## RequiredFields
++ attachment_file (boolean) - O campo do anexo é obrigatório na criação do ticket
++ equipment_id (boolean) - O campo grupo de recursos/local é obrigatório na criação do ticket
++ requestor_name (boolean) - O campo solicitante é obrigatório na criação do ticket
++ requestor_telephone (boolean) - O campo telefone é obrigatório na criação do ticket
++ requestor_ramal (boolean) - O campo ramal é na criação do ticket
+
+## Priority
++ id (number) - Identificador da prioridade
++ desk_id (number) - Identificador da mesa
++ name (string) - Nome da prioridade
++ start_time (number) - Prazo para atendimento
++ end_time (number) - Prazo para solução
++ order (number) - Ordem da prioridade na mesa
+
+## Stage
++ id (number) - Identificador do estágio
++ name (string) - Nome do estágio
++ desk_id (number) - Identificador da mesa
+
+
+## ServiceCatalogItem
++ id (number) - Identificador do catalogo de serviços
++ item_name (string) - Nome do item no catalogo de serviços
++ area_name (string) - Nome da área de conhecimento no catalogo de serviços
++ catalog_name (string) - Nome do catalogo de serviços
+
+## BaseAnswer
++ name (string) - O texto da resposta em formato HTML.
++ ticket_number (number) - Número do ticket em que esta resposta foi adicionada.
++ author (string) - Nome do autor. 
+Se a resposta for enviada com um `user_id`, será adicionado a tag [API] na frente do nome do usuário. Caso contrário, será o valor informado em `answer_name`. Se também não for informado um `answer_name`, esse valor será o e-mail do usuário da API.
++ user_id (number) - Identificador do Usuário.
++ created_at (string) - Data da criação da resposta.
++ organization_id (number) - Idenfificador da organização.
++ answer_origin (number) - Origem da resposta = [API].
++ answer_time (string) - Data da criação da resposta.
++ created_at (string) - Data da criação da resposta.
++ updated_at (string) - Data da atualização da resposta
++ id (number) - Identificador da resposta.
++ signature (enum)
+    + Members
+        + Answer sent without signature (string) - Default: Indica que a resposta foi enviada sem assinatura.
+        + Answer sent without signature : User doesn't have a signature registered (string) - Indica que foi tentado enviar a resposta com assinatura, porém, o usuário não tem uma assinatura cadastrada em "Minha conta". Portanto, a resposta foi enviada sem assinatura.
+        + Answer sent with signature (string) -  Indica que a resposta foi enviada com assinatura.
+
+## BaseListAnswer
++ author (string) - Nome do autor. Só será preenchido se a resposta for enviada por um agente. Caso contrário, o objeto 'usuário' será preenchido
++ created_at (string) - Data da criação da resposta
++ name (string) - O texto da resposta em formato HTML
++ ticket_number (number) - Número do ticket em que esta resposta foi adicionada
++ files (number) - Número de arquivos na resposta
++ user (BaseUser)
+
+## ShowAnswer
++ author (string) - Nome do autor. Só será preenchido se a resposta for enviada por um agente. Caso contrário, o objeto 'usuário' será preenchido
++ created_at (string) - Data da criação da resposta
++ name (string) - O texto da resposta em formato HTML
++ ticket_number (number) - Número do ticket em que esta resposta foi adicionada
++ user (BaseUser)
++ files (BaseFiles) - Informações dos arquivos
+
+## BaseInternalCommunication
++ created_at (string) - Data da criação da resposta
++ text (string) - O texto da comunicação interna em formato HTML
++ ticket_number (number) - Número do ticket em que esta resposta foi adicionada
++ user (BaseUser)
+
+## BasePriority
++ id: 552 - Identificador da prioridade
++ name: Média (string) - Nome da prioridade
+
+## UserBase
++ user_id: 6546 (number),
++ user_email: xyz@email.com (string),
++ user_name: Xyz (string),
++ active: true, (boolean),
++ two_factor_authentication: false (boolean),
++ client_id: 8564, (number),
++ technical_group (enum)
+    + Members
+        + technical_group_id: 23 ,
+        + technical_group_name: Administradores,
++ role_group (enum)
+    + Members
+        + role_group_id: 545,
+        + role_group_name: Admin
+
+## CreateTicketWithAppointment
++ client_id: 1 (number, required) - Identificador do cliente de /api/v1/clients
++ desk_id: 1 (number,required) - Identificador da mesa de /api/v1/desks
++ stage_id: 1 (number,required) - Identificador do estágio desejado.
++ priority_id: 8 (number, required) - Identificador da prioridade.
++ responsible_id: 1 (number, optional) - Identificar do responsável do ticket.
++ title: Nice Ticket (required) - Titulo do ticket
++ description: <p>Nice ticket, have we</p> (string,required) - Descrição do ticket
++ requestor (BaseRequestor, required) - Solicitante do ticket
++ followers: follower1@client.com,follower2@client.com (string, optional) - Seguidores do ticket. Necessário informar os e-mails dos seguidores separados por vírgula 
++ services_catalogs_item_id: null (number) - Item do catálogo de serviços. Obrigatório apenas se “Selecionar item do catálogo de serviço antes de abrir o ticket” for verdadeiro na mesa selecionada
++ appointment (BaseWithAppointment, required) - Dados do apontamento.
++ attend_expiration: `2023-04-17 20:20:00` (string, optional) - Determina o vencimento atendimento do SLA no ticket.
++ solve_expiration: `2023-04-18 10:00:00` (string, optional) - Determina o vencimento solução do SLA no ticket.
+
+
+## CreateTicketWithPreAppointment
++ client_id: 1 (number, required) - Identificador do cliente de /api/v1/clients
++ desk_id: 1 (number,required) - Identificador da mesa de /api/v1/desks
++ stage_id: 1 (number,required) - Identificador do estágio desejado.
++ priority_id: 8 (number, required) - Identificador da prioridade.
++ responsible_id: 1 (number, optional) - Identificar do responsável do ticket.
++ title: Nice Ticket (required) - Titulo do ticket.
++ description: <p>Nice ticket, have we</p> (string,required) - Descrição do ticket.
++ requestor (BaseRequestor, required) - Solicitante do ticket.
++ followers: follower1@client.com,follower2@client.com (string, optional) - Seguidores do ticket. Necessário informar os e-mails dos seguidores separados por vírgula
++ services_catalogs_item_id: 58 (number) - Item do catálogo de serviços. Obrigatório apenas se “Selecionar item do catálogo de serviço antes de abrir o ticket” for verdadeiro na mesa selecionada.
++ appointment (BaseWithPreAppointment, required) - Dados do apontamento.
++ attend_expiration: `2023-04-17 20:20:00` (string, optional) - Determina o vencimento atendimento do SLA no ticket.
++ solve_expiration: `2023-04-18 10:00:00` (string, optional) - Determina o vencimento solução do SLA no ticket.
+
+## CreateUserBase
++ name: Xyz (string)
++ email: xyz@email.com (string)
++ password: XyzXyz123 (string)
++ client_id: 12357 (number)
++ technical_group_id: 61 (number)
+
+## TicketList
++ ticket_number: 11455 (required) - Número do ticket.
++ title: Nice Ticket (string) - Título do ticket.
++ attend_expiration: `2020-03-16T18:48:00Z` (string) - Horário em que o atendimento irá expirar.
++ is_revised: false (boolean) - Informa se o ticket foi revisado.
++ requestor_email: rk@rk.com (string) - E-mail do solicitante.
++ followers: rk2@rk2.com (string) - Informa o e-mail dos seguidores do ticket.
++ solve_expiration: `2020-03-16T18:48:00Z` (string) - Tempo limite para a solução do ticket.
++ solved_in_time: `2021-01-29T14:59:46.055Z` (string) - Informa o horário em que o ticket foi resolvido.
++ created_by_way_of (enum) - Informa o canal pelo qual foi aberto o ticket.
+    + Members
+        + `Tiflux Web` (string) 
+        + Tiflux Agent (string)
+        + Chat Widget (string)
+        + WhatsApp (string)
+        + `E-mail` (string)
+        + External Form (string)
+        + Tiflux Mobile (string)
+        + Tiflux API (string)
+        + Chat (string)
+        + default - Not identified
++ created_at: `2020-03-10 18:41:00` (string) - Data de criação do ticket.
++ updated_at: `2020-03-10T18:51:00Z` (string) - Data da ultima atualização do ticket.
++ pause_sla_status (object)
+    + reason: null (string) - **deprecated** - Não mais utilizado. Esse campo irá sempre retornar NULL. Para saber o motivo da pausa de SLA, você deve utilizar a requisição de Exibir Ticket.
+    + stopped: true (boolean) - Mostra se o SLA está pausado ou não.
++ attend_sla: null (string) - informa se o SLA de atendimento foi cumprido no ticket.
++ client (BaseClient)
++ desk (BaseDesk) - Mesa associada ao ticket
++ responsible (BaseResponsible) - Responsável atual pelo ticket
++ priority (BasePriority)
++ services_catalog (ServiceCatalogItem)
++ stage (BaseStage) - Estágio do ticket
++ status (BaseStatus) - Status do ticket
++ rating (number) - Nota da avaliação do ticket
++ entities (BaseEntities) - Campos personalizados possíveis no ticket
++ parent_ticket (ParentTicket) - Informações do ticket pai  
++ children_ticket (array[ChildrenTicket]) - Informações dos tickets filhos 
+
+## BaseStage
++ id (number) - Identificador do estágio
++ name: `first_stage_name` (string) - Nome do estágio
++ expiration: `2021-02-02T12:27:00` (string) - Tempo de expiração do estágio
+
+## BaseStatus
++ id (number) - Identificador do status
++ name: `first_status_name` (string) - Nome do status
+
+## BaseResponsible
++ id: null (number) - Identificador do responsável
++ name: null (string) - Nome do responsável
++ email: null (string) - E-mail do responsável
+
+## BaseFiles
++ id: 123445 (number) - Identificador do arquivo
++ url: .../service_desk/ticket_files/archives/123445/original/3545614560_0.123_123445_foto.png (string) - Link para acesso ao arquivo
++ name: 3545614560_0.123_123445_foto.png (string) - Nome do arquivo
++ size: 12350 (number) - Tamanho do arquivo em bytes
+
+## TicketView (TicketList)
++ description: <p>Uma boa descrição</p> - Descrição do ticket
++ closed_by (BaseUser) - Usuário que fechou o ticket
++ closed_stage (BaseStage) - O estágio em que o ticket foi fechado
++ closed_status (BaseStatus) - O status em que o ticket foi fechado
++ custom_fields (array[TicketCustomFields]) - Campos personalizados do ticket
++ equipment (BaseEquipment) - Equipamento relacionado ao ticket
++ first_appointment: `2020-03-16T18:48:00Z` (string) - Data e hora do primeiro apontamento
++ priority (Priority) - Prioridade do ticket
++ priority_change_reason: Conexão com a internet caiu (string) - Razão pela qual a prioridade do ticket mudou
++ reopen_count: 0 (number) - Quantas vezes este tíquete foi reaberto
++ requestor (RequestorWithID) - Solicitante do ticket
++ responsible (BaseResponsible) - Responsável do ticket
++ files (BaseFiles) - Informações dos arquivos
++ revised_limit_time: 5 (number) - Tempo limite de revisão para o ticket
++ revised_time: 1 (number) - Quantidade de horas até este ticket ser revisado
++ services_catalog (ServiceCatalogItem) - Catalogo de serviços anexado ao ticket
++ stopped: false (boolean) - Se o ticket está parado
++ worked_hours: 04:40 (string) - Tempo total apontado no ticket
++ is_closed: true (boolean) - Se o ticket está fechado
++ `closed_ticket_total_spent_solving`: 06:05 (string) - Horas gastas de atendimento. Esse campo só terá um valor quando o ticket está fechado. Se o ticket estiver aberto, o valor desse campo será null.
++ created_at: `2020-03-10 18:41:00` (string) - Data de criação do ticket
++ updated_at: `2020-03-10T18:51:00Z` (string) - Data da ultima atualização do ticket
++ rating (number) - Nota da avaliação do ticket
++ entities (BaseEntities) - Campos personalizados possíveis no ticket
++ parent_ticket (ParentTicket) - Informações do ticket pai  
++ children_ticket (array[ChildrenTicket]) - Informações dos tickets filhos 
+
+## TicketUpdated
++ new_entity_value: Novo valor da entidade (string)(boolean)(number) - Valor atualizado da entidade.
++ stage_id: 2 (number) - ID do novo estágio do ticket.
++ stopped: true (boolean) - Se o ticket for pausado aparecerá true, caso contrário aparecerá false.
++ stop_message: <p>O Sla foi pausado. Motivo: Teste</p> (string) - Resposta adicionada ao pausar o SLA.
++ responsible_id: 1 (number) - ID do novo responsável do ticket.
++ priority_id: 148 (number) - ID da nova prioridade do ticket.
++ priority_change_reason: <p>Prioridade alterada.</br>Motivo: Teste</p> (string) - Resposta adicionada ao alterar a prioridade do ticket.
++ status_id: 121 (number) - ID do novo status do ticket.
++ services_catalogs_item_id: 29 (number) - ID do novo catálogo de serviço do ticket.
+
+## CloseTicket
++ message: Ticket scheduled to close (string) - Informa se foi agendado o fechamento do ticket
+
+## ReopenTicket
++ disapproval_reason - Motivo da reprovação.
+
+## ReopenedTicket
++ message (string) - Informa se o ticket foi reaberto, ou se teve algum erro no processo.
+
+## ParentTicket
++ title: Ticket pai (string) - Título do ticket
++ desk_id: 10 (number) - Identificador da mesa
++ stage_id: 11 (number) - Identificador do estágio
++ status_id: 12 (number) - Identificador do status
++ ticket_number: 101010 (number) - Número do ticket
++ responsible_id: 13 (number) - Identificador do responsável
+
+## ChildrenTicket
++ ticket_number: 121212 (number) - Número do ticket
++ title: Ticket filho (string) - Título do ticket
++ desk_id: 7 (number) - Identificador da mesa
++ stage_id: 6 (number) - Identificador do estágio
++ status_id: 5 (number) - Identificador do status
++ responsible_id: 44 (number) - Identificador do responsável
+
+## BaseEntities
++ id (number) - Identificador da entidade
++ entity_name (string) - Nome da entidade
++ entity_description (string) - Descrição da entidade
++ menu_item (boolean) - Se a entidade atual é um item de menu
++ fields (BaseEntityFields) - Campos da entidade
+
+## BaseEntityFields
++ field_id (number) - Identificador do campo de entidade
++ field_name (string) - Nome do campo
++ field_type (string) - Tipo da entidade
++ is_required (boolean) - Se o campo é obrigatório
++ options (BaseEntityFieldOptions) - Opções do campo da entidade
+
+##BaseEntityFieldOptions
++ option_id (number) - Identificador da opção
++ option_name (string) - Nome da opção
++ value (string) - Valor atribuido a opção
+
+## UpdateTicket
++ id (number, required) - Identificador da entidade que será atualizada
++ field_id (number, required) - Identificador do campo de entidade que será atualizado
++ option_id (number) - Identificador da nova opção a ser definida para o campo de entidade, só é necessário caso o campo a ser atualizado tenha opções.
++ value (string) - Novo valor a ser definido no campo, somente necessário para campos com entrada de texto.
++ stage (number) - ID do novo estágio caso queira alterar o estágio do ticket
++ stopped (boolean) - Caso queira pausar o ticket, envie essa chave com o valor "true", caso queira despausar o ticket envie "false".
++ stop_message (string) - Caso queira pausar o ticket, essa chave é obrigatória, aqui você define o motivo do pause de SLA e esse texto aparecerá na comunicação do ticket.
++ responsible_id (number) - ID do novo responsável, caso queria alterar o responsável do ticket. Também é aceito o valor "null", para deixar o ticket sem responsável.
++ priority_id (number) - ID da nova prioridade, caso queria alterar a prioridade do ticket. Esse atributo só é aceito em mesas configuradas com seleção de prioridade na abertura do ticket.
+Seguindo a regra do sistema, não é possível alterar a prioridade de um ticket que esteja com o SLA Pausado.
++ priority_change_reason (string) - Caso queira trocar a prioridade do ticket, essa chave é obrigatória, aqui você define o motivo da troca de prioridade e esse texto aparecerá na comunicação do ticket.
++ status_id (number) - ID do novo status, caso queria alterar o status do ticket. 
+Não é possível alterar para os status padrão de aberto e fechado da mesa.
++ services_catalogs_item_id (number) - ID do novo catálogo de serviço, caso queira alterar o catálogo de serviço do ticket. Esse atributo só é aceito em mesas configuradas com seleção de catálogo na abertura do ticket.
+Seguindo a regra do sistema, não é possível alterar o catálogo de um ticket que esteja com o SLA Pausado.
+
+## BaseCustomFields
++ title (string,required) - Titulo do campo personalizado
++ type (enum, required) - Tipo do campo personalizado
+    + Members
+        + text (string) - Texto
+        + textarea (string) - Parágrafo
+        + checkbox (string) - Checkbox
+        + radio (string) - Seleção única
++ options (array[BaseCustomFieldsOptions]) Opções para os campos Checkbox e Seleção única
++ required (boolean) Se o campo é obrigatório
+
+## BaseCustomFieldsOptions
++ id (number, required) - Identificador da opção
++ description (string, required) - Descrição da opção
++ value (boolean) - Valor da opção
+
+## TicketCustomFields (BaseCustomFields)
++ value (string, required) - Valor do campo. Nem sempre presente.
+
+## BaseEquipment
++ id: 44 (number) - Identificador do equipamento
++ name: `Desktop-34K3J` (string) - Nome do equipamento
+
+## CreateTicket
++ client_id: 1 (number, required) - Identificador do cliente de /api/v1/clients
++ desk_id: 1 (number,required) - Identificador da mesa de /api/v1/desks
++ priority_id: 8 (number, required) - Identificador da prioridade. Obrigatório apenas se o "Selecionar item do catálogo de serviço antes de abrir o ticket" for falso na mesa selecionada
++ responsible_id: 1 (number, optional) - Identificar do responsável do ticket.
++ title: Nice Ticket (required) - Titulo do ticket
++ description: <p>Nice ticket, have we</p> (string,required) - Descrição do ticket
++ requestor (BaseRequestor, required) - Solicitante do ticket
++ followers: follower1@client.com,follower2@client.com (string, optional) - Seguidores do ticket. Necessário informar os e-mails dos seguidores separados por vírgula
++ services_catalogs_item_id: null (number) - Item do catálogo de serviços. Obrigatório apenas se “Selecionar item do catálogo de serviço antes de abrir o ticket” for verdadeiro na mesa selecionada
++ ticket_reference_number: 11333 (number) - Outro ticket que é referenciado por este ticket
++ attend_expiration: `2023-04-17 20:20:00` (string, optional) - Determina o vencimento atendimento do SLA no ticket.
++ solve_expiration: `2023-04-18 10:00:00` (string, optional) - Determina o vencimento solução do SLA no ticket.
++ attend_expiration_minutes: 60 (number) - Tempo em minutos para SLA e atendimento 
++ solve_expiration_minutes: 300 (number) - Tempo em minutos para SLA de resolução
+
+## CreateUsers
++ name: xyz (required) - Nome do usuário, sendo técnico ou cliente.
++ email: email: (string) - E-mail do usuário técnico ou cliente a ser convidado.
++ client_id: 10 (number, required) - Identificador do cliente a qual o novo registro será vinculado
++ is_client: false (boolean, required) - Identifica se o usuário cadastrado é cliente ou não.
++ technical_group_id: 1 (number, required) - Identificador do tipo de usuário, sendo técnico ou cliente. Obrigatório em caso do usuário cadastrado ser do tipo técnico.
++ role_group_id: 3 (number, required) - Identificador do grupo de atendente. Obrigatório em caso do usuário cadastrado ser do tipo técnico.
+
+## AppointmentCharge
++ is_guarantee: false (boolean) - Se o apontamento foi marcado como garantia
++ contract_id: 1 (number) - Identificador do contrato
++ contract_name: Contrato livre (string) - Nome do contrato
++ loose_service_id: 32 (number) - Identificador do serviço avulso
++ loose_service_name: Cortesia (string) - Nome do serviço avulso
+
+## BaseAppointments
++ id: 1 (number) - Identificador do apontamento
++ attendance (enum)
+    + Members
+        + 1 (string) - Horas externas
+        + 2 (string) - Horas remotas
+        + 3 (string) - Horas internas
++ attendance_kind (enum)
+    + Members
+        + 1 (string) - Avulso
+        + 2 (string) - Contrato
+
++ beginning: `2020-03-04T15:00:00.000Z` - Data e hora do inicio do apontamento
++ ending: `2020-03-04T15:30:00.000Z` - Data e hora da finalização do apontamento
++ description: Reinstalled network driver (string) - Descrição do apontamento
++ ticket_number: 2020 (number) - Numero do ticket
++ value: 214,12 (number) - Valor do apontamento
++ client (BaseClient) - Cliente que está sendo atendido no ticket/apontamento
++ user (BaseUser) - Usuário que realizou o apontamento
++ charge (AppointmentCharge) - Informações sobre o tipo de cobrança definido no apontamento
+
+## ListAppointments
++ created_beginning: `YYYY-MM-DD` (string) - Filtrar apontamentos criados após uma data
++ created_ending: `YYYY-MM-DD` (string) - Filtrar apontamentos criados antes de uma data
++ user_id (number) - Número do usuário que realizou o apontamento
+
+## BaseRequestor
++ name: Jane Doe (required) - Nome do solicitante
++ email: jane.doe@client.com (required) - Email do solicitante
++ telephone (BaseTelephone, required) - Telefone do solicitante
+
+## RequestorWithID
++ id: 1 (number) - ID do solicitante. O valor do campo ID só será apresentado neste local, se o ticket estiver associado a um solicitante específico. Caso o solicitante do ticket tenha apenas o nome, e-mail ou telefone registrado, o valor deste atributo será considerado nulo.
++ name: Jane Doe (required) - Nome do solicitante
++ email: jane.doe@client.com (required) - Email do solicitante
++ telephone (BaseTelephone, required) - Telefone do solicitante
+
+## BaseWithAppointment
++ date (string) - Data do dia do apontamento.
++ init_time (string) - Hora do inicio do apontamento.
++ end_time (string) - Hora final do apontamento.
++ user_id (number) - Identificador do responsável do apontamento.
++ description (string) - Descrição do apontamento.
+
+## BaseWithPreAppointment
++ date (string) - Data do dia do apontamento.
++ init_time (string) - Hora do inicio do apontamento.
++ user_id (number) - Identificador do responsável do apontamento.
+
+## BaseTelephone
++ number: +554733333333 (string,required) - Numero de telefone.
++ extension: 333 (number) - Ramal.
+
+## ListEntities
++ id (number) - Identificador do campo personalizado.
++ name (string) - Nome do campo personalizado.
++ description (string) - Descrição do campo personalizado.
++ menu_item (boolean) - Informa se o campo personalizado é item de menu.
++ active (boolean) - Informa se o campo personalizado está ativo.
++ qtd_fields (number) - Quantidade de campos.
+
+## ShowEntity
++ id (number) - Identificador do campo personalizado.
++ name (string) - Nome do campo personalizado.
++ description (string) - Descrição do campo personalizado.
++ menu_item (boolean) - Informa se o campo personalizado é item de menu.
++ active (boolean) - Informa se o campo personalizado está ativo.
++ fields (EquipmentEntityFields) - Campos da entidade
+
+## ListChats
++ chat_id (number) - Identificador do chat.
++ origin (string) - Origem do chat.
++ user_id (number) - Identificador do responsável do chat.
++ online (boolean) - Informa se o chat está em andamento.
++ archived (boolean) - Informa se o chat está arquivado.
++ created_at: `2020-03-10T18:51:00Z` (string) - Horário de criação do chat.
++ name (string) - Nome do usuário que conversou com o responsável no chat.
++ department_name (string) - Nome do departamento selecionado.
++ ticket_id (number) - Identificador do ticket atrelado ao chat.
++ email (string) - E-mail do usuário que conversou com o responsável do chat.
++ client_id (number) - Identificador do cliente.
++ services_catalogs_item_id (number) - Identificador do item do catalogo de serviços.
++ canceled (boolean) - Informa se o chat foi cancelado.
++ assumed_at: `2020-03-10T18:51:00Z` (string) - Informa a data e horário em que o responsável assumiu o chat.
+
+## ShowChat
++ chat_id (number) - Identificador do chat.
++ origin (string) - Origem do chat.
++ number (string) - Identificador do WhatsApp (disponível somente em chats WhatsApp).
++ user_id (number) - Identificador do responsável pelo chat.
++ user_name (string) - Nome do responsável pelo chat.
++ group_attendants_id (number) - Identificador do grupo de atendentes.
++ group_attendants (string) - Nome do grupo de atendentes.
++ client_id (number) - Identificador do cliente.
++ client_name (string) - Nome do cliente.
++ requester_name (string) - Nome do solicitante.
++ services_catalog_id (number) - Identificador do catálogo de serviços.
++ knowledge_area_id (number) - Identificador da área de conhecimento.
++ item_id (number) - Identificador do item do catálogo de serviços.
++ services_catalog (string) - Nome do catálogo de serviços
++ knowledge_area (string) - Nome da área de conhecimento.
++ item (string) - Nome do item do catálogo de serviços.
++ department_id (number) - Identificador do departamento.
++ department_name (string) - Nome do departamento.
++ ticket_number (number) - Numero identificador do ticket.
++ ticket_title (string) - Titulo do ticket.
++ chat_duration (number) - Duração do chat.
++ online (boolean) - Se o solicitante está online. (apenas para o chat Tiflux)
++ archived (boolean) - Se o chat está arquivado.
++ canceled (boolean) - Se o chat está cancelado.
++ email (string) - Email do solicitante.
++ created_at (number) - data da criação do chat.
++ assumed_at (number) - data na qual o chat foi assumido pelo primeiro atendente.
++ finished_at (number) - data na qual o chat foi finalizado.
+
+## ChatSummary
++ answered (string) - Quantidade de chats atendidos.
++ resolved_on_first_contact (number) - Quantidade de chats resolvidos no primeiro contato.
++ average_time_chat (number) - Tempo médio de chat.
++ users_served (string) - Quantidade de usuários atendidos.
++ average_waiting_time (number) - Tempo médio de chat.
++ total_chat_time (number) - Tempo total de chat.
++ canceled_chats (string) - Numero de chats cancelados.
+
+## Message
++ number: 5547999999999 (number, required) - Número de telefone
++ body: Mensagem que será enviada no chat (string) - Utilize esse parâmetro se você deseja enviar uma mensagem que **não** é um modelo HSM ou modelo de chat. 
++ template_id: 20 (number) - **Identificador de template** - modelo de chat, ou modelo de Início de chat (Gupshup).
+Utilize esse atributo se você deseja enviar um modelo HSM ou modelo de chat.
+> __Extra__: Se você está utilizando um HSM e deseja enviar parâmetros personalizados no valor das variáveis, utilize o atributo *params* em conjunto a este.
++ params: valor 1, valor 2 (array) - Lista de strings, com os valores personalizados das variáveis do modelo HSM (template_id) que será enviado
++ name: João (string) - Nome do solicitante
++ user_id: 1515 (number) - Identificador do usuário que ficará responsável pelo chat
++ integration_id: 1 (number, required) - Identificador de integração
++ department_id: 1 (number) - Identificador de departamento, se você deseja vincular o chat criado a um departamento
++ ticket_id (number) - Identificador de ticket, se você deseja vincular o chat criado a um ticket
++ client_id (number) - Identificador de cliente, se você deseja vincular o chat criado a um cliente
++ archive (boolean) - Arquivar chat após o envio

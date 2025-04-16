@@ -1,0 +1,65 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "869795efd73446f18b6589592f428b64",
+                "name": "ztg-integracoes"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "7dd5af4829684fa78c59dba9f05fff42",
+                "template": "zt-app-tiflux",
+                "name": "zt-app-tiflux",
+                "groups": [
+                    {
+                        "name": "ztg-integracoes"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$API_KEY}",
+                        "type": "SECRET_TEXT",
+                        "description": "Chave de API do Tiflux"
+                    },
+                    {
+                        "macro": "{$API_URL}",
+                        "value": "https://api.tiflux.com/api/v1/tickets/",
+                        "description": "S\u00f3 altere quando for indicado pelo suporte do TIflux"
+                    },
+                    {
+                        "macro": "{$CLIENT_ID}",
+                        "description": "ID do cliente"
+                    },
+                    {
+                        "macro": "{$MESA_ID}",
+                        "description": "ID da mesa do cliente"
+                    },
+                    {
+                        "macro": "{$PRIORITY_ID}",
+                        "description": "ID de prioridade da mesa"
+                    },
+                    {
+                        "macro": "{$TIPO_COMUNICACAO}",
+                        "value": "0",
+                        "description": "0 - comunica\u00e7\u00e3o interna. 1 - comunica\u00e7\u00e3o com cliente"
+                    },
+                    {
+                        "macro": "{$ZABBIX_PASS}",
+                        "type": "SECRET_TEXT",
+                        "description": "Senha do usu\u00e1rio zabbix"
+                    },
+                    {
+                        "macro": "{$ZABBIX_SERVER_URL}",
+                        "description": "URL do frontend do zabbix server"
+                    },
+                    {
+                        "macro": "{$ZABBIX_USER}",
+                        "description": "Usu\u00e1rio zabbix com acesso aos hosts da integra\u00e7\u00e3o"
+                    }
+                ]
+            }
+        ]
+    }
+}

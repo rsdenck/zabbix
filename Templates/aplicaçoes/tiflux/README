@@ -1,0 +1,12 @@
+## REQUISITOS
+-Ubuntu 20.04 e Red Hat EL 8.4
+-Zabbix 5.0 e 5.4 
+-Python 3
+---------------------------
+A integração Zabbix não é um produto Tiflux, é um software desenvolvido por um especialista Zabbix que disponibilizou os códigos para uso de nossa comunidade Tifluxer. Os códigos criados, fazem uso de nossa API pública e podem ser desenvolvidos ou dado manutenção por qualquer pessoa que tenha conhecimentos de programação e Zabbix. 
+
+A Tiflux não realiza suporte no Zabbix e nem na integração, caso seja necessário algum suporte sobre esse ponto, recomendamos que você contrate uma empresa especialista na solução Zabbix para que a mesma possa lhe auxiliar neste ponto.
+
+
+### Tiflux Official API
+Documentação: https://tiflux.docs.apiary.io/#reference
