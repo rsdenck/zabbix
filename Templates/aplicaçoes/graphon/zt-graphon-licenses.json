@@ -1,0 +1,56 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "317a467f005547878db42e6b748dcff4",
+                "name": "GoGlobal"
+            },
+            {
+                "uuid": "ac1ac4b77bce4598a4e4a76feb78e1a9",
+                "name": "Templates/Brusque"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "88951fff4a974b34bfe3d74f29dfb88e",
+                "template": "zt-graphon-licenses",
+                "name": "zt-graphon-licenses",
+                "description": "Monitora as licen\u00e7as do goglobal.",
+                "templates": [
+                    {
+                        "name": "zt-graphon-licenses-uso"
+                    },
+                    {
+                        "name": "zt-graphon-services"
+                    }
+                ],
+                "groups": [
+                    {
+                        "name": "GoGlobal"
+                    },
+                    {
+                        "name": "Templates/Brusque"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "276953113a0e4617925cf723af466651",
+                        "name": "Licen\u00e7as em Uso GoGlobal",
+                        "key": "custom.goglobal.licenses_in_use",
+                        "history": "90d",
+                        "status": "DISABLED"
+                    },
+                    {
+                        "uuid": "fe474fb635bf4f1088b29513b7e31323",
+                        "name": "Total de Licen\u00e7as GoGlobal",
+                        "key": "custom.goglobal.total_licenses",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "status": "DISABLED"
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,60 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "317a467f005547878db42e6b748dcff4",
+                "name": "GoGlobal"
+            },
+            {
+                "uuid": "ac1ac4b77bce4598a4e4a76feb78e1a9",
+                "name": "Templates/Brusque"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "8a86069b37994349b0b84525484d7ed8",
+                "template": "zt-graphon-licenses-uso",
+                "name": "zt-graphon-licenses-uso",
+                "description": "Conta as licen\u00e7as dispon\u00edveis e em uso dos servidores GO-LIC",
+                "groups": [
+                    {
+                        "name": "GoGlobal"
+                    },
+                    {
+                        "name": "Templates/Brusque"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "41c2c4ebb06a4b7397f81423978504de",
+                        "name": "Licen\u00e7as Dispon\u00edveis",
+                        "key": "check.licenses.available",
+                        "history": "90d",
+                        "trends": "0"
+                    },
+                    {
+                        "uuid": "5fdb685d20a54308b49d133cfb914e44",
+                        "name": "Licen\u00e7as em Uso",
+                        "key": "check.licenses.in_use",
+                        "history": "90d",
+                        "triggers": [
+                            {
+                                "uuid": "a6fd42fef5e34a2cb5254ffffb3c47b4",
+                                "expression": "last(/zt-graphon-licenses-uso/check.licenses.in_use)>=850",
+                                "name": "Go Global Alerta de Uso de Licen\u00e7as: Licen\u00e7as em uso: {ITEM.LASTVALUE}",
+                                "priority": "HIGH"
+                            },
+                            {
+                                "uuid": "0608dc377f124c44b561096f141163f6",
+                                "expression": "last(/zt-graphon-licenses-uso/check.licenses.in_use)>=900",
+                                "name": "Go Global Alerta de Uso de Licen\u00e7as: Licen\u00e7as em uso: {ITEM.LASTVALUE}",
+                                "priority": "DISASTER"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

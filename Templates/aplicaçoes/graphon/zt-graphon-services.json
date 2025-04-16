@@ -1,0 +1,177 @@
+{
+    "zabbix_export": {
+        "version": "7.0",
+        "template_groups": [
+            {
+                "uuid": "ac1ac4b77bce4598a4e4a76feb78e1a9",
+                "name": "Templates/Brusque"
+            },
+            {
+                "uuid": "338038e6e18f4e7b86d6b2c73b30cdae",
+                "name": "Zabbix Templates"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "d5cef91305b043bba0cd7240dee6a576",
+                "template": "zt-graphon-services",
+                "name": "zt-graphon-services",
+                "groups": [
+                    {
+                        "name": "Templates/Brusque"
+                    },
+                    {
+                        "name": "Zabbix Templates"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "a063025391b046e7b7ef0d21ad2955f7",
+                        "name": "GO-Global - Active Sessions",
+                        "key": "perf_counter[\"\\GO-Global Host\\Active Sessions\"]",
+                        "history": "90d",
+                        "trends": "90d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Go-Global"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "ab44330ce9a440d1baec3d8d69649101",
+                        "name": "GO-Global - Client Connections",
+                        "key": "perf_counter[\"\\GO-Global Host\\Client Connections\"]",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "trends": "90d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Go-Global"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "9df846ba0fc743af806dc2976c9c8533",
+                        "name": "GO-Global - Host Connections",
+                        "key": "perf_counter[\"\\GO-Global Host\\Host Connections\"]",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "trends": "90d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Go-Global"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d39bd1391dab40faa65eb0769e6bfbe7",
+                        "name": "GO-Global - Maximum Sessions",
+                        "key": "perf_counter[\"\\GO-Global Host\\Maximum Sessions\"]",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "trends": "90d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Go-Global"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a0f3a72c3f1d49b88d6bfde9d2eafc56",
+                        "name": "Go-Global Application Publishing Service",
+                        "key": "service.info[GGAPS]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "trends": "60d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Go-Global"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "e72c1e3e14b54a78b8f700d2b26926c4",
+                                "expression": "last(/zt-graphon-services/service.info[GGAPS])<>0",
+                                "name": "Erro no servi\u00e7o  - (GO-Global Application Publishing Service)",
+                                "priority": "HIGH"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "cee68a9ca7c542d9b27e5e8aa36bb911",
+                        "name": "GO-Global License Manager",
+                        "key": "service.info[GGLicenseManager]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "trends": "60d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Go-Global"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "a4cf21911faf499d8d0991a1b008e0fe",
+                                "expression": "last(/zt-graphon-services/service.info[GGLicenseManager])<>0",
+                                "name": "Erro no servi\u00e7o  - (GO-Global License Manager)",
+                                "priority": "HIGH"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "d965986abb9d4edebd2739ca1b092f6b",
+                        "name": "GO-Global Update Client",
+                        "key": "service.info[GGUpdateClient]",
+                        "history": "1w",
+                        "value_type": "FLOAT",
+                        "trends": "60d",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Go-Global"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "81fb85eff6f14589918d2228e01a3ad9",
+                                "expression": "last(/zt-graphon-services/service.info[GGUpdateClient])>0",
+                                "name": "Erro no servi\u00e7o  - (GO-Global Update Client)",
+                                "priority": "HIGH"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "3e3477519f54428d911629d39e5fdbf0",
+                        "name": "Go-Global - Pocertagem de sessoes ativas",
+                        "type": "CALCULATED",
+                        "key": "sessions.usage",
+                        "history": "90d",
+                        "value_type": "FLOAT",
+                        "units": "%",
+                        "params": "last(//perf_counter[\"\\GO-Global Host\\Active Sessions\"])/last(//perf_counter[\"\\GO-Global Host\\Maximum Sessions\"])*100",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "Go-Global"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "fbf4b92690c244e19608c3448dc51e27",
+                                "expression": "last(/zt-graphon-services/sessions.usage)>90",
+                                "name": "Sessoes Go-global em uso acima de 90% -> ({ITEM.LASTVALUE})",
+                                "priority": "AVERAGE"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
